@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = "it-logica-application-backbone"
-  s.version = "0.1.11"
+  s.version = "0.1.12"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ladas"]
@@ -51,6 +51,11 @@ Gem::Specification.new do |s|
     "app/assets/javascripts/backbone_js/load-image.min.js",
     "app/assets/javascripts/backbone_js/time_picker.js",
     "app/assets/javascripts/backbone_js/tmpl.min.js",
+    "app/assets/stylesheets/backbone_css/bootstrap_and_overrides.css.scss",
+    "app/assets/stylesheets/backbone_css/index.css.scss",
+    "app/assets/stylesheets/backbone_css/jquery_datetime_picker.css.scss",
+    "app/assets/stylesheets/backbone_css/jquery_ui.css.scss",
+    "app/assets/stylesheets/backbone_css/tables.css.scss",
     "app/views/helpers/_build_ajax_callback_code.html.erb",
     "app/views/helpers/_build_breadcrumb.html.erb",
     "app/views/helpers/_build_datafiles.html.erb",
@@ -60,6 +65,7 @@ Gem::Specification.new do |s|
     "app/views/helpers/_build_table_pager.html.erb",
     "app/views/helpers/_build_table_wrapper.html.erb",
     "it-logica-application-backbone.gemspec",
+    "lib/backbone_css/engine.rb",
     "lib/backbone_js/engine.rb",
     "lib/controller_mixins/csv_instance_methods.rb",
     "lib/controller_mixins/renderer_instance_methods.rb",

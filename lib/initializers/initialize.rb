@@ -1,9 +1,12 @@
 require 'view_mixins/link'
 require 'view_mixins/form'
 require 'view_mixins/breadcrumb'
+require 'view_mixins/datafiles_for'
 require 'view_mixins/table'
 
 require 'model_mixins/table_builder_class_methods'
+require 'model_mixins/tree_node_class_methods'
+require 'model_mixins/tree_node_instance_methods'
 
 require 'controller_mixins/renderer_instance_methods'
 
@@ -14,10 +17,13 @@ module Initializers
       ActionView::Base.send :include, ViewMixins::Form
       ActionView::Base.send :include, ViewMixins::Breadcrumb
       ActionView::Base.send :include, ViewMixins::Table
+      ActionView::Base.send :include, ViewMixins::DatafilesFor
 
       ActionController::Base.send :include, ControllerMixins::RendererInstanceMethods
 
       ActiveRecord::Base.send :extend, ModelMixins::TableBuilderClassMethods
+      ActiveRecord::Base.send :extend, ModelMixins::TreeNodeInstanceMethods
+      ActiveRecord::Base.send :extend, ModelMixins::TreeNodeClassMethods
     end
   end
 end

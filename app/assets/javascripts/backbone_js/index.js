@@ -1,5 +1,5 @@
-//= require jquery.cookie
-//= require jquery.hotkeys
+//= require ./jquery.cookie.js
+//= require jquery.hotkeys.js
 //= require jquery.jstree
 //= require ladas_jstree
 //= require jquery.history

@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = "it-logica-application-backbone"
-  s.version = "0.1.0"
+  s.version = "0.1.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ladas"]
@@ -26,7 +26,32 @@ Gem::Specification.new do |s|
     "README.rdoc",
     "Rakefile",
     "VERSION",
+    "app/assets/javascripts/backbone_js/index.js",
+    "app/assets/javascripts/backbone_js/jquery-ui-timepicker-cs.js",
+    "app/assets/javascripts/backbone_js/jquery.cookie.js",
+    "app/assets/javascripts/backbone_js/jquery.fileupload.js",
+    "app/assets/javascripts/backbone_js/jquery.history.js",
+    "app/assets/javascripts/backbone_js/jquery.hotkeys.js",
+    "app/assets/javascripts/backbone_js/jquery.iframe-transport.js",
+    "app/assets/javascripts/backbone_js/jquery.jstree.js",
+    "app/assets/javascripts/backbone_js/jquery.multiselect.min.js",
+    "app/assets/javascripts/backbone_js/jquery.ui.datepicker-cs.js",
+    "app/assets/javascripts/backbone_js/jquery.ui.widget.js",
+    "app/assets/javascripts/backbone_js/ladas_form_submitter.js",
+    "app/assets/javascripts/backbone_js/ladas_functions.js",
+    "app/assets/javascripts/backbone_js/ladas_initialize_history.js",
+    "app/assets/javascripts/backbone_js/ladas_jstree.js",
+    "app/assets/javascripts/backbone_js/ladas_live_search.js",
+    "app/assets/javascripts/backbone_js/ladas_loading.js",
+    "app/assets/javascripts/backbone_js/ladas_paginate.js",
+    "app/assets/javascripts/backbone_js/ladas_saving.js",
+    "app/assets/javascripts/backbone_js/ladas_table_for.js",
+    "app/assets/javascripts/backbone_js/ladas_tinymce.js",
+    "app/assets/javascripts/backbone_js/load-image.min.js",
+    "app/assets/javascripts/backbone_js/time_picker.js",
+    "app/assets/javascripts/backbone_js/tmpl.min.js",
     "it-logica-application-backbone.gemspec",
+    "lib/backbone_js/engine.rb",
     "lib/it-logica-application-backbone.rb",
     "test/helper.rb",
     "test/test_it-logica-application-backbone.rb"

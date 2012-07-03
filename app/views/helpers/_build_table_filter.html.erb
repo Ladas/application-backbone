@@ -78,7 +78,8 @@
         {% var stringified_button_settings = JSON.stringify(button_settings); %}
 
         {% if (button_settings.symlink_controller || button_settings.symlink_action || button_settings.symlink_id || button_settings.symlink_outer_controller || button_settings.symlink_outer_id) { %}
-            <a href="#" class="{%= button_settings['class'] %}" data-tr_class="{%= button_settings.tr_class %}" onclick="load_page({%= stringified_button_settings %}, this); return false;">{%= button_settings['name'] %}</a>
+            {% var non_ajax_url = build_get_url(button_settings); %}
+            <a href="{%= non_ajax_url %}" class="{%= button_settings['class'] %}" data-tr_class="{%= button_settings.tr_class %}" data-td_class="{%= button_settings.td_class %}" onclick="load_page({%= stringified_button_settings %}, this); return false;">{%= button_settings['name'] %}</a>
         {% } else { %}
             <span class="{%= button_settings['class'] %}" data-tr_class="{%= button_settings.tr_class %}">{%= button_settings['name'] %}</span>
         {% } %}
@@ -90,7 +91,8 @@
           {% var stringified_button_settings = JSON.stringify(button_settings); %}
 
           {% if (button_settings.symlink_controller || button_settings.symlink_action || button_settings.symlink_id || button_settings.symlink_outer_controller || button_settings.symlink_outer_id) { %}
-              <a href="#" class="{%= button_settings['class'] %}" data-tr_class="{%= button_settings.tr_class %}" onclick="load_page({%= stringified_button_settings %}, this); return false;">{%= button_settings['name'] %}</a>
+              {% var non_ajax_url = build_get_url(button_settings); %}
+              <a href="{%= non_ajax_url %}" class="{%= button_settings['class'] %}" data-tr_class="{%= button_settings.tr_class %}" data-td_class="{%= button_settings.td_class %}" onclick="load_page({%= stringified_button_settings %}, this); return false;">{%= button_settings['name'] %}</a>
           {% } else { %}
               <span class="{%= button_settings['class'] %}" data-tr_class="{%= button_settings.tr_class %}">{%= button_settings['name'] %}</span>
           {% } %}

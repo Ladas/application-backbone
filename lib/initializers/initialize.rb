@@ -38,7 +38,7 @@ module ActiveRecord
     def update_attributes(attributes, options = {})
       if timestamp_control = attributes.delete(:control_against_overwrite_by_another_user)
         if self.attributes['updated_at'] > timestamp_control
-          errors[:base] << I18n.t('activerecord.errors.messages.control_against_overwrite_by_another_user')
+          errors[:base] << I18n.t('errors.messages.control_against_overwrite_by_another_user')
           return false
         end
       end
@@ -51,7 +51,7 @@ module ActiveRecord
     def update_attributes!(attributes, options = {})
       if timestamp_control = attributes.delete(:control_against_overwrite_by_another_user)
         if self.attributes['updated_at'] > timestamp_control
-          errors[:base] << I18n.t('activerecord.errors.messages.control_against_overwrite_by_another_user')
+          errors[:base] << I18n.t('errors.messages.control_against_overwrite_by_another_user')
           return false
         end
       end

@@ -1,14 +1,14 @@
 //= require ./jquery.cookie.js
-//= require jquery.hotkeys.js
-//= require jquery.jstree
-//= require ladas_jstree
-//= require jquery.history
-//= require ladas_initialize_history
-//= require time_picker
+//= require ./jquery.hotkeys.js
+//= require ./jquery.jstree.js
+//= require ./ladas_jstree.js
+//= require ./jquery.history.js
+//= require ./ladas_initialize_history.js
+//= require ./time_picker.js
 
 
-//= require jquery.iframe-transport
-//= require jquery.fileupload
-//= require jquery.fileupload-ui
+//= require ./jquery.iframe-transport.js
+//= require ./jquery.fileupload.js
+//= require ./jquery.fileupload-ui.js
 
 //= require_tree .

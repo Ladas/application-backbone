@@ -6,7 +6,7 @@
             language:"cs", // change language here en,cs,sk
 
             // Location of TinyMCE script
-            script_url:'/tinymce/jscripts/tiny_mce/tiny_mce.js',
+            script_url:'/assets/backbone_js/tinymce/jscripts/tiny_mce/tiny_mce.js',
 
             width:"100%",
 

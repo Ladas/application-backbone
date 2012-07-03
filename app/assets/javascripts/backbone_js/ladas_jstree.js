@@ -127,7 +127,7 @@
                                        "valid_children":["default"],
                                        // If we specify an icon for the default type it WILL OVERRIDE the theme icons
                                        "icon":{
-                                           "image":"/icons/file.png"
+                                           "image":"/assets/backbone_images/icons/file.png"
                                        }
                                    },
                                    // The `folder` type
@@ -135,7 +135,7 @@
                                        // can have files and other folders inside of it, but NOT `drive` nodes
                                        "valid_children":[ "default", "folder" ],
                                        "icon":{
-                                           "image":"/icons/folder.png"
+                                           "image":"/assets/backbone_images/icons/folder.png"
                                        }
                                    },
                                    // The `drive` nodes
@@ -143,7 +143,7 @@
                                        // can have files and folders inside, but NOT other `drive` nodes
                                        "valid_children":[ "default", "folder" ],
                                        "icon":{
-                                           "image":"/icons/root.png"
+                                           "image":"/assets/backbone_images/icons/root.png"
                                        },
                                        // those prevent the functions with the same name to be used on `drive` nodes
                                        // internally the `before` event is used

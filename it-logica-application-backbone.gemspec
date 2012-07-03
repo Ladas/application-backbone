@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = "it-logica-application-backbone"
-  s.version = "0.1.16"
+  s.version = "0.1.17"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ladas"]
@@ -106,6 +106,8 @@ Gem::Specification.new do |s|
     "app/assets/images/backbone_images/filtering-loader.gif",
     "app/assets/images/backbone_images/icon-a.png",
     "app/assets/images/backbone_images/icon-b.png",
+    "app/assets/images/backbone_images/img/loading.gif",
+    "app/assets/images/backbone_images/img/progressbar.gif",
     "app/assets/images/backbone_images/logo-josiah-venture.png",
     "app/assets/images/backbone_images/rails.png",
     "app/assets/images/backbone_images/sep-a.png",
@@ -141,8 +143,10 @@ Gem::Specification.new do |s|
     "app/assets/javascripts/backbone_js/tmpl.min.js",
     "app/assets/stylesheets/backbone_css/bootstrap_and_overrides.css.scss",
     "app/assets/stylesheets/backbone_css/index.css.scss",
+    "app/assets/stylesheets/backbone_css/jquery.fileupload-ui.css",
     "app/assets/stylesheets/backbone_css/jquery_datetime_picker.css.scss",
     "app/assets/stylesheets/backbone_css/jquery_ui.css.scss",
+    "app/assets/stylesheets/backbone_css/left_menu.css.scss",
     "app/assets/stylesheets/backbone_css/tables.css.scss",
     "app/views/helpers/_build_ajax_callback_code.html.erb",
     "app/views/helpers/_build_breadcrumb.html.erb",

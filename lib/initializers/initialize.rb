@@ -22,8 +22,6 @@ module Initializers
       ActionController::Base.send :include, ControllerMixins::RendererInstanceMethods
 
       ActiveRecord::Base.send :extend, ModelMixins::TableBuilderClassMethods
-      ActiveRecord::Base.send :extend, ModelMixins::TreeNodeInstanceMethods
-      ActiveRecord::Base.send :extend, ModelMixins::TreeNodeClassMethods
     end
   end
 end

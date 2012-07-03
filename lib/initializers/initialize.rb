@@ -1,5 +1,3 @@
-
-
 class ActiveRecord::Base
   extend ModelMixins::TableBuilderClassMethods
 end

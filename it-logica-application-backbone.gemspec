@@ -10,19 +10,23 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ladas"]
   s.date = "2012-07-03"
-  s.description = "The backbone for our apps"
+  s.description = "longer description of your gem"
   s.email = "ladislav.smola@it-logica.cz"
   s.extra_rdoc_files = [
     "LICENSE.txt",
+    "README.md",
     "README.rdoc"
   ]
   s.files = [
     ".document",
     "Gemfile",
+    "Gemfile.lock",
     "LICENSE.txt",
+    "README.md",
     "README.rdoc",
     "Rakefile",
     "VERSION",
+    "it-logica-application-backbone.gemspec",
     "lib/it-logica-application-backbone.rb",
     "test/helper.rb",
     "test/test_it-logica-application-backbone.rb"
@@ -31,7 +35,7 @@ Gem::Specification.new do |s|
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
   s.rubygems_version = "1.8.17"
-  s.summary = "Backbone for our applications"
+  s.summary = "one-line summary of your gem"
 
   if s.respond_to? :specification_version then
     s.specification_version = 3

@@ -9,6 +9,7 @@ require 'model_mixins/tree_node_class_methods'
 require 'model_mixins/tree_node_instance_methods'
 
 require 'controller_mixins/renderer_instance_methods'
+require 'controller_mixins/csv_instance_methods'
 
 module Initializers
   class Initialize < Rails::Railtie

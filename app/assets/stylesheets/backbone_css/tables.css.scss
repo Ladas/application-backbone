@@ -1,0 +1,54 @@
+$marked_item_color: #008000;
+
+table.table_special span.sort_button {
+  cursor: Pointer;
+}
+
+table.table_special span.sort_button.active {
+  background-color: $marked_item_color;
+}
+
+table.table_special div.th_filter {
+  width: 90px;
+  height: 20px;
+}
+
+table.table_special span.active_multiselect {
+  background-color: $marked_item_color;
+}
+
+table.table_special .input-small {
+  width: 40px;
+  height: 10px;
+  color: $marked_item_color;
+}
+
+table.table_special .input-small.datetime_class {
+  width: 15px;
+}
+
+table.table_special label.datetime_class_label {
+  display: inline;
+}
+
+#spinner {
+  z-index: 10000000;
+}
+
+.ui-datepicker-divui-datepicker-div {
+  z-index: 10000000;
+}
+
+.table thead th.users_form_id_ajax_pager {
+  vertical-align: middle;
+}
+.table tfoot th.users_form_id_ajax_pager {
+  vertical-align: middle;
+}
+
+.pager {
+  margin-bottom: 5px;
+  margin-top: 5px;
+  vertical-align: middle;
+}
+

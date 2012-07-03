@@ -1,6 +1,7 @@
 module ItLogicaApplicationBackbone
   require 'backbone_js/engine'
-
+  require 'backbone_css/engine'
+  require 'backbone_images/engine'
 
 
 

@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = "it-logica-application-backbone"
-  s.version = "0.1.4"
+  s.version = "0.1.5"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ladas"]
@@ -29,6 +29,7 @@ Gem::Specification.new do |s|
     "app/assets/javascripts/backbone_js/index.js",
     "app/assets/javascripts/backbone_js/jquery-ui-timepicker-cs.js",
     "app/assets/javascripts/backbone_js/jquery.cookie.js",
+    "app/assets/javascripts/backbone_js/jquery.fileupload-ui.js",
     "app/assets/javascripts/backbone_js/jquery.fileupload.js",
     "app/assets/javascripts/backbone_js/jquery.history.js",
     "app/assets/javascripts/backbone_js/jquery.hotkeys.js",

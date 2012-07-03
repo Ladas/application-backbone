@@ -1,0 +1,115 @@
+<table class="table table-bordered table-condensed table_special">
+  <thead>
+  <tr>
+    <th colspan="10000000" class="<%= settings[:form_id] + '_ajax_pager' %>">
+      <%= render :partial => 'helpers/build_table_pager', :locals => {:settings => settings} %>
+    </th>
+  </tr>
+  <tr>
+    <% if !settings[:row].blank? && !settings[:row][:functions].blank? %>
+        <th></th>
+    <% end %>
+    <% settings[:columns].each do |col| %>
+        <th class="<%= col[:class] %>">
+          <div class="th_label">
+            <span><%= col[:label].html_safe %></span>
+          </div>
+
+          <div class="th_filter">
+            <% if col[:column_method].blank? && col[:row_method].blank? && !col[:name].blank? %>
+          <span class="sortButtons az">
+          <span onclick="filter_sort('<%= settings[:form_id] %>','<%= col[:table] + "." +col[:name] %>', 'ASC', this); return false;"
+                title="Sort Ascending"
+                class="icon-arrow-up sort_button sort-up <%= (settings[:params][:order_by] == (col[:table] + "." + col[:name]) && settings[:params][:order_by_direction]=="ASC") ? "active" : "inactive" %>">
+            <span class="oos"></span></span>
+           <span onclick="filter_sort('<%= settings[:form_id] %>','<%= col[:table] + "." +col[:name] %>', 'DESC', this); return false;"
+                 title="Sort Descending"
+                 class="icon-arrow-down sort_button sort-down <%= (settings[:params][:order_by] == (col[:table] + "." + col[:name]) && settings[:params][:order_by_direction]=="DESC") ? "active" : "inactive" %>">
+            <span class="oos "></span></span>
+            <% end %>
+            <% case col[:filter] %>
+            <% when :find %>
+                <% saved_param = (!settings[:params].blank? && !settings[:params]['find'].blank? && !settings[:params]['find']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['find']["#{col[:table]}.#{col[:name]}"] : "" %>
+                <span><%= text_field_tag "find[#{col[:table]}.#{col[:name]}]", saved_param,
+                                         {:class => "input-small text #{settings[:form_id] + '_column_find'}"} %>
+                     </span>
+            <% when :multichoice %>
+                <% saved_param = (!settings[:params].blank? && !settings[:params]['multichoice'].blank? && !settings[:params]['multichoice']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['multichoice']["#{col[:table]}.#{col[:name]}"] : [] %>
+                <span><%= select_tag("multichoice[#{col[:table]}.#{col[:name]}]", options_for_select(col[:filter_data], saved_param),
+                                     :onchange => "form_submit_watcher('#{settings[:form_id]}')",
+                                     :multiple => true,
+                                     :class => "multiselect_class") %></span>
+            <% when :date %>
+                <% saved_param = (!settings[:params].blank? && !settings[:params]['date_from'].blank? && !settings[:params]['date_from']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['date_from']["#{col[:table]}.#{col[:name]}"] : "" %>
+                <%#= label_tag "date_from[#{col[:table]}.#{col[:name]}]", "Od", :class => "datetime_class_label" %>
+                <%= text_field_tag "date_from[#{col[:table]}.#{col[:name]}]", saved_param, {:class => "datetime_class input-small",
+                                                                                            :onchange => "form_submit_watcher('#{settings[:form_id]}')",
+                                                                                            :title => "Datum od"} %>
+                <% saved_param = (!settings[:params].blank? && !settings[:params]['date_to'].blank? && !settings[:params]['date_to']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['date_to']["#{col[:table]}.#{col[:name]}"] : "" %>
+                <%#= label_tag "date_to[#{col[:table]}.#{col[:name]}]", "Do", :class => "datetime_class_label" %>
+                <%= text_field_tag "date_to[#{col[:table]}.#{col[:name]}]", saved_param, {:class => "datetime_class input-small",
+                                                                                          :onchange => "form_submit_watcher('#{settings[:form_id]}')",
+                                                                                          :title => "Datum do"} %>
+                <span></span>
+            <% else %>
+            <% end %>
+            </span>
+          </div>
+        </th>
+    <% end %>
+  </tr>
+
+  </thead>
+  <tbody id="<%= settings[:form_id] %>_ajax_content">
+  <% unless settings[:template].blank? %>
+      <%= render :partial => settings[:template], :locals => {:settings => settings} %>
+  <% end %>
+  </tbody>
+  <tfoot>
+  <tr>
+    <th colspan="10000000" class="<%= settings[:form_id] + '_ajax_pager' %>">
+      <%= render :partial => 'helpers/build_table_pager', :locals => {:settings => settings} %>
+    </th>
+  </tr>
+  </tfoot>
+</table>
+
+<script type="text/javascript">
+    $('.<%= settings[:form_id] + "_column_find" %>').livesearch({
+        searchCallback:function (searchTerm) {
+            $('#<%= settings[:form_id] %>').submit();
+        },
+        queryDelay:250,
+        innerText:"",
+        minimumSearchLength:1
+    });
+</script>
+
+
+<script type="text/javascript">
+    $.datepicker.setDefaults($.datepicker.regional[ "cs" ]);
+    $('.datetime_class').datetimepicker({
+        dateFormat:"yy-mm-dd",
+        timeFormat:'hh:mm',
+        separator:' ',
+        changeYear:true,
+        yearRange:'<%= Date.today.year - 100 %>:<%= Date.today.year + 30 %>',
+        changeMonth:true
+    });
+</script>
+
+
+<script type="text/javascript">
+    $('.multiselect_class').multiselect({
+        selectedText:'<span class="active_multiselect">***</span>',
+        noneSelectedText:"",
+        checkAllText:"Označit vše",
+        uncheckAllText:"Zrušit vše",
+        minWidth:100
+    }, function () {
+        form_submit_watcher('<%=settings[:form_id] %>');
+    });
+    //$('#filled_value_' + fid + '_' + rid).multiselect("open");
+    $(".ui-multiselect-menu").css("width", "240px");
+    $("button.ui-multiselect").css("width", "40px");
+</script>

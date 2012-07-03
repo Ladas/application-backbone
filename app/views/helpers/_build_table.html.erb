@@ -1,0 +1,4 @@
+<%= form_tag settings[:filter_path], :html => {:'data-type' => 'html'}, :method => 'POST', :class => 'forms', :remote => true, :id => settings[:form_id] do |f| %>
+    <%= render :partial => "/helpers/build_table_filter", :locals => {:settings => settings} %>
+    <%= render :partial => "/helpers/build_table_wrapper", :locals => {:settings => settings} %>
+<% end %>

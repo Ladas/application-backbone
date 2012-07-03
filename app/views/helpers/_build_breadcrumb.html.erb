@@ -1,0 +1,31 @@
+<ul class="breadcrumb">
+  <li>
+    <%= ajax_link_to "Úvodní stránka", "/" %>
+    <% if !breadcrumb.blank? %>
+        <span class="divider">/</span>
+    <% end %>
+  </li>
+  <% if !breadcrumb.blank? && breadcrumb.kind_of?(Array) %>
+      <% breadcrumb.each_with_index do |b, i| %>
+          <% if is_tree_node?(b) %>
+              <% if breadcrumb.count - 1 == i %>
+                  <li class="active"><%= b.name %></li>
+              <% else %>
+                  <li>
+                    <%= link_to b.name, convert_settings_to_url(b.to_json), :onclick => "load_page(#{b.to_json}); return false;" %>
+                    <span class="divider">/</span>
+                  </li>
+              <% end %>
+          <% elsif b.kind_of?(Hash) %>
+              <% if breadcrumb.count - 1 == i %>
+                  <li class="active"><%= b[:name] %></li>
+              <% else %>
+                  <li>
+                    <%= link_to b[:name], convert_settings_to_url(b.to_json), :onclick => "load_page(#{b.to_json}); return false;" %>
+                    <span class="divider">/</span>
+                  </li>
+              <% end %>
+          <% end %>
+      <% end %>
+  <% end %>
+</ul>

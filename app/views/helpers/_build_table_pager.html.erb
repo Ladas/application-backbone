@@ -1,0 +1,9 @@
+<%= ajax_post_link_to "Smazat filtr", settings[:filter_path], :class => "btn", "data-post" => {:clear => true}.to_json, :style => "float: left" %>
+<div id="<%= settings[:form_id] %>_pagination" class="pager <%= settings[:form_id] %>_pager">
+    <span class="pager_pages">
+      <%= will_paginate settings[:data_paginate], :container => false %>
+    </span>
+    <span class="pager_numberofrecords">
+      <%= page_entries_info settings[:data_paginate] %>
+    </span>
+</div>

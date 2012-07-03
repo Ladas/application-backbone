@@ -1,5 +1,5 @@
 module ViewMixins
-  def Link
+  module Link
     def ajax_link_to(*args, &block)
       if block_given?
         options = args.first || {}

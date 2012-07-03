@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = "it-logica-application-backbone"
-  s.version = "0.1.18"
+  s.version = "0.1.19"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ladas"]
@@ -294,10 +294,6 @@ Gem::Specification.new do |s|
     "app/assets/javascripts/backbone_js/tinymce/jscripts/tiny_mce/plugins/searchreplace/langs/en_dlg.js",
     "app/assets/javascripts/backbone_js/tinymce/jscripts/tiny_mce/plugins/searchreplace/langs/sk_dlg.js",
     "app/assets/javascripts/backbone_js/tinymce/jscripts/tiny_mce/plugins/searchreplace/searchreplace.htm",
-    "app/assets/javascripts/backbone_js/tinymce/jscripts/tiny_mce/plugins/spellchecker/css/content.css",
-    "app/assets/javascripts/backbone_js/tinymce/jscripts/tiny_mce/plugins/spellchecker/editor_plugin.js",
-    "app/assets/javascripts/backbone_js/tinymce/jscripts/tiny_mce/plugins/spellchecker/editor_plugin_src.js",
-    "app/assets/javascripts/backbone_js/tinymce/jscripts/tiny_mce/plugins/spellchecker/img/wline.gif",
     "app/assets/javascripts/backbone_js/tinymce/jscripts/tiny_mce/plugins/style/css/props.css",
     "app/assets/javascripts/backbone_js/tinymce/jscripts/tiny_mce/plugins/style/editor_plugin.js",
     "app/assets/javascripts/backbone_js/tinymce/jscripts/tiny_mce/plugins/style/editor_plugin_src.js",

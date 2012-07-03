@@ -11,6 +11,6 @@ module ItLogicaApplicationBackbone
 
   require 'controller_mixins/renderer_instance_methods'
 
-  require 'initializers/initialize.rb'
+  require 'initializers/initialize.rb' if defined?(Rails)
 
 end

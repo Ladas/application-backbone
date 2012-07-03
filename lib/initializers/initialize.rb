@@ -1,3 +1,12 @@
+require 'view_mixins/link'
+require 'view_mixins/form'
+require 'view_mixins/breadcrumb'
+require 'view_mixins/table'
+
+require 'model_mixins/table_builder_class_methods'
+
+require 'controller_mixins/renderer_instance_methods'
+
 module Initializers
   class Initialize < Rails::Railtie
     initializer "initialize mixins" do

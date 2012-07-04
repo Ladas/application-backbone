@@ -11,7 +11,8 @@
 //= require ./jquery.fileupload.js
 //= require ./jquery.fileupload-ui.js
 
-
+//= require ./tinymce/jscripts/tiny_mce/tiny_mce.js
 //= require ./tinymce/jscripts/tiny_mce/jquery.tinymce.js
+
 
 //= require_tree .

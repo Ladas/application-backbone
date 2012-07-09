@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = "it-logica-application-backbone"
-  s.version = "0.1.34"
+  s.version = "0.1.35"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ladas"]
@@ -120,6 +120,7 @@ Gem::Specification.new do |s|
     "app/assets/images/backbone_images/temp-userphoto.jpg",
     "app/assets/images/backbone_images/vrchovina-logo.png",
     "app/assets/javascripts/backbone_js/index.js",
+    "app/assets/javascripts/backbone_js/jquery-ui-timepicker-addon.js",
     "app/assets/javascripts/backbone_js/jquery-ui-timepicker-cs.js",
     "app/assets/javascripts/backbone_js/jquery.cookie.js",
     "app/assets/javascripts/backbone_js/jquery.fileupload-ui.js",
@@ -151,7 +152,6 @@ Gem::Specification.new do |s|
     "app/assets/javascripts/backbone_js/themes/default/d.png",
     "app/assets/javascripts/backbone_js/themes/default/style.css",
     "app/assets/javascripts/backbone_js/themes/default/throbber.gif",
-    "app/assets/javascripts/backbone_js/time_picker.js",
     "app/assets/javascripts/backbone_js/tinymce/changelog.txt",
     "app/assets/javascripts/backbone_js/tinymce/examples/css/content.css",
     "app/assets/javascripts/backbone_js/tinymce/examples/index.html",

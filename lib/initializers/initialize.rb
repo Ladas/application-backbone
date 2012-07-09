@@ -21,6 +21,7 @@ module Initializers
       ActionView::Base.send :include, ViewMixins::DatafilesFor
 
       ActionController::Base.send :include, ControllerMixins::RendererInstanceMethods
+      ActionController::Base.send :include, ControllerMixins::CsvInstanceMethods
 
       ActiveRecord::Base.send :extend, ModelMixins::TableBuilderClassMethods
     end

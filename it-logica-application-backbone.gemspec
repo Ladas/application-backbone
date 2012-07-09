@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "it-logica-application-backbone"
-  s.version = "0.1.32"
+  s.version = "0.1.33"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ladas"]
-  s.date = "2012-07-04"
+  s.date = "2012-07-09"
   s.description = "longer description of your gem"
   s.email = "ladislav.smola@it-logica.cz"
   s.extra_rdoc_files = [
@@ -106,6 +106,9 @@ Gem::Specification.new do |s|
     "app/assets/images/backbone_images/filtering-loader.gif",
     "app/assets/images/backbone_images/icon-a.png",
     "app/assets/images/backbone_images/icon-b.png",
+    "app/assets/images/backbone_images/icons/file.png",
+    "app/assets/images/backbone_images/icons/folder.png",
+    "app/assets/images/backbone_images/icons/root.png",
     "app/assets/images/backbone_images/img/loading.gif",
     "app/assets/images/backbone_images/img/progressbar.gif",
     "app/assets/images/backbone_images/logo-josiah-venture.png",
@@ -139,6 +142,15 @@ Gem::Specification.new do |s|
     "app/assets/javascripts/backbone_js/ladas_table_for.js",
     "app/assets/javascripts/backbone_js/ladas_tinymce.js",
     "app/assets/javascripts/backbone_js/load-image.min.js",
+    "app/assets/javascripts/backbone_js/themes/default-rtl/d.gif",
+    "app/assets/javascripts/backbone_js/themes/default-rtl/d.png",
+    "app/assets/javascripts/backbone_js/themes/default-rtl/dots.gif",
+    "app/assets/javascripts/backbone_js/themes/default-rtl/style.css",
+    "app/assets/javascripts/backbone_js/themes/default-rtl/throbber.gif",
+    "app/assets/javascripts/backbone_js/themes/default/d.gif",
+    "app/assets/javascripts/backbone_js/themes/default/d.png",
+    "app/assets/javascripts/backbone_js/themes/default/style.css",
+    "app/assets/javascripts/backbone_js/themes/default/throbber.gif",
     "app/assets/javascripts/backbone_js/time_picker.js",
     "app/assets/javascripts/backbone_js/tinymce/changelog.txt",
     "app/assets/javascripts/backbone_js/tinymce/examples/css/content.css",

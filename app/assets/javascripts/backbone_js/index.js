@@ -4,7 +4,7 @@
 //= require ./ladas_jstree.js
 //= require ./jquery.history.js
 //= require ./ladas_initialize_history.js
-//= require ./time_picker.js
+//= require ./jquery-ui-timepicker-addon.js
 
 
 //= require ./jquery.iframe-transport.js

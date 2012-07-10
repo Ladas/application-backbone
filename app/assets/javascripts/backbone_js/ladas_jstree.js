@@ -24,7 +24,7 @@
                        .jstree({
                             "themes" : {
                        			"theme" : "default",
-                                "url" : "/assets/backbone_css/themes/default",
+                                "url" : "/assets/backbone_css/themes/default/style.css",
                        			"dots" : true,
                        			"icons" : true
                        		},

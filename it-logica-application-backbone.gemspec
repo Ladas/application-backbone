@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "it-logica-application-backbone"
-  s.version = "0.1.35"
+  s.version = "0.1.36"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ladas"]
-  s.date = "2012-07-09"
+  s.date = "2012-07-10"
   s.description = "longer description of your gem"
   s.email = "ladislav.smola@it-logica.cz"
   s.extra_rdoc_files = [
@@ -143,15 +143,6 @@ Gem::Specification.new do |s|
     "app/assets/javascripts/backbone_js/ladas_table_for.js",
     "app/assets/javascripts/backbone_js/ladas_tinymce.js",
     "app/assets/javascripts/backbone_js/load-image.min.js",
-    "app/assets/javascripts/backbone_js/themes/default-rtl/d.gif",
-    "app/assets/javascripts/backbone_js/themes/default-rtl/d.png",
-    "app/assets/javascripts/backbone_js/themes/default-rtl/dots.gif",
-    "app/assets/javascripts/backbone_js/themes/default-rtl/style.css",
-    "app/assets/javascripts/backbone_js/themes/default-rtl/throbber.gif",
-    "app/assets/javascripts/backbone_js/themes/default/d.gif",
-    "app/assets/javascripts/backbone_js/themes/default/d.png",
-    "app/assets/javascripts/backbone_js/themes/default/style.css",
-    "app/assets/javascripts/backbone_js/themes/default/throbber.gif",
     "app/assets/javascripts/backbone_js/tinymce/changelog.txt",
     "app/assets/javascripts/backbone_js/tinymce/examples/css/content.css",
     "app/assets/javascripts/backbone_js/tinymce/examples/index.html",
@@ -449,6 +440,15 @@ Gem::Specification.new do |s|
     "app/assets/stylesheets/backbone_css/jquery_ui.css.scss",
     "app/assets/stylesheets/backbone_css/left_menu.css.scss",
     "app/assets/stylesheets/backbone_css/tables.css.scss",
+    "app/assets/stylesheets/backbone_css/themes/default-rtl/d.gif",
+    "app/assets/stylesheets/backbone_css/themes/default-rtl/d.png",
+    "app/assets/stylesheets/backbone_css/themes/default-rtl/dots.gif",
+    "app/assets/stylesheets/backbone_css/themes/default-rtl/style.css",
+    "app/assets/stylesheets/backbone_css/themes/default-rtl/throbber.gif",
+    "app/assets/stylesheets/backbone_css/themes/default/d.gif",
+    "app/assets/stylesheets/backbone_css/themes/default/d.png",
+    "app/assets/stylesheets/backbone_css/themes/default/style.css",
+    "app/assets/stylesheets/backbone_css/themes/default/throbber.gif",
     "app/views/helpers/_build_ajax_callback_code.html.erb",
     "app/views/helpers/_build_breadcrumb.html.erb",
     "app/views/helpers/_build_datafiles.html.erb",

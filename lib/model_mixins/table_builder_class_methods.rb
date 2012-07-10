@@ -6,6 +6,8 @@ module ModelMixins
       params[:order_by_direction] = settings[:default][:order_by_direction] if params[:order_by_direction].blank?
       params[:per_page] = per_page
 
+      check_non_existing_colum_order_by(settings, params)
+
       not_selected_items = object.filter(settings, params, per_page)
       items = not_selected_items.selection(settings)
       if params[:page].to_i > items.total_pages && items.total_pages > 0
@@ -21,14 +23,16 @@ module ModelMixins
         settings[:columns].each do |col|
           unless col[:global_format_method].blank?
             # ToDo dodelat moznost predani parametru do formatovaci metody
+            col[:name] = col[:name].blank? ? "non_existing_column___" + col[:global_format_method] : col[:name]
             another_global_format = {:global_format_method => col[:global_format_method],
-                                     :name => col[:name].blank? ? col[:global_format_method] : col[:name],
+                                     :name => col[:name],
                                      :table => col[:table]}
             another_global_formats << another_global_format
           end
           unless col[:format_method].blank?
+            col[:name] = col[:name].blank? ? "non_existing_column___" + col[:format_method] : col[:name]
             another_format = {:format_method => col[:format_method],
-                              :name => col[:name].blank? ? col[:format_method] : col[:name],
+                              :name => col[:name],
                               :table => col[:table]}
             another_formats << another_format
           end
@@ -48,9 +52,9 @@ module ModelMixins
                               # todo think about, but I dont need object, because it's making the same query twice, I just need class and with one outer join it return filtered data, and i include includes to it
                               #template_items = object.joins("RIGHT OUTER JOIN (" + not_selected_items.select(settings[:row][:id] + " AS row_id").to_sql + ") temp_template_query ON #{settings[:row][:id]} = temp_template_query.row_id")
         if object.respond_to?(:klass)
-          template_items = object.klass.joins("RIGHT OUTER JOIN (" + not_selected_items.uniq.select(settings[:row][:id] + " AS row_id").to_sql + ") temp_template_query ON #{settings[:row][:id]} = temp_template_query.row_id")
+          template_items = object.klass.joins("RIGHT OUTER JOIN (" + items.uniq.to_sql + ") temp_template_query ON #{settings[:row][:id]} = temp_template_query.row_id")
         else
-          template_items = object.joins("RIGHT OUTER JOIN (" + not_selected_items.uniq.select(settings[:row][:id] + " AS row_id").to_sql + ") temp_template_query ON #{settings[:row][:id]} = temp_template_query.row_id")
+          template_items = object.joins("RIGHT OUTER JOIN (" + items.uniq.to_sql + ") temp_template_query ON #{settings[:row][:id]} = temp_template_query.row_id")
         end
 
         template_items = template_items.includes(settings[:includes])
@@ -104,7 +108,7 @@ module ModelMixins
 
         settings.merge!({:data => items_array})
       else
-        template_items = object.joins("RIGHT OUTER JOIN (" + not_selected_items.uniq.select(settings[:row][:id] + " AS row_id").to_sql + ") temp_template_query ON #{settings[:row][:id]} = temp_template_query.row_id")
+        template_items = object.joins("LEFT OUTER JOIN (" + not_selected_items.uniq.select(settings[:row][:id] + " AS row_id").to_sql + ") temp_template_query ON #{settings[:row][:id]} = temp_template_query.row_id")
         settings.merge!({:data => template_items})
       end
       settings.merge!({:data_paginate => items})
@@ -120,6 +124,20 @@ module ModelMixins
           select_string += ", " unless select_string.blank?
           select_string += "#{col[:table]}.#{col[:name]} AS #{col[:table]}_#{col[:name]}"
         end
+
+        # for select more data in combination with filter_method (etc full_name of user))
+        if !col[:table].blank? && !col[:select].blank? && !col[:select_as].blank?
+          col[:select_as] = col[:table] if col[:select_as].blank?
+
+          col[:select].split(",").each do |one_select|
+            one_select.gsub!(" ", "")
+            select_string += ", " unless select_string.blank?
+            select_string += "#{col[:select_as]}.#{one_select} AS #{col[:select_as]}_#{one_select}"
+          end
+        end
+
+        # for (agregated data)
+        #if (!col[:select_agregated].blank?
       end
 
       select_string += ", " unless select_string.blank?
@@ -131,16 +149,36 @@ module ModelMixins
     def filter(settings, params, per_page = 10)
       order_by = params[:order_by] +' '+ params[:order_by_direction]
 
-
       cond_str = ""
       cond_hash = {}
       if !params.blank? && params['find']
         params['find'].each_pair do |i, v|
           unless v.blank?
-            cond_str += " AND " unless cond_str.blank?
-            cond_id = "find_#{i.gsub(/\./, '_')}"
-            cond_str += "#{i} LIKE :#{cond_id}" #OR guest_email LIKE :find"
-            cond_hash.merge!({cond_id.to_sym => "%#{v}%"})
+            if i.match(/^.*?non_existing_column___.*$/i)
+              identifier = i.split("non_existing_column___").second
+              settings[:columns].each do |col|
+                if !col[:select_as].blank? && !col[:format_method].blank? && col[:format_method] == identifier
+                  cond_str += " AND " unless cond_str.blank?
+                  cond_str += "( "
+                  sub_cond = ""
+                  col[:select].split(",").each do |sub_cond_col|
+                    sub_cond += " OR " unless sub_cond.blank?
+                    non_existing_column_i = col[:select_as] + "." + sub_cond_col.gsub(" ", "")
+                    cond_id = "find_#{non_existing_column_i.gsub(/\./, '_')}"
+                    sub_cond += "#{non_existing_column_i} LIKE :#{cond_id}" #OR guest_email LIKE :find"
+                    cond_hash.merge!({cond_id.to_sym => "%#{v}%"})
+                  end
+                  cond_str += sub_cond + " )"
+                else
+                  ""
+                end
+              end
+            else
+              cond_str += " AND " unless cond_str.blank?
+              cond_id = "find_#{i.gsub(/\./, '_')}"
+              cond_str += "#{i} LIKE :#{cond_id}" #OR guest_email LIKE :find"
+              cond_hash.merge!({cond_id.to_sym => "%#{v}%"})
+            end
           end
         end
       end
@@ -179,13 +217,41 @@ module ModelMixins
         end
       end
 
+      ret = where(cond_str, cond_hash).paginate(:page => params[:page], :per_page => per_page).order(order_by)
       #items = self.joins("LEFT OUTER JOIN intranet_text_pages ON resource_id = intranet_text_pages.id").where(cond_str, cond_hash).paginate(:page => params[:page], :per_page => per_page).order(order_by).selection(settings)
       #if params[:page].to_i > items.total_pages && items.total_pages > 0
       #  params[:page] = 1
       #  items = self.where(cond_str, cond_hash).paginate(:page => params[:page], :per_page => per_page).order(order_by).selection(settings)
       #end
       #items
-      where(cond_str, cond_hash).paginate(:page => params[:page], :per_page => per_page).order(order_by)
+
+      # if there are additional joins i will add them
+      settings[:columns].each do |col|
+        col[:table_primary_key] = "id" if col[:table_primary_key].blank?
+        if !col[:join_on].blank?
+          col[:select] += ", #{col[:table_primary_key]}" # adding primary key so it can be used in on condition
+          ret= ret.joins("LEFT OUTER JOIN (SELECT #{col[:select]} FROM #{col[:table]}) #{col[:select_as]} ON #{col[:select_as]}.#{col[:table_primary_key]}=#{col[:join_on]}")
+        end
+      end
+
+      ret
+    end
+
+
+    def check_non_existing_colum_order_by(settings, params)
+      if params[:order_by].match(/^.*?non_existing_column___.*$/i)
+        identifier = params[:order_by].split("non_existing_column___").second
+        settings[:columns].each do |col|
+          if !col[:select_as].blank? && !col[:format_method].blank? && col[:format_method] == identifier
+            params[:order_by] = col[:order_by].gsub(",", " #{params[:order_by_direction]} ,")
+          else
+            ""
+          end
+        end
+      else
+
+      end
+
     end
   end
 end

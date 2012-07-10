@@ -22,11 +22,12 @@
                            $("#alog").append(data.func + "<br />");
                        })
                        .jstree({
-//                            "themes" : {
-//                       			"theme" : "default",
-//                       			"dots" : false,
-//                       			"icons" : false
-//                       		},
+                            "themes" : {
+                       			"theme" : "default",
+                                "url" : "/assets/backbone_css/themes/default",
+                       			"dots" : true,
+                       			"icons" : true
+                       		},
                            // List of active plugins
                            "plugins":[
                                "themes", "json_data", "ui", "crrm", "cookies", "dnd", "search", "types", "hotkeys", "contextmenu"

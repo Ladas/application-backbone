@@ -1,8 +1,3 @@
-# some patches
-require "ladas_string_patch"
-
-#app backbone patches
-
 
 require 'view_mixins/link'
 require 'view_mixins/form'
@@ -13,6 +8,10 @@ require 'view_mixins/table'
 require 'model_mixins/table_builder_class_methods'
 require 'model_mixins/tree_node_class_methods'
 require 'model_mixins/tree_node_instance_methods'
+
+require "model_mixins/ladas/string_extensions"
+require "model_mixins/ladas/html_entities"
+
 
 require 'controller_mixins/renderer_instance_methods'
 require 'controller_mixins/csv_instance_methods'
@@ -30,6 +29,9 @@ module Initializers
       ActionController::Base.send :include, ControllerMixins::CsvInstanceMethods
 
       ActiveRecord::Base.send :extend, ModelMixins::TableBuilderClassMethods
+
+      String.send :include, ModelMixins::Ladas::StringExtensions
+      String.send :include, ModelMixins::Ladas::HtmlEntities
     end
   end
 end

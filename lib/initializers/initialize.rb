@@ -30,8 +30,8 @@ module Initializers
 
       ActiveRecord::Base.send :extend, ModelMixins::TableBuilderClassMethods
 
-      String.send :include, ModelMixins::Ladas::StringExtensions
-      String.send :include, ModelMixins::Ladas::HtmlEntities
+      String.send :include, ModelMixins::LadasStringExtensions
+      String.send :include, ModelMixins::LadasHtmlEntities
     end
   end
 end

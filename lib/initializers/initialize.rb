@@ -1,3 +1,9 @@
+# some patches
+require "ladas_string_patch"
+
+#app backbone patches
+
+
 require 'view_mixins/link'
 require 'view_mixins/form'
 require 'view_mixins/breadcrumb'

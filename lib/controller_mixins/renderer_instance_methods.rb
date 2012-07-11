@@ -31,6 +31,9 @@ module ControllerMixins
         end
       elsif action_name == "index"
         default_params = @settings[:default]
+        default_params[:order_by] = @settings[:default][:order_by] + " " + @settings[:default][:order_by_direction] if !@settings[:default][:order_by].blank? && !@settings[:default][:order_by_direction].blank?
+        default_params[:order_by] = @settings[:default][:order] if !@settings[:default][:order].blank?
+
         default_params = session["#{@settings[:form_id]}_params"] unless session["#{@settings[:form_id]}_params"].blank?
         @settings = class_obj.prepare_settings(logged_user, data, @settings, default_params)
       end

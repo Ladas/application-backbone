@@ -1,7 +1,6 @@
 # encoding: utf-8
 module ModelMixins
-  module Ladas
-    module StringExtensions
+    module LadasStringExtensions
 
       # init
       def self.included(base)
@@ -29,5 +28,4 @@ module ModelMixins
 
       end
     end
-  end
 end

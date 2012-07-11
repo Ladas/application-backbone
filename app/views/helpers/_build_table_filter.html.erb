@@ -5,8 +5,9 @@
   <%#= submit_tag "Filter",{:class => 'button'} %>
 </fieldset>
 
-<%= hidden_field_tag :order_by, settings[:default][:order_by], :id => settings[:form_id] + '_order_by' %>
-<%= hidden_field_tag :order_by_direction, settings[:default][:order_by_direction], :id => settings[:form_id] + '_order_by_direction' %>
+<%= hidden_field_tag :default_order_by, settings[:default][:order].blank? ? settings[:default][:order_by] + " " + settings[:default][:order_by_direction] : settings[:default][:order], :id => settings[:form_id] + '_default_order_by' %>
+<%= hidden_field_tag :order_by, settings[:params][:order_by], :id => settings[:form_id] + '_order_by' %>
+<%#= hidden_field_tag :order_by_direction, settings[:default][:order_by_direction], :id => settings[:form_id] + '_order_by_direction' %>
 <%= hidden_field_tag :page, settings[:default][:page], :id => settings[:form_id] + '_page' %>
 
 <%# end %>

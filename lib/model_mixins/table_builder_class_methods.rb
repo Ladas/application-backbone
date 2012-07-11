@@ -2,10 +2,15 @@ module ModelMixins
   module TableBuilderClassMethods
     def prepare_settings(logged_user, object, settings, params, per_page = 10)
       params[:page] = 1 if params[:page].blank?
-      params[:order_by] = settings[:default][:order_by] if params[:order_by].blank?
-      params[:order_by_direction] = settings[:default][:order_by_direction] if params[:order_by_direction].blank?
+      params[:order_by] = settings[:default][:order_by] + " " + settings[:default][:order_by_direction] if params[:order_by].blank? && !settings[:default][:order_by].blank? && !settings[:default][:order_by_direction].blank?
+
+      params[:order_by] = settings[:default][:order] if params[:order_by].blank? && !settings[:default][:order].blank?
+
+
       params[:per_page] = per_page
 
+      # method below can change this if there were some virtual non exixtent columns
+      params[:real_order_by] = params[:order_by]
       check_non_existing_colum_order_by(settings, params)
 
       not_selected_items = object.filter(settings, params, per_page)
@@ -147,7 +152,7 @@ module ModelMixins
     end
 
     def filter(settings, params, per_page = 10)
-      order_by = params[:order_by] +' '+ params[:order_by_direction]
+      order_by = params[:real_order_by]
 
       cond_str = ""
       cond_hash = {}
@@ -239,19 +244,24 @@ module ModelMixins
 
 
     def check_non_existing_colum_order_by(settings, params)
-      if params[:order_by].match(/^.*?non_existing_column___.*$/i)
-        identifier = params[:order_by].split("non_existing_column___").second
-        settings[:columns].each do |col|
-          if !col[:select_as].blank? && !col[:format_method].blank? && col[:format_method] == identifier
-            params[:order_by] = col[:order_by].gsub(",", " #{params[:order_by_direction]} ,")
-          else
-            ""
+      order_by_arr = params[:order_by].split(",")
+      order_by_arr.each_with_index do |one_order_by, index|
+        if one_order_by.match(/^.*?non_existing_column___.*$/i)
+          identifier_and_direction = one_order_by.split("non_existing_column___").second
+          identifier = identifier_and_direction.split(" ").first
+          order_by_direction = identifier_and_direction.split(" ").second
+          settings[:columns].each do |col|
+            if !col[:select_as].blank? && !col[:format_method].blank? && col[:format_method] == identifier
+              order_by_arr[index] = col[:order_by].gsub(",", " #{order_by_direction} ,") + " #{order_by_direction}"
+            else
+              ""
+            end
           end
+        else
+          ""
         end
-      else
-
       end
-
+      params[:real_order_by] = order_by_arr*","
     end
   end
 end

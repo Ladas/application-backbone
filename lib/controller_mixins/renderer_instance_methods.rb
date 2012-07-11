@@ -6,7 +6,11 @@ module ControllerMixins
       class_obj = data.respond_to?(:klass) ? data.klass : data
       if action_name == "filter"
         default_params = params
-        default_params = @settings[:default] if !params.blank? && params["clear"]
+        if !params.blank? && params["clear"]
+          default_params = @settings[:default].dup
+          default_params[:order_by] = @settings[:default][:order_by] + " " + @settings[:default][:order_by_direction] if !@settings[:default][:order_by].blank? && !@settings[:default][:order_by_direction].blank?
+          default_params[:order_by] = @settings[:default][:order] if !@settings[:default][:order].blank?
+        end
 
         @settings = class_obj.prepare_settings(logged_user, data, @settings, default_params)
         if !params.blank? && params["clear"]

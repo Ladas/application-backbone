@@ -2,7 +2,7 @@ function formatLinkForPaginationURL(form_id) {
     var matchedString;
     var page_number;
     //$("#" + paginate_wrapper).find("a").each(function() {
-    $("."+ form_id +"_pager").find("a").each(function() {
+    $("." + form_id + "_pager").find("a").each(function () {
         var linkElement = $(this);
         var paginationURL = linkElement.attr("href");
         var matchedString = paginationURL.match(/(\?|\&)page=(\d+)/);
@@ -12,11 +12,11 @@ function formatLinkForPaginationURL(form_id) {
         }
 
         linkElement.attr({
-            "url": paginationURL,
-            "href": "#"
+            "url":paginationURL,
+            "href":"#"
         });
 
-        linkElement.click(function() {
+        linkElement.click(function () {
             $("#" + form_id + "_page").val(page_number);
             $("#" + form_id).submit();
             return false;
@@ -29,7 +29,7 @@ function formatLinkForPagination(container_class) {
     var matchedString;
     var page_number;
     //$("#" + paginate_wrapper).find("a").each(function() {
-    $("."+ container_class).find("a").each(function() {
+    $("." + container_class).find("a").each(function () {
         var linkElement = $(this);
         var paginationURL = linkElement.attr("href");
         var matchedString = paginationURL.match(/(\?|\&)page=(\d+)/);
@@ -41,10 +41,12 @@ function formatLinkForPagination(container_class) {
         linkElement.attr({
 //            "url": paginationURL,
 //            "href": "#"
-            "data-remote": true
+            "data-remote":true
         });
 
-        linkElement.bind('ajax:beforeSend', function(evt, xhr, settings) { ajax_beforeSend_std(evt, xhr, settings) });
+        linkElement.bind('ajax:beforeSend', function (evt, xhr, settings) {
+            ajax_beforeSend_std(evt, xhr, settings)
+        });
         linkElement.bind('ajax:success', function (evt, data, status, xhr) {
                 ajax_success_std(evt, data, status, xhr, ["list"]);
                 set_anchors_to_alu_items();
@@ -52,7 +54,7 @@ function formatLinkForPagination(container_class) {
 
             }
         );
-        linkElement.bind('ajax:error', function(evt, xhr, status, error) {
+        linkElement.bind('ajax:error', function (evt, xhr, status, error) {
             ajax_error_std(evt, xhr, status, error);
             $('#spinner').hide();
         });
@@ -93,17 +95,63 @@ function formatLinkForPagination(container_class) {
 
 function filter_sort(form_id, order_by_value, dir, obj) {
     var order_by_id = '#' + form_id + '_order_by';
-    var order_by_direction_id = '#' + form_id + '_order_by_direction';
+    var default_order_by_val = $('#' + form_id + '_default_order_by').val();
 
-    $(order_by_id).val(order_by_value);
-    $(order_by_direction_id).val(dir);
+    var order_by_array = $(order_by_id).val().split(",");
+    //console.log(order_by_value)
+    //console.log(dir)
+    //console.log(order_by_array);
 
-    $("#" + form_id + " .sort_button").each(function() {
+    if (order_by_array.indexOf(order_by_value + " " + dir) >= 0) { // the value is already there, if I click on it again I want to cancel the sorting by this value
+        //console.log("mazu");
+        var index = order_by_array.indexOf(order_by_value + " " + dir);
+        order_by_array.splice(index, 1);
+        if (order_by_array.length <= 0) {
+            // the ordering is empty I will fill it with default
+            order_by_array.push(default_order_by_val);
+        }
+        //console.log(order_by_array);
+    }
+    else if ((dir == "DESC" && order_by_array.indexOf(order_by_value + " ASC") >= 0) || (dir == "ASC" && order_by_array.indexOf(order_by_value + " DESC") >= 0)) {
+        // there is other variant of the column DESC or ASC, I will swith it to the other variant
+        //console.log("menim dir");
+        if (dir == "DESC") {
+            var index = order_by_array.indexOf(order_by_value + " ASC");
+            order_by_array[index] = order_by_value + " DESC";
+        }
+        else {
+            var index = order_by_array.indexOf(order_by_value + " DESC");
+            order_by_array[index] = order_by_value + " ASC";
+        }
+        //console.log(order_by_array);
+    }
+    else { // i am not ordering by this value, I will append it to end
+        //console.log("pridavam");
+        order_by_array.push(order_by_value + " " + dir);
+        //console.log(order_by_array);
+    }
+
+    $("#" + form_id + " .sort_button").each(function () {
         $(this).removeClass("active");
         $(this).addClass("inactive");  // give all disabled class
     });
-    $(obj).removeClass("inactive");  // remove disabled from this one
-    $(obj).addClass("active");
+
+    var new_order_by_val = "";
+    $.each(order_by_array, function (i, item) {
+        if (new_order_by_val != "") {
+            new_order_by_val += ",";
+        }
+        //console.log(item);
+        new_order_by_val += item;
+
+        var order_by_button_id = "#" + item.replace(" ", "___").replace(".", "___");
+        $(order_by_button_id).removeClass("inactive");
+        $(order_by_button_id).addClass("active");
+    });
+    //console.log(new_order_by_val);
+
+    $(order_by_id).val(new_order_by_val);
+
 
     $('#' + form_id).submit();
     return false;

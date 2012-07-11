@@ -87,7 +87,11 @@
 
         {% if (button_settings.symlink_controller || button_settings.symlink_action || button_settings.symlink_id || button_settings.symlink_outer_controller || button_settings.symlink_outer_id) { %}
             {% var non_ajax_url = build_get_url(button_settings); %}
-            <a title="{%= button_settings['name'] %}" href="{%= non_ajax_url %}" class="{%= button_settings['class'] %}" data-tr_class="{%= button_settings.tr_class %}" data-td_class="{%= button_settings.td_class %}" onclick="load_page({%= stringified_button_settings %}, this); return false;">{%= sliced_text %}</a>
+            {% if (button_settings.confirm) { %}
+                <a title="{%= button_settings['name'] %}" href="{%= non_ajax_url %}" class="{%= button_settings['class'] %}" data-tr_class="{%= button_settings.tr_class %}" data-td_class="{%= button_settings.td_class %}" onclick="if (confirm('{%= button_settings.confirm %}')){ load_page({%= stringified_button_settings %}, this)}; return false;">{%= sliced_text %}</a>
+            {% } else { %}
+                <a title="{%= button_settings['name'] %}" href="{%= non_ajax_url %}" class="{%= button_settings['class'] %}" data-tr_class="{%= button_settings.tr_class %}" data-td_class="{%= button_settings.td_class %}" onclick="load_page({%= stringified_button_settings %}, this); return false;">{%= sliced_text %}</a>
+            {% } %}
         {% } else { %}
             <span title="{%= button_settings['name'] %}" class="{%= button_settings['class'] %}" data-tr_class="{%= button_settings.tr_class %}">{%= sliced_text %}</span>
         {% } %}
@@ -108,7 +112,11 @@
 
           {% if (button_settings.symlink_controller || button_settings.symlink_action || button_settings.symlink_id || button_settings.symlink_outer_controller || button_settings.symlink_outer_id) { %}
               {% var non_ajax_url = build_get_url(button_settings); %}
-              <a title="{%= button_settings['name'] %}" href="{%= non_ajax_url %}" class="{%= button_settings['class'] %}" data-tr_class="{%= button_settings.tr_class %}" data-td_class="{%= button_settings.td_class %}" onclick="load_page({%= stringified_button_settings %}, this); return false;">{%= sliced_text %}</a>
+              {% if (button_settings.confirm) { %}
+                <a title="{%= button_settings['name'] %}" href="{%= non_ajax_url %}" class="{%= button_settings['class'] %}" data-tr_class="{%= button_settings.tr_class %}" data-td_class="{%= button_settings.td_class %}" onclick="if (confirm('{%= button_settings.confirm %}')){ load_page({%= stringified_button_settings %}, this)}; return false;">{%= sliced_text %}</a>
+              {% } else { %}
+                <a title="{%= button_settings['name'] %}" href="{%= non_ajax_url %}" class="{%= button_settings['class'] %}" data-tr_class="{%= button_settings.tr_class %}" data-td_class="{%= button_settings.td_class %}" onclick="load_page({%= stringified_button_settings %}, this); return false;">{%= sliced_text %}</a>
+              {% } %}
           {% } else { %}
               <span title="{%= button_settings['name'] %}" class="{%= button_settings['class'] %}" data-tr_class="{%= button_settings.tr_class %}">{%= sliced_text %}</span>
           {% } %}

@@ -30,7 +30,7 @@ module ControllerMixins
           render :layout => false, :json => {:settings => returned_t_body, :paginate => @paginate}.to_json
         end
       elsif action_name == "index"
-        default_params = @settings[:default]
+        default_params = @settings[:default].dup
         default_params[:order_by] = @settings[:default][:order_by] + " " + @settings[:default][:order_by_direction] if !@settings[:default][:order_by].blank? && !@settings[:default][:order_by_direction].blank?
         default_params[:order_by] = @settings[:default][:order] if !@settings[:default][:order].blank?
 

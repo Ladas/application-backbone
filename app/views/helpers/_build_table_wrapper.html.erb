@@ -19,11 +19,11 @@
             <% if col[:column_method].blank? && col[:row_method].blank? && !col[:name].blank? %>
           <span class="sortButtons az">
           <span onclick="filter_sort('<%= settings[:form_id] %>','<%= col[:table] + "." +col[:name] %>', 'ASC', this); return false;"
-                title="Sort Ascending"
+                title="Seřadit vzestupně"
                 class="icon-arrow-up sort_button sort-up <%= (settings[:params][:order_by] == (col[:table] + "." + col[:name]) && settings[:params][:order_by_direction]=="ASC") ? "active" : "inactive" %>">
             <span class="oos"></span></span>
            <span onclick="filter_sort('<%= settings[:form_id] %>','<%= col[:table] + "." +col[:name] %>', 'DESC', this); return false;"
-                 title="Sort Descending"
+                 title="Seřadit sestupně"
                  class="icon-arrow-down sort_button sort-down <%= (settings[:params][:order_by] == (col[:table] + "." + col[:name]) && settings[:params][:order_by_direction]=="DESC") ? "active" : "inactive" %>">
             <span class="oos "></span></span>
             <% end %>

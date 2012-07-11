@@ -15,7 +15,7 @@
 <script type="text/javascript">
     $(document).ready(function () {
         <% if settings[:template].blank? %>
-        $("#<%= settings[:form_id] %>_ajax_content").html(tmpl('template-ajax-table', jQuery.parseJSON('<%= settings.to_json.html_safe %>')));
+        $("#<%= settings[:form_id] %>_ajax_content").html(tmpl('template-ajax-table', jQuery.parseJSON('<%= j settings.to_json.html_safe %>')));
         apply_modifiers_of_the_table($("#<%= settings[:form_id] %>_ajax_content"));
         <% end %>
         formatLinkForPaginationURL('<%= settings[:form_id] %>');

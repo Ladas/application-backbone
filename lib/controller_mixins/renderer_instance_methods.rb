@@ -17,7 +17,7 @@ module ControllerMixins
           session["#{@settings[:form_id]}_params"] = params
           if @settings[:template].blank?
             # if there is no template a will return json and tbody renders in javascript template
-            returned_t_body = j @settings.to_json
+            returned_t_body = @settings.to_json
           else
             # or there is template so i will return template rendered here in ruby
             returned_t_body = render_to_string(:partial => @settings[:template], :locals => {:settings => @settings})

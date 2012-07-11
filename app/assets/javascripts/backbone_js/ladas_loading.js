@@ -65,6 +65,11 @@ function load_page(settings, caller_object) {
                     if (data['settings']) {
                         load_page(data['settings']);
                     }
+                    else if (settings['origin'] == "table" && build_type(settings) == "POST")
+                    {
+                        // if origin of request is table, and it was not get, I will submit the parent form, so table can reload
+                        $(caller_object).parents("form").submit();
+                    }
                 }
                 else {
                     $(content_id).html(data);
@@ -88,10 +93,9 @@ function load_page(settings, caller_object) {
                     if (data['settings']) {
                         load_page(data['settings']);
                     }
-                    // if origin of request is table, and it was not get, I will submit the parent form, so table can reload
-                    if (settings['origin'] == "table" && build_type(settings) == "POST") {
-
-
+                    else if (settings['origin'] == "table" && build_type(settings) == "POST")
+                    {
+                        // if origin of request is table, and it was not get, I will submit the parent form, so table can reload
                         $(caller_object).parents("form").submit();
                     }
                 }

@@ -16,8 +16,9 @@
           </div>
 
           <div class="th_filter">
+            <span class="sortButtons az">
             <% if col[:column_method].blank? && col[:row_method].blank? && !col[:name].blank? %>
-          <span class="sortButtons az">
+
           <span onclick="filter_sort('<%= settings[:form_id] %>','<%= col[:table] + "." +col[:name] %>', 'ASC', this); return false;"
                 title="Seřadit vzestupně"
                 class="icon-arrow-up sort_button sort-up <%= (settings[:params][:order_by] == (col[:table] + "." + col[:name]) && settings[:params][:order_by_direction]=="ASC") ? "active" : "inactive" %>">

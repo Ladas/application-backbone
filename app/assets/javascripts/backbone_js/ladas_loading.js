@@ -77,6 +77,8 @@ function load_page(settings, caller_object) {
                     //console.log($(content_id).find("textarea.datafile_tinymce"));
                     // Todo nefunguje korektne kdyz nactu tinymce datafali i v sablone i tady, tedy zatim muzuz zobrazovat pouze spolu
                     //$(content_id).find("textarea.datafile_tinymce").LadasTinyMce(settings);
+
+                    Breadcrumbs.mark_active_menu_items();
                 }
 
                 ladas_loading_hide();

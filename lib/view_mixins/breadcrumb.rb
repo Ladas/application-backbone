@@ -39,8 +39,11 @@ module ViewMixins
     end
 
     def is_tree_node?(object)
+      if defined?(Intranet::TreeNode) == 'constant' && Intranet::TreeNode.class == Class
+        #object.kind_of?(Intranet::TreeNode) #|| object.kind_of?(Web::TreeNode) || object.kind_of?(Organizer::TreeNode)
+        return object.kind_of?(Intranet::TreeNode)
+      end
       false
-      #object.kind_of?(Intranet::TreeNode) #|| object.kind_of?(Web::TreeNode) || object.kind_of?(Organizer::TreeNode)
     end
   end
 end

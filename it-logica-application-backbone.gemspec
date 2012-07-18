@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "it-logica-application-backbone"
-  s.version = "0.2.15"
+  s.version = "0.2.16"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ladas"]
-  s.date = "2012-07-17"
+  s.date = "2012-07-18"
   s.description = "longer description of your gem"
   s.email = "ladislav.smola@it-logica.cz"
   s.extra_rdoc_files = [
@@ -132,6 +132,7 @@ Gem::Specification.new do |s|
     "app/assets/javascripts/backbone_js/jquery.multiselect.min.js",
     "app/assets/javascripts/backbone_js/jquery.ui.datepicker-cs.js",
     "app/assets/javascripts/backbone_js/jquery.ui.widget.js",
+    "app/assets/javascripts/backbone_js/ladas_breadcrumb.js.coffee",
     "app/assets/javascripts/backbone_js/ladas_form_submitter.js",
     "app/assets/javascripts/backbone_js/ladas_functions.js",
     "app/assets/javascripts/backbone_js/ladas_initialize_history.js",

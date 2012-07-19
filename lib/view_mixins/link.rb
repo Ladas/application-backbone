@@ -90,25 +90,25 @@ module ViewMixins
 
       settings = JSON.parse(settings_json)
       url = ""
-      if settings['url']
+      unless settings['url'].to_s.blank?
         url += settings['url'].to_s
       else
-        if settings['symlink_outer_controller'].to_s
+        unless settings['symlink_outer_controller'].to_s.blank?
           url += "/" + settings['symlink_outer_controller'].to_s
         end
-        if settings['symlink_outer_id']
+        unless settings['symlink_outer_id'].to_s.blank?
           url += "/" + settings['symlink_outer_id'].to_s
         end
-        if settings['symlink_controller']
+        unless settings['symlink_controller'].to_s.blank?
           url += "/" + settings['symlink_controller'].to_s
         end
-        if settings['symlink_id']
+        unless settings['symlink_id'].to_s.blank?
           url += "/" + settings['symlink_id'].to_s
         end
-        if settings['symlink_action']
+        unless settings['symlink_action'].to_s.blank?
           url += "/" + settings['symlink_action'].to_s
         end
-        if settings['symlink_params']
+        unless settings['symlink_params'].to_s.blank?
           url += settings['params'].to_s
         end
       end

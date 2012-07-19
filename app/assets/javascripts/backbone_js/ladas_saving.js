@@ -77,11 +77,10 @@ function connect_callback_to_form(caller_id) {
     });
 }
 
-function process_error_data(form, data) {
-    if (typeof data['table_name'] == undefined) {
-        var table_name = "";
-    } else {
-        var table_name = data['table_name'];
+function process_error_data(form, data) {    
+    var table_name = "";
+    if (typeof data['table_name'] !== 'undefined') {
+      table_name = data['table_name'];
     }
 
     jQuery.each(data['errors'], function (i, val) {

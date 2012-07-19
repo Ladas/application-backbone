@@ -78,9 +78,20 @@ function connect_callback_to_form(caller_id) {
 }
 
 function process_error_data(form, data) {
-    var table_name = data['table_name'];
+    if (typeof data['table_name'] == undefined) {
+        var table_name = "";
+    } else {
+        var table_name = data['table_name'];
+    }
+
     jQuery.each(data['errors'], function (i, val) {
-        var id = table_name + "_" + i;
+        if (table_name.length > 0) {
+            var id = table_name + "_" + i;
+        } else {
+            var id = i;
+        }
+
+
         var input = form.find("input#" + id + "," + "textarea#" + id);
         //console.log(input)
         var err_text = "";

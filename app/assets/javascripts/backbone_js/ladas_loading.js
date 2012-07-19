@@ -59,14 +59,17 @@ function load_page(settings, caller_object) {
                 if (jqXHR.status == 202) {
                     //alert(jqXHR.status);
                     var data = jQuery.parseJSON(jqXHR.responseText);
-                    if (data['message']) {
-                        alert(data['message']);
-                    }
+
+                    data['message'] ? Alert.set_message(data['message']) : Alert.set_message("");
+                    data['message_header'] ? Alert.set_message_header(data['message_header']) : Alert.set_message_header("");
+                    data['status'] ? Alert.set_status(data['status']) : Alert.set_status("");
+                    //alert(data['message']);
+
+
                     if (data['settings']) {
                         load_page(data['settings']);
                     }
-                    else if (settings['origin'] == "table" && build_type(settings) == "POST")
-                    {
+                    else if (settings['origin'] == "table" && build_type(settings) == "POST") {
                         // if origin of request is table, and it was not get, I will submit the parent form, so table can reload
                         $(caller_object).parents("form").submit();
                     }
@@ -77,8 +80,9 @@ function load_page(settings, caller_object) {
                     //console.log($(content_id).find("textarea.datafile_tinymce"));
                     // Todo nefunguje korektne kdyz nactu tinymce datafali i v sablone i tady, tedy zatim muzuz zobrazovat pouze spolu
                     //$(content_id).find("textarea.datafile_tinymce").LadasTinyMce(settings);
-
+                    //console.log(data)
                     Breadcrumbs.mark_active_menu_items();
+                    Alert.show(content_id);
                 }
 
                 ladas_loading_hide();
@@ -95,18 +99,25 @@ function load_page(settings, caller_object) {
                     if (data['settings']) {
                         load_page(data['settings']);
                     }
-                    else if (settings['origin'] == "table" && build_type(settings) == "POST")
-                    {
+                    else if (settings['origin'] == "table" && build_type(settings) == "POST") {
                         // if origin of request is table, and it was not get, I will submit the parent form, so table can reload
                         $(caller_object).parents("form").submit();
                     }
                 }
                 else if (jqXHR.status == 401) {
-                    alert("Nemáte oprávnění na tuto akci!");
+                    Alert.clear(content_id);
+                    Alert.set_message_header("Přístup nepovolen.");
+                    Alert.set_message("Nemáte dostatečná oprávnění na tuto akci!");
+                    Alert.set_status("error");
+                    Alert.show(content_id);
                 }
                 else {
-                    alert("Request failed: " + textStatus + " status: " + jqXHR.status + " response" + jqXHR);
-
+                    //alert("Request failed: " + textStatus + " status: " + jqXHR.status + " response" + jqXHR);
+                    Alert.clear(content_id);
+                    Alert.set_message_header("Server error.");
+                    Alert.set_message("There has been server error, please wait for the fix of the problem.");
+                    Alert.set_status("error");
+                    Alert.show(content_id);
                 }
             }
         });

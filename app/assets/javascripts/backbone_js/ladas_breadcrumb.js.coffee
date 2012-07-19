@@ -17,7 +17,7 @@
 
 class Breadcrumbs
   @mark_active_menu_items: ->
-    $('a[data-breadcrumb-id]').each (index, element) =>
+    $('a[data-breadcrumb-id],li[data-breadcrumb-id]').each (index, element) =>
       $(element).removeClass('active')
 
     $('.breadcrumb li').each (index, element) =>

@@ -113,7 +113,14 @@ module ModelMixins
 
         settings.merge!({:data => items_array})
       else
-        template_items = object.joins("LEFT OUTER JOIN (" + not_selected_items.uniq.select(settings[:row][:id] + " AS row_id").to_sql + ") temp_template_query ON #{settings[:row][:id]} = temp_template_query.row_id")
+        #template_items = object.joins("RIGHT OUTER JOIN (" + not_selected_items.uniq.select(settings[:row][:id] + " AS row_id").to_sql + ") temp_template_query ON #{settings[:row][:id]} = temp_template_query.row_id")
+        if object.respond_to?(:klass)
+          template_items = object.klass.joins("RIGHT OUTER JOIN (" + items.uniq.to_sql + ") temp_template_query ON #{settings[:row][:id]} = temp_template_query.row_id")
+        else
+          template_items = object.joins("RIGHT OUTER JOIN (" + items.uniq.to_sql + ") temp_template_query ON #{settings[:row][:id]} = temp_template_query.row_id")
+        end
+
+        template_items = template_items.includes(settings[:includes])
         settings.merge!({:data => template_items})
       end
       settings.merge!({:data_paginate => items})

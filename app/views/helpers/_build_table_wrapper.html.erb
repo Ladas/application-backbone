@@ -9,10 +9,10 @@
     <% if !settings[:row].blank? && !settings[:row][:functions].blank? %>
         <th></th>
     <% end %>
-    <% order_by_arr = settings[:params][:order_by].downcase.split(",") %>
+    <% order_by_arr = settings[:params][:order_by].downcase.split(",") unless  settings[:params][:order_by].blank?  %>
     <% settings[:columns].each do |col| %>
-        <% order_asc_id = (col[:table] + "___" + col[:name] + "___asc") %>
-        <% order_desc_id = (col[:table] + "___" + col[:name] + "___desc") %>
+        <% order_asc_id = (col[:table].blank? || col[:name].blank?) ? "" : (col[:table] + "___" + col[:name] + "___asc")  %>
+        <% order_desc_id = (col[:table].blank? || col[:name].blank?) ? "" : (col[:table] + "___" + col[:name] + "___desc") %>
         <th class="<%= col[:class] %>">
           <div class="th_label">
             <span><%= col[:label].html_safe %></span>

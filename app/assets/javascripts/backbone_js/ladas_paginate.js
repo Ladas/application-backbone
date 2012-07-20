@@ -94,8 +94,11 @@ function formatLinkForPagination(container_class) {
 //}
 
 function filter_sort(form_id, order_by_value, dir, obj) {
+    order_by_value = order_by_value.toLowerCase();
+    dir = dir.toLowerCase();
+
     var order_by_id = '#' + form_id + '_order_by';
-    var default_order_by_val = $('#' + form_id + '_default_order_by').val();
+    var default_order_by_val = $('#' + form_id + '_default_order_by').val().toLowerCase();
 
     var order_by_array = $(order_by_id).val().split(",");
     //console.log(order_by_value)
@@ -112,16 +115,16 @@ function filter_sort(form_id, order_by_value, dir, obj) {
         }
         //console.log(order_by_array);
     }
-    else if ((dir == "DESC" && order_by_array.indexOf(order_by_value + " ASC") >= 0) || (dir == "ASC" && order_by_array.indexOf(order_by_value + " DESC") >= 0)) {
-        // there is other variant of the column DESC or ASC, I will swith it to the other variant
+    else if ((dir == "desc" && order_by_array.indexOf(order_by_value + " asc") >= 0) || (dir == "asc" && order_by_array.indexOf(order_by_value + " desc") >= 0)) {
+        // there is other variant of the column desc or asc, I will swith it to the other variant
         //console.log("menim dir");
-        if (dir == "DESC") {
-            var index = order_by_array.indexOf(order_by_value + " ASC");
-            order_by_array[index] = order_by_value + " DESC";
+        if (dir == "desc") {
+            var index = order_by_array.indexOf(order_by_value + " asc");
+            order_by_array[index] = order_by_value + " desc";
         }
         else {
-            var index = order_by_array.indexOf(order_by_value + " DESC");
-            order_by_array[index] = order_by_value + " ASC";
+            var index = order_by_array.indexOf(order_by_value + " desc");
+            order_by_array[index] = order_by_value + " asc";
         }
         //console.log(order_by_array);
     }
@@ -145,6 +148,7 @@ function filter_sort(form_id, order_by_value, dir, obj) {
         new_order_by_val += item;
 
         var order_by_button_id = "#" + item.replace(" ", "___").replace(".", "___");
+        //console.log(order_by_button_id)
         $(order_by_button_id).removeClass("inactive");
         $(order_by_button_id).addClass("active");
     });

@@ -9,10 +9,10 @@
     <% if !settings[:row].blank? && !settings[:row][:functions].blank? %>
         <th></th>
     <% end %>
-    <% order_by_arr = settings[:params][:order_by].split(",") %>
+    <% order_by_arr = settings[:params][:order_by].downcase.split(",") %>
     <% settings[:columns].each do |col| %>
-        <% order_asc_id = (col[:table] + "___" + col[:name] + "___ASC") %>
-        <% order_desc_id = (col[:table] + "___" + col[:name] + "___DESC") %>
+        <% order_asc_id = (col[:table] + "___" + col[:name] + "___asc") %>
+        <% order_desc_id = (col[:table] + "___" + col[:name] + "___desc") %>
         <th class="<%= col[:class] %>">
           <div class="th_label">
             <span><%= col[:label].html_safe %></span>
@@ -22,14 +22,14 @@
             <span class="sortButtons az">
             <% if col[:column_method].blank? && col[:row_method].blank? && !col[:name].blank? %>
 
-          <span onclick="filter_sort('<%= settings[:form_id] %>','<%= col[:table] + "." +col[:name] %>', 'ASC', this); return false;"
+          <span onclick="filter_sort('<%= settings[:form_id] %>','<%= col[:table] + "." +col[:name] %>', 'asc', this); return false;"
                 title="Seřadit vzestupně"
-                class="icon-arrow-up sort_button sort-up <%= (order_by_arr.include?(col[:table] + "." + col[:name] + " ASC")) ? "active" : "inactive" %>"
+                class="icon-arrow-up sort_button sort-up <%= (order_by_arr.include?(col[:table] + "." + col[:name] + " asc")) ? "active" : "inactive" %>"
                 id="<%= order_asc_id %>">
             <span class="oos"></span></span>
-           <span onclick="filter_sort('<%= settings[:form_id] %>','<%= col[:table] + "." +col[:name] %>', 'DESC', this); return false;"
+           <span onclick="filter_sort('<%= settings[:form_id] %>','<%= col[:table] + "." +col[:name] %>', 'desc', this); return false;"
                  title="Seřadit sestupně"
-                 class="icon-arrow-down sort_button sort-down <%= (order_by_arr.include?(col[:table] + "." + col[:name] + " DESC")) ? "active" : "inactive" %>"
+                 class="icon-arrow-down sort_button sort-down <%= (order_by_arr.include?(col[:table] + "." + col[:name] + " desc")) ? "active" : "inactive" %>"
                  id="<%= order_desc_id %>">
             <span class="oos "></span></span>
             <% end %>

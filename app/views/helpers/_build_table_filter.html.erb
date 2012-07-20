@@ -11,84 +11,16 @@
 <%= hidden_field_tag :page, settings[:default][:page], :id => settings[:form_id] + '_page' %>
 
 <%# end %>
-<script type="text/javascript">
-    (function ($) {
-        "use strict";
-        var tmpl = function (str, data) {
-            var f = !/[^\w\-\.:]/.test(str) ? tmpl.cache[str] = tmpl.cache[str] ||
-                    tmpl(tmpl.load(str)) :
-                        new Function(
-                            tmpl.arg + ',tmpl',
-                            "var _e=tmpl.encode" + tmpl.helper + ",_s='" +
-                                str.replace(tmpl.regexp, tmpl.func) +
-                                "';return _s;"
-                        );
-            return data ? f(data, tmpl) : function (data) {
-                return f(data, tmpl);
-            };
-        };
-        tmpl.cache = {};
-        tmpl.load = function (id) {
-            return document.getElementById(id).innerHTML;
-        };
-        tmpl.regexp = /([\s'\\])(?![^%]*%\})|(?:\{%(=|#)([\s\S]+?)%\})|(\{%)|(%\})/g;
-        tmpl.func = function (s, p1, p2, p3, p4, p5) {
-            if (p1) { // whitespace, quote and backspace in interpolation context
-                return {
-                    "\n": "\\n",
-                    "\r": "\\r",
-                    "\t": "\\t",
-                    " " : " "
-                }[s] || "\\" + s;
-            }
-            if (p2) { // interpolation: {%=prop%}, or unescaped: {%#prop%}
-                if (p2 === "=") {
-                    return "'+_e(" + p3 + ")+'";
-                }
-                return "'+(" + p3 + "||'')+'";
-            }
-            if (p4) { // evaluation start tag: {%
-                return "';";
-            }
-            if (p5) { // evaluation end tag: %}
-                return "_s+='";
-            }
-        };
-        tmpl.encReg = /[<>&"'\x00]/g;
-        tmpl.encMap = {
-            "<"   : "&lt;",
-            ">"   : "&gt;",
-            "&"   : "&amp;",
-            "\""  : "&quot;",
-            "'"   : "&#39;"
-        };
-        tmpl.encode = function (s) {
-            return String(s || "").replace(
-                tmpl.encReg,
-                function (c) {
-                    return tmpl.encMap[c] || "";
-                }
-            );
-        };
-        tmpl.arg = "o";
-        tmpl.helper = ",print=function(s,e){_s+=e&&(s||'')||_e(s);}" +
-            ",include=function(s,d){_s+=tmpl(s,d);}";
-        if (typeof define === "function" && define.amd) {
-            define(function () {
-                return tmpl;
-            });
-        } else {
-            $.tmpl = tmpl;
-        }
-    }(this));
-</script>
+
 <%#= javascript_include_tag '/assets/backbone_js/tmpl.min.js' %>
 <script type="text/javascript">
     $(document).ready(function () {
         <% if settings[:template].blank? %>
         var initial_parsed_data = jQuery.parseJSON('<%= j settings.to_json.html_safe %>');
-        var html_from_tmpl = tmpl('template-ajax-table', initial_parsed_data);
-        $("#<%= settings[:form_id] %>_ajax_content").html(html_from_tmpl);
+        var html_from_json = TableBuilder.render_tbody(initial_parsed_data);
+       
+
+        $("#<%= settings[:form_id] %>_ajax_content").html(html_from_json);
         apply_modifiers_of_the_table($("#<%= settings[:form_id] %>_ajax_content"));
         <% end %>
         formatLinkForPaginationURL('<%= settings[:form_id] %>');
@@ -108,7 +40,10 @@
                     //console.log(ladas_build_table('template-ajax-table', parsed_response));
                     <% if settings[:template].blank? %>
                     var parsed_settings = jQuery.parseJSON(parsed_response['settings'])
-                    $("#<%= settings[:form_id] %>_ajax_content").html(tmpl('template-ajax-table', parsed_settings));
+                    var html_from_json = TableBuilder.render_tbody(parsed_settings);
+
+                    
+                    $("#<%= settings[:form_id] %>_ajax_content").html(html_from_json);
                     apply_modifiers_of_the_table($("#<%= settings[:form_id] %>_ajax_content"));
 
                     <% else %>
@@ -122,92 +57,3 @@
     });
 </script>
 
-
-<script id="template-ajax-table" type="text/x-tmpl">
-  {% for (var i=0, row ; row=o.data[i]; i++) { %}
-  <tr class="">
-
-    {% if (o.row.functions) { %}
-    <td>
-      {% for (var function_name in o.row.functions) { %}
-          {% var settings = o.row.functions[function_name]; %}
-          {% settings.symlink_id = row.row_id; %}
-          {% stringified_settings = JSON.stringify(settings); %}
-          {% var non_ajax_url = build_get_url(settings); %}
-          {% if (settings.confirm) { %}
-            <a href="{%= non_ajax_url %}" class="{%= settings['class'] %}" onclick="if (confirm('{%= settings.confirm %}')){ load_page({%=stringified_settings%}); }; return false;" >{%= settings.name %}</a>
-          {% } else { %}
-            <a href="{%= non_ajax_url %}" class="{%= settings['class'] %}" onclick="load_page({%=stringified_settings%}); return false;">{%= settings.name %}</a>
-          {% } %}
-      {% } %}
-    </td>
-    {% } %}
-
-    {% for (var j=0, col; col=o.columns[j]; j++) { %}
-    <td class="{%= col.class %}">
-      {% if (is_hash(row[col.table + '_' + col.name])) { %}
-        {% var button_settings = row[col.table + '_' + col.name]; %}
-        {% button_settings['origin'] = 'table'; %}
-        {% var stringified_button_settings = JSON.stringify(button_settings); %}
-
-        {% var sliced_text = button_settings['name']; %}
-        {% if (col.max_text_length) { %}
-          {% var max = col.max_text_length - 3; %}
-          {% if ( max > 0 && sliced_text.length > max) { %}
-              {% sliced_text = sliced_text.slice(0, col.max_text_length) + "..."; %}
-          {% } %}
-        {% } %}
-
-        {% if (button_settings.symlink_controller || button_settings.symlink_action || button_settings.symlink_id || button_settings.symlink_outer_controller || button_settings.symlink_outer_id) { %}
-            {% var non_ajax_url = build_get_url(button_settings); %}
-            {% if (button_settings.confirm) { %}
-                <a title="{%= button_settings['name'] %}" href="{%= non_ajax_url %}" class="{%= button_settings['class'] %}" data-tr_class="{%= button_settings.tr_class %}" data-td_class="{%= button_settings.td_class %}" onclick="if (confirm('{%= button_settings.confirm %}')){ load_page({%= stringified_button_settings %}, this)}; return false;">{%= sliced_text %}</a>
-            {% } else { %}
-                <a title="{%= button_settings['name'] %}" href="{%= non_ajax_url %}" class="{%= button_settings['class'] %}" data-tr_class="{%= button_settings.tr_class %}" data-td_class="{%= button_settings.td_class %}" onclick="load_page({%= stringified_button_settings %}, this); return false;">{%= sliced_text %}</a>
-            {% } %}
-        {% } else { %}
-            <span title="{%= button_settings['name'] %}" class="{%= button_settings['class'] %}" data-tr_class="{%= button_settings.tr_class %}">{%= sliced_text %}</span>
-        {% } %}
-      {% } else if (is_array(row[col.table + '_' + col.name])) { %}
-        {% var one_cell_buttons = row[col.table + '_' + col.name]; %}
-        {% for (var b=0, one_cell_button; one_cell_button=one_cell_buttons[b]; b++) { %}
-          {% var button_settings = one_cell_button; %}
-          {% button_settings['origin'] = 'table'; %}
-          {% var stringified_button_settings = JSON.stringify(button_settings); %}
-
-          {% var sliced_text = button_settings['name']; %}
-          {% if (col.max_text_length) { %}
-            {% var max = col.max_text_length - 3; %}
-            {% if ( max > 0 && sliced_text.length > max) { %}
-             {% sliced_text = sliced_text.slice(0, col.max_text_length) + "..."; %}
-            {% } %}
-          {% } %}
-
-          {% if (button_settings.symlink_controller || button_settings.symlink_action || button_settings.symlink_id || button_settings.symlink_outer_controller || button_settings.symlink_outer_id) { %}
-              {% var non_ajax_url = build_get_url(button_settings); %}
-              {% if (button_settings.confirm) { %}
-                <a title="{%= button_settings['name'] %}" href="{%= non_ajax_url %}" class="{%= button_settings['class'] %}" data-tr_class="{%= button_settings.tr_class %}" data-td_class="{%= button_settings.td_class %}" onclick="if (confirm('{%= button_settings.confirm %}')){ load_page({%= stringified_button_settings %}, this)}; return false;">{%= sliced_text %}</a>
-              {% } else { %}
-                <a title="{%= button_settings['name'] %}" href="{%= non_ajax_url %}" class="{%= button_settings['class'] %}" data-tr_class="{%= button_settings.tr_class %}" data-td_class="{%= button_settings.td_class %}" onclick="load_page({%= stringified_button_settings %}, this); return false;">{%= sliced_text %}</a>
-              {% } %}
-          {% } else { %}
-              <span title="{%= button_settings['name'] %}" class="{%= button_settings['class'] %}" data-tr_class="{%= button_settings.tr_class %}">{%= sliced_text %}</span>
-          {% } %}
-        {% } %}
-      {% } else if (is_string(row[col.table + '_' + col.name])) { %}
-        {% var sliced_text = row[col.table + '_' + col.name]; %}
-        {% if (col.max_text_length) { %}
-            {% var max = col.max_text_length - 3; %}
-            {% if ( max > 0 && sliced_text.length > max) { %}
-                {% sliced_text = sliced_text.slice(0, col.max_text_length) + "..."; %}
-            {% } %}
-        {% } %}
-        <span title="{%= row[col.table + '_' + col.name] %}">{%= sliced_text %}</span>
-      {% } else { %}
-        <span title="{%= row[col.table + '_' + col.name] %}">{%= row[col.table + '_' + col.name] %}</span>
-      {% } %}
-    </td>
-    {% } %}
-  </tr>
-  {% } %}
-</script>

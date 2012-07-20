@@ -100,7 +100,7 @@ function filter_sort(form_id, order_by_value, dir, obj) {
     var order_by_id = '#' + form_id + '_order_by';
     var default_order_by_val = $('#' + form_id + '_default_order_by').val().toLowerCase();
 
-    var order_by_array = $(order_by_id).val().split(",");
+    var order_by_array = $(order_by_id).val().toLowerCase().split(",");
     //console.log(order_by_value)
     //console.log(dir)
     //console.log(order_by_array);

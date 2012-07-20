@@ -27,7 +27,7 @@ class TableBuilder
       for function_name in TableBuilder.obj.row.functions.data
         do (function_name) ->
           settings = o.row.functions[function_name]
-          TableBuilder.make_href_button(settings,undefined, row)
+          TableBuilder.make_row_function_button(settings, row, col)
 
       TableBuilder.html += '</td>'
 
@@ -39,6 +39,7 @@ class TableBuilder
         if (is_hash(row[col.table + '_' + col.name]))
           # hash span or href (styled as button)
           button_settings = row[col.table + '_' + col.name]
+          button_settings = {} if !button_settings?
           TableBuilder.make_column_from_hash(button_settings, row, col)
 
         else if (is_array(row[col.table + '_' + col.name]))
@@ -46,6 +47,7 @@ class TableBuilder
           one_cell_buttons = row[col.table + '_' + col.name]
           for one_cell_button in one_cell_buttons
             do (one_cell_button) ->
+              one_cell_button = {} if !button_settings?
               TableBuilder.make_column_from_hash(one_cell_button, row, col)
 
         else if (is_string(row[col.table + '_' + col.name]))
@@ -69,9 +71,7 @@ class TableBuilder
         TableBuilder.html += '</td>'
 
 
-  @make_href_button:(settings, col, row) ->
-    settings.symlink_id = row.row_id if row?  # only for generic row functions, they are defined without the id
-
+  @make_href_button:(settings, row, col) ->
 
     sliced_text = settings['name']
     if col?
@@ -113,9 +113,13 @@ class TableBuilder
 
 
 
+  @make_row_function_button:(button_settings, row, col) ->
+    button_settings.symlink_id = row.row_id if row?  # only for generic row functions, they are defined without the id
+    TableBuilder.make_href_button(button_settings, row, col)
+
   @make_column_from_hash:(button_settings, row, col) ->
     button_settings['origin'] = 'table'
-    TableBuilder.make_href_button(button_settings, col, row)
+    TableBuilder.make_href_button(button_settings, row, col)
 
 
 window.TableBuilder = TableBuilder

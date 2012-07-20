@@ -25,24 +25,29 @@ class Breadcrumbs
     $('a[data-breadcrumb-id],li[data-breadcrumb-id]').each (index, element) =>
       $(element).removeClass('active')
 
-    $('.breadcrumb li').each (index, element) =>
+    $('.main_breadcrumb li').each (index, element) =>
       bc = $(element)
       href = bc.find('a')
       if href.length > 0
         text = href.html()
       else
         text = bc.html()
+
+      text = text.replace(/\n/g, ' ').replace(/\r/g, ' ');
+      console.log(text)
+
       Breadcrumbs.mark_menu_item(text)
-      Breadcrumbs.change_document_title(title_prefix, title_suffix, text) if (index + 1) >= $('.breadcrumb li').length
+      Breadcrumbs.change_document_title(title_prefix, title_suffix, text) if (index + 1) >= $('.main_breadcrumb li').length
 
     # default title if there is no breadcrumbs
-    Breadcrumbs.change_document_title("","", title_default) if $('.breadcrumb li').lenght <= 0
+    Breadcrumbs.change_document_title("","", title_default) if $('.main_breadcrumb li').lenght <= 0
 
 
   @mark_menu_item: (val) ->
     finding_string = "li[data-breadcrumb-id='" + val + "']"
     finding_string += ",a[data-breadcrumb-id='" + val + "']"
     #console.log $(finding_string)
+
     found = $(finding_string)
     found.addClass('active') if found
 

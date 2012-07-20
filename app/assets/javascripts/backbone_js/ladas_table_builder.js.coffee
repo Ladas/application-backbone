@@ -13,21 +13,20 @@ class TableBuilder
       do (row) ->
         TableBuilder.html += '<tr>'
 
-        TableBuilder.add_row_functions()
+        TableBuilder.add_row_functions(row)
         TableBuilder.add_row_columns(row)
 
         TableBuilder.html += '</tr>'
   @make_row: ->
 
 
-  @add_row_functions: ->
-    if (TableBuilder.obj.row.functions)
+  @add_row_functions:(row) ->
+    if TableBuilder.obj.row? && TableBuilder.obj.row.functions?
       TableBuilder.html += '<td>'
 
-      for function_name in TableBuilder.obj.row.functions.data
-        do (function_name) ->
-          settings = o.row.functions[function_name]
-          TableBuilder.make_row_function_button(settings, row, col)
+
+      for function_name, settings of TableBuilder.obj.row.functions
+        TableBuilder.make_row_function_button(settings, row)
 
       TableBuilder.html += '</td>'
 
@@ -47,7 +46,7 @@ class TableBuilder
           one_cell_buttons = row[col.table + '_' + col.name]
           for one_cell_button in one_cell_buttons
             do (one_cell_button) ->
-              one_cell_button = {} if !button_settings?
+              one_cell_button = {} if !one_cell_buttons?
               TableBuilder.make_column_from_hash(one_cell_button, row, col)
 
         else if (is_string(row[col.table + '_' + col.name]))

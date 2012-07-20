@@ -34,7 +34,7 @@ class Breadcrumbs
         text = bc.html()
 
       text = text.replace(/\n/g, ' ').replace(/\r/g, ' ');
-      console.log(text)
+
 
       Breadcrumbs.mark_menu_item(text)
       Breadcrumbs.change_document_title(title_prefix, title_suffix, text) if (index + 1) >= $('.main_breadcrumb li').length

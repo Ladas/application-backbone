@@ -39,6 +39,45 @@ module ControllerMixins
       end
     end
 
+    def render_table(settings, logged_user=nil, template = nil, &proc)
+      settings[:template] = template unless template.blank?
+      data = yield
+      class_obj = data.respond_to?(:klass) ? data.klass : data
+      if action_name == "filter"
+        default_params = params
+        if !params.blank? && params["clear"]
+          default_params = settings[:default].dup
+          default_params[:order_by] = settings[:default][:order_by] + " " + settings[:default][:order_by_direction] if !settings[:default][:order_by].blank? && !settings[:default][:order_by_direction].blank?
+          default_params[:order_by] = settings[:default][:order] if !settings[:default][:order].blank?
+        end
+
+        settings = class_obj.prepare_settings(logged_user, data, settings, default_params)
+        if !params.blank? && params["clear"]
+          session["#{settings[:form_id]}_params"] = ""
+          render :layout => false, :action => :index
+        else
+          paginate = render_to_string(:partial => "/helpers/build_table_pager", :locals => {:settings => settings})
+          session["#{settings[:form_id]}_params"] = params
+          if settings[:template].blank?
+            # if there is no template a will return json and tbody renders in javascript template
+            returned_t_body = settings.to_json
+          else
+            # or there is template so i will return template rendered here in ruby
+            returned_t_body = render_to_string(:partial => settings[:template], :locals => {:settings => settings})
+          end
+
+          render :layout => false, :json => {:settings => returned_t_body, :paginate => paginate}.to_json
+        end
+      elsif action_name == "index"
+        default_params = settings[:default].dup
+        default_params[:order_by] = settings[:default][:order_by] + " " + settings[:default][:order_by_direction] if !settings[:default][:order_by].blank? && !settings[:default][:order_by_direction].blank?
+        default_params[:order_by] = settings[:default][:order] if !settings[:default][:order].blank?
+
+        default_params = session["#{settings[:form_id]}_params"] unless session["#{settings[:form_id]}_params"].blank?
+        settings = class_obj.prepare_settings(logged_user, data, settings, default_params)
+      end
+    end
+
     def fill_settings_with opts
       settings = {}
       settings[:symlink_remote] = true

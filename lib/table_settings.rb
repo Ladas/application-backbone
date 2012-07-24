@@ -1,5 +1,5 @@
-require './lib/table_settings/table_column.rb'
-require './lib/table_settings/table_action.rb'
+require 'table_settings/table_column.rb'
+require 'table_settings/table_action.rb'
 
 class TableSettings
 

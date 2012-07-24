@@ -31,6 +31,8 @@ class TableSettings
     construct_columns if @settings[:columns].empty?
     construct_actions if @settings[:row][:functions].blank?
 
+    @settings[:row].delete(:functions) if @settings[:row][:functions].empty?
+
     @settings
   end
 

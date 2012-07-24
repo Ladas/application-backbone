@@ -9,12 +9,15 @@ require 'model_mixins/table_builder_class_methods'
 require 'model_mixins/tree_node_class_methods'
 require 'model_mixins/tree_node_instance_methods'
 
+require 'model_mixins/table_settings_interface'
+
 require "model_mixins/ladas_string_extensions"
 require "model_mixins/ladas_html_entities"
 
 
 require 'controller_mixins/renderer_instance_methods'
 require 'controller_mixins/csv_instance_methods'
+require 'controller_mixins/table_settings_interface'
 
 module Initializers
   class Initialize < Rails::Railtie
@@ -27,8 +30,11 @@ module Initializers
 
       ActionController::Base.send :include, ControllerMixins::RendererInstanceMethods
       ActionController::Base.send :include, ControllerMixins::CsvInstanceMethods
+      ActionController::Base.send :include, ControllerMixins::TableSettingsInterface
 
       ActiveRecord::Base.send :extend, ModelMixins::TableBuilderClassMethods
+      ActiveRecord::Base.send :extend, ModelMixins::TableSettingsInterface
+
 
       String.send :include, ModelMixins::LadasStringExtensions
       String.send :include, ModelMixins::LadasHtmlEntities

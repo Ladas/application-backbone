@@ -1,5 +1,6 @@
 require 'table_settings/table_column.rb'
 require 'table_settings/table_action.rb'
+require 'table_settings/detail_table.rb'
 
 class TableSettings
 

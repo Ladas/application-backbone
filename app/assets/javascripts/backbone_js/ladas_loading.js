@@ -238,7 +238,9 @@ function parse_link_and_load_page(element) {
     var settings = {};
     settings['url'] = element.attr("href");
     settings['symlink_remote'] = true;
-
+    if (element.data("content_id").length > 0) {
+        settings['content_id'] = element.data("content_id");
+    }
     load_page(settings);
 }
 
@@ -248,7 +250,9 @@ function parse_link_and_post(element) {
     settings['symlink_remote'] = true;
     settings['data'] = element.data("post");
     settings['method'] = "post";
-
+    if (element.data("content_id").length > 0) {
+        settings['content_id'] = element.data("content_id");
+    }
 
     load_page(settings);
 }

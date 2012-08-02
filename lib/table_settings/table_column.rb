@@ -64,7 +64,7 @@ class TableSettings
           :name           => name,
           :label          => label,
           :column_method  => column_method,
-          :filter         => :find
+          :filter         => :none
       }
       @column_hash[:column_class]         = column_class         unless column_class.nil?
       @column_hash[:column_params]        = column_params        unless column_params.nil?

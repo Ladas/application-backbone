@@ -161,6 +161,14 @@ class TableSettings
     self
   end
 
+  ##
+  # ID tagu (napr. <div>), do ktereho se ma prekreslit cela tabulka (napr. po Smazat filtr)
+  #
+  def content_id(string)
+    @settings[:content_id] = string
+    self
+  end
+
   def includes(options)
     @settings[:includes] = options
 

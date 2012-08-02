@@ -105,6 +105,10 @@ class TableSettings
       self
     end
 
+    def method(symbol)
+      @hash[:method] = symbol
+    end
+
     def css_class(name)
       @hash[:class] = name
       self

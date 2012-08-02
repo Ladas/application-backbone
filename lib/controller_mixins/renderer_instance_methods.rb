@@ -39,44 +39,97 @@ module ControllerMixins
       end
     end
 
+    ##
+    # Nastavi data pro tabulku.
+    #
+    # @param [Hash] settings
+    # @param [User] logger_user
+    # @param [String] template
+    #
+    # @return [Hash | renderuje] Hash vraci pro vykresleni tabulky, renderuje pri filtrovani
     def render_table(settings, logged_user=nil, template = nil, &proc)
       settings[:template] = template unless template.blank?
       data = yield
       class_obj = data.respond_to?(:klass) ? data.klass : data
-      if action_name == "filter"
-        default_params = params
-        if !params.blank? && params["clear"]
-          default_params = settings[:default].dup
-          default_params[:order_by] = settings[:default][:order_by] + " " + settings[:default][:order_by_direction] if !settings[:default][:order_by].blank? && !settings[:default][:order_by_direction].blank?
-          default_params[:order_by] = settings[:default][:order] if !settings[:default][:order].blank?
+
+      filter_method     = settings[:filter_method]
+      show_table_method = settings[:show_table_method]
+
+      default_params = set_default_params(filter_method, show_table_method, settings)
+
+      settings = class_obj.prepare_settings(logged_user, data, settings, default_params)
+
+      # Filtrovani se renderuje zde
+      if is_filtering?(filter_method)
+
+        if clear_filter?  # Tlacitko Smazat filtr
+          render_table_on_clear_filter(settings, show_table_method)
+        else              # Ostatni filtry
+          render_tbody_on_filter(settings)
         end
 
-        settings = class_obj.prepare_settings(logged_user, data, settings, default_params)
-        if !params.blank? && params["clear"]
-          session["#{settings[:form_id]}_params"] = ""
-          render :layout => false, :action => :index
-        else
-          paginate = render_to_string(:partial => "/helpers/build_table_pager", :locals => {:settings => settings})
-          session["#{settings[:form_id]}_params"] = params
-          if settings[:template].blank?
-            # if there is no template a will return json and tbody renders in javascript template
-            returned_t_body = settings.to_json
-          else
-            # or there is template so i will return template rendered here in ruby
-            returned_t_body = render_to_string(:partial => settings[:template], :locals => {:settings => settings})
-          end
-
-          render :layout => false, :json => {:settings => returned_t_body, :paginate => paginate}.to_json
-        end
-      elsif action_name == "index"
-        default_params = settings[:default].dup
-        default_params[:order_by] = settings[:default][:order_by] + " " + settings[:default][:order_by_direction] if !settings[:default][:order_by].blank? && !settings[:default][:order_by_direction].blank?
-        default_params[:order_by] = settings[:default][:order] if !settings[:default][:order].blank?
-
-        default_params = session["#{settings[:form_id]}_params"] unless session["#{settings[:form_id]}_params"].blank?
-        settings = class_obj.prepare_settings(logged_user, data, settings, default_params)
       end
+
+      # Cele vykresleni stranky normalne z metody, ktera toto zavolala
     end
+
+    def set_default_params(filter_method, show_table_method, settings )
+      default_params = params
+      default_params = default_params_for_clear_filter(settings) if is_filtering?(filter_method) && clear_filter?
+      default_params = default_params_for_show_table(settings) if is_showing_table?(show_table_method)
+      default_params
+    end
+
+    def render_table_on_clear_filter(settings, show_table_method)
+      session["#{settings[:form_id]}_params"] = ""
+      render :layout => false, :action => (show_table_method.blank? ? :index : show_table_method)
+    end
+
+    def render_tbody_on_filter(settings)
+      paginate = render_to_string(:partial => "/helpers/build_table_pager", :locals => {:settings => settings})
+      session["#{settings[:form_id]}_params"] = params
+      if settings[:template].blank?
+        # if there is no template a will return json and tbody renders in javascript template
+        returned_t_body = settings.to_json
+      else
+        # or there is template so i will return template rendered here in ruby
+        returned_t_body = render_to_string(:partial => settings[:template], :locals => {:settings => settings})
+      end
+
+      render :layout => false, :json => {:settings => returned_t_body, :paginate => paginate}.to_json
+    end
+
+    def clear_filter?
+      !params.blank? && params["clear"]
+    end
+
+    def default_params_for_clear_filter(settings)
+      default_params = settings[:default].dup
+      default_params[:order_by] = settings[:default][:order_by] + " " + settings[:default][:order_by_direction] if !settings[:default][:order_by].blank? && !settings[:default][:order_by_direction].blank?
+      default_params[:order_by] = settings[:default][:order] if !settings[:default][:order].blank?
+      default_params
+    end
+
+    def default_params_for_show_table(settings)
+      default_params = settings[:default].dup
+      default_params[:order_by] = settings[:default][:order_by] + " " + settings[:default][:order_by_direction] if !settings[:default][:order_by].blank? && !settings[:default][:order_by_direction].blank?
+      default_params[:order_by] = settings[:default][:order] if !settings[:default][:order].blank?
+
+      default_params = session["#{settings[:form_id]}_params"] unless session["#{settings[:form_id]}_params"].blank?
+      default_params
+    end
+
+
+    def is_showing_table?(show_table_method)
+      action_name == "index" ||
+          (!show_table_method.blank? && action_name == show_table_method)
+    end
+
+    def is_filtering?(filter_method)
+      action_name == "filter" ||
+          (!filter_method.blank? && action_name == filter_method)
+    end
+
 
     def fill_settings_with opts
       settings = {}

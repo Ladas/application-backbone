@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "it-logica-application-backbone"
-  s.version = "1.0.3"
+  s.version = "1.0.4"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ladas"]
-  s.date = "2012-07-25"
+  s.date = "2012-08-02"
   s.description = "longer description of your gem"
   s.email = "ladislav.smola@it-logica.cz"
   s.extra_rdoc_files = [
@@ -476,7 +476,9 @@ Gem::Specification.new do |s|
     "lib/model_mixins/tree_node_class_methods.rb",
     "lib/model_mixins/tree_node_instance_methods.rb",
     "lib/table_settings.rb",
+    "lib/table_settings/detail_table.rb",
     "lib/table_settings/table_action.rb",
+    "lib/table_settings/table_button.rb",
     "lib/table_settings/table_column.rb",
     "lib/view_mixins/breadcrumb.rb",
     "lib/view_mixins/datafiles_for.rb",

@@ -160,6 +160,25 @@ class TableSettings
 
     self
   end
+  #  Metoda, ze ktere se filtruje tabulka
+  def filter_method(name)
+    @settings[:filter_method] = name
+    self
+  end
+
+  #   Metoda, ze ktere se vykresluje tabulka (default: index)
+  def on_method(name)
+    @settings[:show_table_method] = name
+    self
+  end
+  ##
+  # ID tagu (napr. <div>), do ktereho se ma prekreslit cela tabulka
+  # (napr. pro tlacitko "Smazat filtr")
+  #
+  def content_id(string)
+    @settings[:content_id] = string
+    self
+  end
 
   def includes(options)
     @settings[:includes] = options

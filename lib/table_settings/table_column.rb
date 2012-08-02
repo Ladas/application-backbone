@@ -71,6 +71,19 @@ class TableSettings
 
       self
     end
+    def callback_params(params)
+      @column_hash[:column_params] = params
+      self
+    end
+
+    def callback_method(name)
+      @column_hash[:column_method] = name
+      self
+    end
+    def callback_class(name)
+      @column_hash[:column_class] = name
+      self
+    end
   end
 
   class StandardColumn < Column

@@ -69,10 +69,11 @@
                                    // the parameter is the node being loaded
                                    // (may be -1, 0, or undefined when loading the root nodes)
                                    "data":function (n) {
+                                       var root_id = typeof(self.settings['root_id']) == 'undefined' ? 0 : self.settings['root_id'];
                                        // the result is fed to the AJAX request `data` option
                                         return {
                                            "operation":"get_children",
-                                           "id":n.attr ? n.attr("id").replace("node_", "") : 0
+                                           "id":n.attr ? n.attr("id").replace("node_", "") : root_id
                                         };
                                    },
 //                                   "success" : function (data) {

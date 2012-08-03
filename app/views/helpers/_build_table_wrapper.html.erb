@@ -53,14 +53,14 @@
                                                                                               :title => "Vetší nebo rovno"} %>
                   <% saved_param = (!settings[:params].blank? && !settings[:params]['date_to'].blank? && !settings[:params]['date_to']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['date_to']["#{col[:table]}.#{col[:name]}"] : "" %>
                   <%#= label_tag "date_to[#{col[:table]}.#{col[:name]}]", "Do", :class => "datetime_class_label" %>
-                  <%= text_field_tag "number_to[#{col[:table]}.#{col[:name]}]", saved_param, {:class => "input-small input-mini",
+                  <%= text_field_tag "number_to[#{col[:table]}.#{col[:name]}]", saved_param, {:class => "input-small input-mini #{settings[:form_id] + '_column_find'}",
                                                                                             :onchange => "form_submit_watcher('#{settings[:form_id]}')",
                                                                                             :title => "Menší nebo rovno"} %>
                   <span></span>
               <% when :date %>
                   <% saved_param = (!settings[:params].blank? && !settings[:params]['date_from'].blank? && !settings[:params]['date_from']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['date_from']["#{col[:table]}.#{col[:name]}"] : "" %>
                   <%#= label_tag "date_from[#{col[:table]}.#{col[:name]}]", "Od", :class => "datetime_class_label" %>
-                  <%= text_field_tag "date_from[#{col[:table]}.#{col[:name]}]", saved_param, {:class => "datetime_class input-small #{settings[:form_id] + '_column_find'}",
+                  <%= text_field_tag "date_from[#{col[:table]}.#{col[:name]}]", saved_param, {:class => "datetime_class input-small",
                                                                                               :onchange => "form_submit_watcher('#{settings[:form_id]}')",
                                                                                               :title => "Datum od"} %>
                   <% saved_param = (!settings[:params].blank? && !settings[:params]['date_to'].blank? && !settings[:params]['date_to']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['date_to']["#{col[:table]}.#{col[:name]}"] : "" %>

@@ -13,11 +13,11 @@ module ModelMixins
       params[:real_order_by] = params[:order_by]
       check_non_existing_colum_order_by(settings, params)
 
-      not_selected_items = object.filter(settings, params, per_page)
+      not_selected_items = object.filter(object, settings, params, per_page)
       items = not_selected_items.selection(settings)
       if params[:page].to_i > items.total_pages && items.total_pages > 0
         params[:page] = 1
-        not_selected_items = object.filter(settings, params, per_page)
+        not_selected_items = object.filter(object, settings, params, per_page)
         items = not_selected_items.selection(settings)
       end
 
@@ -131,7 +131,9 @@ module ModelMixins
     def selection(settings)
       select_string = ""
       settings[:columns].each do |col|
-        col[:table] = "unknown" if col[:table].blank?
+        col[:table] = "___unknown___" if col[:table].blank?
+        col[:table] = "___sql_expression___" unless col[:sql_expression].blank?
+
         if col[:column_method].blank? && col[:row_method].blank? && !col[:name].blank?
           if col[:sql_expression].blank?
             # I am selection col[:name]
@@ -163,16 +165,22 @@ module ModelMixins
       select_string += ", " unless select_string.blank?
       select_string += "#{settings[:row][:id]} AS row_id "
 
+
       select(select_string)
     end
 
-    def filter(settings, params, per_page = 10)
+    def filter(object, settings, params, per_page = 10)
       order_by = params[:real_order_by]
 
       cond_str = ""
       cond_hash = {}
+      having_cond_str = ""
+      having_cond_hash = {}
+
+
       if !params.blank? && params['find']
         params['find'].each_pair do |i, v|
+          i = i.gsub(/___unknown___\./, "") #some cleaning job
           unless v.blank?
             if i.match(/^.*?non_existing_column___.*$/i)
               identifier = i.split("non_existing_column___").second
@@ -194,17 +202,29 @@ module ModelMixins
                 end
               end
             else
-              cond_str += " AND " unless cond_str.blank?
-              cond_id = "find_#{i.gsub(/\./, '_')}"
-              cond_str += "#{i} LIKE :#{cond_id}" #OR guest_email LIKE :find"
-              cond_hash.merge!({cond_id.to_sym => "%#{v}%"})
+              if i.match(/^.*?___sql_expression___.*$/i)
+                i = i.gsub(/___sql_expression___\./, "") #some cleaning job
+
+                having_cond_str += " AND " unless cond_str.blank?
+                cond_id = "find_#{i.gsub(/\./, '_')}"
+                having_cond_str += "#{i} LIKE :#{cond_id}" #OR guest_email LIKE :find"
+                having_cond_hash.merge!({cond_id.to_sym => "%#{v}%"})
+              else
+                cond_str += " AND " unless cond_str.blank?
+                cond_id = "find_#{i.gsub(/\./, '_')}"
+                cond_str += "#{i} LIKE :#{cond_id}" #OR guest_email LIKE :find"
+                cond_hash.merge!({cond_id.to_sym => "%#{v}%"})
+              end
             end
           end
         end
       end
 
+      # ToDO ladas add number filter
+      # ToDo ladas add having condition to others
       if !params.blank? && params['multichoice']
         params['multichoice'].each_pair do |i, v|
+          i = i.gsub(/___unknown___\./, "") #some cleaning job
           unless v.blank?
             cond_str += " AND " unless cond_str.blank?
             cond_id = "multichoice_#{i.gsub(/\./, '_')}"
@@ -217,6 +237,7 @@ module ModelMixins
 
       if !params.blank? && params['date_from']
         params['date_from'].each_pair do |i, v|
+          i = i.gsub(/___unknown___\./, "") #some cleaning job
           unless v.blank?
             cond_str += " AND " unless cond_str.blank?
             cond_id = "date_from_#{i.gsub(/\./, '_')}"
@@ -228,6 +249,7 @@ module ModelMixins
 
       if !params.blank? && params['date_to']
         params['date_to'].each_pair do |i, v|
+          i = i.gsub(/___unknown___\./, "") #some cleaning job
           unless v.blank?
             cond_str += " AND " unless cond_str.blank?
             cond_id = "date_to_#{i.gsub(/\./, '_')}"
@@ -237,7 +259,8 @@ module ModelMixins
         end
       end
 
-      ret = where(cond_str, cond_hash).paginate(:page => params[:page], :per_page => per_page).order(order_by)
+      ret = where(cond_str, cond_hash).order(order_by)
+      ret = ret.having(having_cond_str, having_cond_hash) unless having_cond_str.blank?
       #items = self.joins("LEFT OUTER JOIN intranet_text_pages ON resource_id = intranet_text_pages.id").where(cond_str, cond_hash).paginate(:page => params[:page], :per_page => per_page).order(order_by).selection(settings)
       #if params[:page].to_i > items.total_pages && items.total_pages > 0
       #  params[:page] = 1
@@ -254,12 +277,23 @@ module ModelMixins
         end
       end
 
+
+      # fuck will paginate, if there are agregated queries that I use for condition, will_paginage will delete it
+      # i am counting rows on my own
+      if object.respond_to?(:klass)
+        mysql_count = object.klass.find_by_sql("SELECT COUNT(*) AS count_all FROM (" + ret.selection(settings).to_sql + ") count")
+      else
+        mysql_count = object.find_by_sql("SELECT COUNT(*) AS count_all FROM (" + ret.selection(settings).to_sql + ") count")
+      end
+      ret = ret.paginate(:page => params[:page], :per_page => per_page, :total_entries => mysql_count.first[:count_all])
+
       ret
     end
 
 
     def check_non_existing_colum_order_by(settings, params)
-      order_by_arr = params[:order_by].split(",")
+      order_by_params = params[:order_by].dup.gsub(/___unknown___\./, "") #some cleaning job
+      order_by_arr = order_by_params.split(",")
       order_by_arr.each_with_index do |one_order_by, index|
         if one_order_by.match(/^.*?non_existing_column___.*$/i)
           identifier_and_direction = one_order_by.split("non_existing_column___").second

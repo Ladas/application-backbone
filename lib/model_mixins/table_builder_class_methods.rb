@@ -293,6 +293,8 @@ module ModelMixins
 
     def check_non_existing_colum_order_by(settings, params)
       order_by_params = params[:order_by].dup.gsub(/___unknown___\./, "") #some cleaning job
+      order_by_params = order_by_params.gsub(/___sql_expression___\./, "") #some cleaning job
+
       order_by_arr = order_by_params.split(",")
       order_by_arr.each_with_index do |one_order_by, index|
         if one_order_by.match(/^.*?non_existing_column___.*$/i)

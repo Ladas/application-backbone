@@ -9,9 +9,9 @@
     <% if !settings[:row].blank? && !settings[:row][:functions].blank? %>
         <th></th>
     <% end %>
-    <% order_by_arr = settings[:params][:order_by].downcase.split(",") unless  settings[:params][:order_by].blank?  %>
+    <% order_by_arr = settings[:params][:order_by].downcase.split(",") unless  settings[:params][:order_by].blank? %>
     <% settings[:columns].each do |col| %>
-        <% order_asc_id = (col[:table].blank? || col[:name].blank?) ? "" : (col[:table] + "___" + col[:name] + "___asc")  %>
+        <% order_asc_id = (col[:table].blank? || col[:name].blank?) ? "" : (col[:table] + "___" + col[:name] + "___asc") %>
         <% order_desc_id = (col[:table].blank? || col[:name].blank?) ? "" : (col[:table] + "___" + col[:name] + "___desc") %>
         <th class="<%= col[:class] %>">
           <div class="th_label">
@@ -45,10 +45,22 @@
                                        :onchange => "form_submit_watcher('#{settings[:form_id]}')",
                                        :multiple => true,
                                        :class => "multiselect_class") %></span>
-            <% when :date %>
-                <% saved_param = (!settings[:params].blank? && !settings[:params]['date_from'].blank? && !settings[:params]['date_from']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['date_from']["#{col[:table]}.#{col[:name]}"] : "" %>
+              <% when :number %>
+                              <% saved_param = (!settings[:params].blank? && !settings[:params]['date_from'].blank? && !settings[:params]['date_from']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['date_from']["#{col[:table]}.#{col[:name]}"] : "" %>
+
+                  <%= text_field_tag "number_from[#{col[:table]}.#{col[:name]}]", saved_param, {:class => "input-small input-mini #{settings[:form_id] + '_column_find'}",
+                                                                                              :onchange => "form_submit_watcher('#{settings[:form_id]}')",
+                                                                                              :title => "Vetší nebo rovno"} %>
+                  <% saved_param = (!settings[:params].blank? && !settings[:params]['date_to'].blank? && !settings[:params]['date_to']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['date_to']["#{col[:table]}.#{col[:name]}"] : "" %>
+                  <%#= label_tag "date_to[#{col[:table]}.#{col[:name]}]", "Do", :class => "datetime_class_label" %>
+                  <%= text_field_tag "number_to[#{col[:table]}.#{col[:name]}]", saved_param, {:class => "input-small input-mini",
+                                                                                            :onchange => "form_submit_watcher('#{settings[:form_id]}')",
+                                                                                            :title => "Menší nebo rovno"} %>
+                  <span></span>
+              <% when :date %>
+                  <% saved_param = (!settings[:params].blank? && !settings[:params]['date_from'].blank? && !settings[:params]['date_from']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['date_from']["#{col[:table]}.#{col[:name]}"] : "" %>
                   <%#= label_tag "date_from[#{col[:table]}.#{col[:name]}]", "Od", :class => "datetime_class_label" %>
-                  <%= text_field_tag "date_from[#{col[:table]}.#{col[:name]}]", saved_param, {:class => "datetime_class input-small",
+                  <%= text_field_tag "date_from[#{col[:table]}.#{col[:name]}]", saved_param, {:class => "datetime_class input-small #{settings[:form_id] + '_column_find'}",
                                                                                               :onchange => "form_submit_watcher('#{settings[:form_id]}')",
                                                                                               :title => "Datum od"} %>
                   <% saved_param = (!settings[:params].blank? && !settings[:params]['date_to'].blank? && !settings[:params]['date_to']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['date_to']["#{col[:table]}.#{col[:name]}"] : "" %>
@@ -57,7 +69,7 @@
                                                                                             :onchange => "form_submit_watcher('#{settings[:form_id]}')",
                                                                                             :title => "Datum do"} %>
                   <span></span>
-            <% else %>
+                  <% else %>
               <% end %>
             </span>
           </div>

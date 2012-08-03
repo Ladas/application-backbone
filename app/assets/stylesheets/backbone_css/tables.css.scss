@@ -23,6 +23,10 @@ table.table_special .input-small {
   color: $marked_item_color;
 }
 
+table.table_special .input-small.input-mini {
+  width: 15px;
+}
+
 table.table_special .input-small.datetime_class {
   width: 15px;
 }

@@ -205,7 +205,7 @@ module ModelMixins
               if i.match(/^.*?___sql_expression___.*$/i)
                 i = i.gsub(/___sql_expression___\./, "") #some cleaning job
 
-                having_cond_str += " AND " unless cond_str.blank?
+                having_cond_str += " AND " unless having_cond_str.blank?
                 cond_id = "find_#{i.gsub(/\./, '_')}"
                 having_cond_str += "#{i} LIKE :#{cond_id}" #OR guest_email LIKE :find"
                 having_cond_hash.merge!({cond_id.to_sym => "%#{v}%"})
@@ -235,26 +235,54 @@ module ModelMixins
         end
       end
 
-      if !params.blank? && params['date_from']
-        params['date_from'].each_pair do |i, v|
+      if !params.blank? && (params['date_from'] || params['number_from'])
+        from_hash = params['date_from']
+        if from_hash.blank?
+          from_hash = params['number_from']
+        else
+          from_hash.merge!(params['number_from']) unless params['number_from'].blank?
+        end
+        from_hash.each_pair do |i, v|
           i = i.gsub(/___unknown___\./, "") #some cleaning job
           unless v.blank?
-            cond_str += " AND " unless cond_str.blank?
-            cond_id = "date_from_#{i.gsub(/\./, '_')}"
-            cond_str += "#{i} >= :#{cond_id}" #OR guest_email LIKE :find"
-            cond_hash.merge!({cond_id.to_sym => "#{v}"})
+            if i.match(/^.*?___sql_expression___.*$/i)
+              i = i.gsub(/___sql_expression___\./, "") #some cleaning job
+              having_cond_str += " AND " unless having_cond_str.blank?
+              cond_id = "date_from_#{i.gsub(/\./, '_')}"
+              having_cond_str += "#{i} >= :#{cond_id}" #OR guest_email LIKE :find"
+              having_cond_hash.merge!({cond_id.to_sym => "#{v}"})
+            else
+              cond_str += " AND " unless cond_str.blank?
+              cond_id = "date_from_#{i.gsub(/\./, '_')}"
+              cond_str += "#{i} >= :#{cond_id}" #OR guest_email LIKE :find"
+              cond_hash.merge!({cond_id.to_sym => "#{v}"})
+            end
           end
         end
       end
 
-      if !params.blank? && params['date_to']
-        params['date_to'].each_pair do |i, v|
+      if !params.blank? && (params['date_to'] || params['number_to'])
+        to_hash = params['date_to']
+        if to_hash.blank?
+          to_hash = params['number_to']
+        else
+          to_hash.merge!(params['number_to']) unless params['number_to'].blank?
+        end
+        to_hash.each_pair do |i, v|
           i = i.gsub(/___unknown___\./, "") #some cleaning job
           unless v.blank?
-            cond_str += " AND " unless cond_str.blank?
-            cond_id = "date_to_#{i.gsub(/\./, '_')}"
-            cond_str += "#{i} <= :#{cond_id}" #OR guest_email LIKE :find"
-            cond_hash.merge!({cond_id.to_sym => "#{v}"})
+            if i.match(/^.*?___sql_expression___.*$/i)
+              i = i.gsub(/___sql_expression___\./, "") #some cleaning job
+              having_cond_str += " AND " unless having_cond_str.blank?
+              cond_id = "date_to_#{i.gsub(/\./, '_')}"
+              having_cond_str += "#{i} <= :#{cond_id}" #OR guest_email LIKE :find"
+              having_cond_hash.merge!({cond_id.to_sym => "#{v}"})
+            else
+              cond_str += " AND " unless cond_str.blank?
+              cond_id = "date_to_#{i.gsub(/\./, '_')}"
+              cond_str += "#{i} <= :#{cond_id}" #OR guest_email LIKE :find"
+              cond_hash.merge!({cond_id.to_sym => "#{v}"})
+            end
           end
         end
       end

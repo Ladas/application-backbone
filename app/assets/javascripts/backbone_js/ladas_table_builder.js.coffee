@@ -53,6 +53,8 @@ class TableBuilder
           # its just string
           text = ""
           text = row[col.table + '_' + col.name] if row[col.table + '_' + col.name]?
+          text = row[col.name] if row[col.name]? && text? && text.length <= 0
+
           sliced_text = text
           if (col.max_text_length)
             max = col.max_text_length - 3
@@ -64,6 +66,8 @@ class TableBuilder
           # its something else eg. number cant be sliced, or its probably aliens Kveigars
           text = ""
           text = row[col.table + '_' + col.name] if row[col.table + '_' + col.name]?
+          text = row[col.name] if row[col.name]? && text? && text.length <= 0
+          console.log[text]
 
           TableBuilder.html += '<span title="' + text + '">' + text + '</span>'
 

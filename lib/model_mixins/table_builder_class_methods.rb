@@ -133,8 +133,16 @@ module ModelMixins
       settings[:columns].each do |col|
         col[:table] = "unknown" if col[:table].blank?
         if col[:column_method].blank? && col[:row_method].blank? && !col[:name].blank?
-          select_string += ", " unless select_string.blank?
-          select_string += "#{col[:table]}.#{col[:name]} AS #{col[:table]}_#{col[:name]}"
+          if col[:sql_expression].blank?
+            # I am selection col[:name]
+            select_string += ", " unless select_string.blank?
+            select_string += "#{col[:table]}.#{col[:name]} AS #{col[:table]}_#{col[:name]}"
+          else
+            # Iam selecting col[:expression] and col[:name] is alias
+            # the expression can be sql expression
+            select_string += ", " unless select_string.blank?
+            select_string += "#{col[:sql_expression]} AS #{col[:name]}"
+          end
         end
 
         # for select more data in combination with filter_method (etc full_name of user))

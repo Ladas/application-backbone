@@ -31,7 +31,7 @@ class TableSettings
     ##
     # Defines select expression for column (ie. select count(id) as counter)
     #
-    def sql_expresssion(expression)
+    def sql_expression(expression)
       @column_hash[:sql_expression] = expression
       self
     end

@@ -96,10 +96,23 @@ module ModelMixins
             attrs = i.attributes
             another_global_formats.each do |another_global_format|
               # todo udelat moznost predani dalsich parametru
-              attrs.merge!({"#{another_global_format[:table]}_#{another_global_format[:name]}" => i.send(another_global_format[:global_format_method].to_sym, attrs["#{another_global_format[:table]}_#{another_global_format[:name]}"])})
+              case another_global_format[:table]
+                when "___sql_expression___"
+                  col_name = "#{another_global_format[:name]}"
+                else
+                  col_name = "#{another_global_format[:table]}_#{another_global_format[:name]}"
+              end
+              attrs.merge!({col_name => i.send(another_global_format[:global_format_method].to_sym, col_name)})
             end
             another_formats.each do |another_format|
-              attrs.merge!({"#{another_format[:table]}_#{another_format[:name]}" => i.send(another_format[:format_method].to_sym, attrs["#{another_format[:table]}_#{another_format[:name]}"])})
+              case another_format[:table]
+                when "___sql_expression___"
+                  col_name = "#{another_format[:name]}"
+                else
+                  col_name = "#{another_format[:table]}_#{another_format[:name]}"
+              end
+
+              attrs.merge!({col_name => i.send(another_format[:format_method].to_sym, col_name)})
             end
             column_methods.each do |column_method|
               another_column_row = "-"
@@ -220,7 +233,7 @@ module ModelMixins
         end
       end
 
-      # ToDO ladas add number filter
+
       # ToDo ladas add having condition to others
       if !params.blank? && params['multichoice']
         params['multichoice'].each_pair do |i, v|

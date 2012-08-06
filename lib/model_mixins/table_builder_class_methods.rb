@@ -102,7 +102,7 @@ module ModelMixins
                 else
                   col_name = "#{another_global_format[:table]}_#{another_global_format[:name]}"
               end
-              attrs.merge!({col_name => i.send(another_global_format[:global_format_method].to_sym, col_name)})
+              attrs.merge!({col_name => i.send(another_global_format[:global_format_method].to_sym, attrs[col_name])})
             end
             another_formats.each do |another_format|
               case another_format[:table]
@@ -112,7 +112,7 @@ module ModelMixins
                   col_name = "#{another_format[:table]}_#{another_format[:name]}"
               end
 
-              attrs.merge!({col_name => i.send(another_format[:format_method].to_sym, col_name)})
+              attrs.merge!({col_name => i.send(another_format[:format_method].to_sym, attrs[col_name])})
             end
             column_methods.each do |column_method|
               another_column_row = "-"

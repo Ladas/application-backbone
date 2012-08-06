@@ -21,7 +21,9 @@ module ModelMixins
         items = not_selected_items.selection(settings)
       end
 
+
       if settings[:template].blank?
+        # initialize another_global_formats,another_formats and column_methods
         another_global_formats = []
         another_formats = []
         column_methods = []
@@ -52,10 +54,12 @@ module ModelMixins
         end
 
 
+        # the array of items, Will be filled with column method values, formatting values
         all_items = items.all # maybe can be done more optimal
-                              # same as template_items below, loads objects so column method are better to use
-                              # todo think about, but I dont need object, because it's making the same query twice, I just need class and with one outer join it return filtered data, and i include includes to it
-                              #template_items = object.joins("RIGHT OUTER JOIN (" + not_selected_items.select(settings[:row][:id] + " AS row_id").to_sql + ") temp_template_query ON #{settings[:row][:id]} = temp_template_query.row_id")
+        # same as template_items below, loads objects so column method are better to use
+        # todo think about, but I dont need object, because it's making the same query twice, I just need class and with one outer join it return filtered data, and i include includes to it
+        #template_items = object.joins("RIGHT OUTER JOIN (" + not_selected_items.select(settings[:row][:id] + " AS row_id").to_sql + ") temp_template_query ON #{settings[:row][:id]} = temp_template_query.row_id")
+        # the AREL with items
         if object.respond_to?(:klass)
           template_items = object.klass.joins("RIGHT OUTER JOIN (" + items.uniq.to_sql + ") temp_template_query ON #{settings[:row][:id]} = temp_template_query.row_id")
         else
@@ -68,6 +72,7 @@ module ModelMixins
         # todo dat do knowledge base, kdyz chci aby fungoval include nesmim volat all
         #template_items.each {|t| t.meeting_registrations.each {|x| puts x.inspect}}
 
+        # calling column methods
         another_columns = {}
         unless column_methods.blank?
           column_method_settings = {:params => params}
@@ -88,8 +93,9 @@ module ModelMixins
           end
         end
 
-        if another_global_formats.blank? && another_formats.blank? && column_methods.blank?
-          items_array = items
+        # updating items by another_global_formats,another_formats, column_methods, summary_methods
+        if another_global_formats.blank? && another_formats.blank? && column_methods.blank? &&
+            items_array = items
         else
           items_array = []
           all_items.each do |i|
@@ -136,6 +142,35 @@ module ModelMixins
         template_items = template_items.includes(settings[:includes])
         settings.merge!({:data => template_items})
       end
+
+      # summary_methods 
+      unless settings[:summaries].blank?
+        summaries = settings[:summaries]
+        summaries.each do |summary|
+          summary_settings = {:params => params}
+          summary_settings[:summary_params] = summary[:summary_params]
+
+          if summary[:summary_class].blank?
+            if object.respond_to?(:klass)
+              val = object.klass.send(summary[:summary_method], logged_user, all_items, template_items, object, summary_settings)
+            else
+              val = object.send(summary[:summary_method], logged_user, all_items, template_items, object, summary_settings)
+            end
+          else
+            summary_class = summary[:summary_class].constantize if summary[:summary_class].kind_of?(String)
+            val = summary_class.send(summary[:summary_method], logged_user, all_items, template_items, object, summary_settings)
+          end
+          if val.kind_of?(Hash)
+            summary[:value] = val[:value]
+            summary[:class] = val[:class]            
+          else
+            summary[:value] = val
+          end
+        end
+
+      end
+
+
       settings.merge!({:data_paginate => items})
       settings.merge!({:params => params})
       settings

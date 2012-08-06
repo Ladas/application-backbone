@@ -18,7 +18,7 @@
         <% if settings[:template].blank? %>
         var initial_parsed_data = jQuery.parseJSON('<%= j settings.to_json.html_safe %>');
         var html_from_json = TableBuilder.render_tbody(initial_parsed_data);
-       
+        TableSummaries.refresh(initial_parsed_data);
 
         $("#<%= settings[:form_id] %>_ajax_content").html(html_from_json);
         apply_modifiers_of_the_table($("#<%= settings[:form_id] %>_ajax_content"));
@@ -41,6 +41,7 @@
                     <% if settings[:template].blank? %>
                     var parsed_settings = jQuery.parseJSON(parsed_response['settings'])
                     var html_from_json = TableBuilder.render_tbody(parsed_settings);
+                    TableSummaries.refresh(parsed_settings);
 
                     
                     $("#<%= settings[:form_id] %>_ajax_content").html(html_from_json);

@@ -107,6 +107,11 @@ class TableSettings
 
       self
     end
+
+    def table(name)
+      @column_hash[:table] = name
+      self
+    end
   end
 
 end

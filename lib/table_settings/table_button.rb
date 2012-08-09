@@ -24,7 +24,7 @@ class TableSettings
     end
 
     def add_button(row_id, label, url_path = nil)
-      row = add_row(row_id) if @rows[row_id].nil?
+      row = @rows[row_id].nil? ? add_row(row_id) : @rows[row_id]
 
       button = row.add_button(label, url_path)
 

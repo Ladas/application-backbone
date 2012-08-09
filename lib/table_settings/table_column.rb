@@ -28,6 +28,14 @@ class TableSettings
       self
     end
 
+    ##
+    # Defines select expression for column (ie. select count(id) as counter)
+    #
+    def sql_expression(expression)
+      @column_hash[:sql_expression] = expression
+      self
+    end
+
     def filter_data(array)
       @column_hash[:filter_data] = array
 

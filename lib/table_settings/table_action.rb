@@ -42,6 +42,7 @@ class TableSettings
       self
     end
 
+    # @param [Symbol|String] - :get|:put|:post|:delete
     def http_method(name)
       @action_hash[:method] = name
       self
@@ -52,7 +53,25 @@ class TableSettings
       self
     end
 
+    def css_class_type(type)
+      css=case type
+            when :show then "btn btn-success"
+            when :edit then "btn btn-warning"
+            when :delete then "btn btn-danger"
+            when :destroy then "btn btn-danger"
+            else "btn"
+          end
+      @action_hash[:class] = css
+      self
+    end
 
+    ##
+    # Position of button
+    # @param [Symbol] pos - :left | :right
+    def position(pos)
+      @action_hash[:position] = pos
+      self
+    end
 
   end
 end

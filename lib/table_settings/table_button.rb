@@ -126,6 +126,7 @@ class TableSettings
             when :edit then "btn btn-warning"
             when :delete then "btn btn-danger"
             when :destroy then "btn btn-danger"
+            when :log then "btn btn-inverse"
             else "btn"
           end
       @hash[:class] = css

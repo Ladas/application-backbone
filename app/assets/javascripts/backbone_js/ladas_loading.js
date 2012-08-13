@@ -241,6 +241,9 @@ function parse_link_and_load_page(element) {
     if (typeof(element.data("content_id")) != 'undefined') {
         settings['content_id'] = element.data("content_id");
     }
+    if (typeof(element.data("no_tracking")) != 'undefined') {
+        settings['no_tracking'] = element.data("no_tracking");
+    }
     load_page(settings);
 }
 
@@ -253,7 +256,9 @@ function parse_link_and_post(element) {
     if (typeof(element.data("content_id")) != 'undefined') {
         settings['content_id'] = element.data("content_id");
     }
-
+    if (typeof(element.data("no_tracking")) != 'undefined') {
+        settings['no_tracking'] = element.data("no_tracking");
+    }
     load_page(settings);
 }
 

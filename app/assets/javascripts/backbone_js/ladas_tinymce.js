@@ -64,6 +64,9 @@ function tinymce_datafile_url(settings, type) {
     if (typeof(settings) != "undefined") {
         if (settings['resource_type'] && settings['resource_id']) {
             var datafile_url = "/datafiles?datafile[owner_type]=" + settings['resource_type'] + "&datafile[owner_id]=" + settings['resource_id'] + "&type=" + type;
+            if (typeof(settings['sub_type']) != "undefined") {
+                datafile_url = datafile_url + "&datafile[sub_type]="+settings['sub_type']
+            }
         }
         else {
             var datafile_url = "";

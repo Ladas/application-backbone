@@ -107,6 +107,12 @@ class TableSettings
 
     def method(symbol)
       @hash[:method] = symbol
+      self
+    end
+
+    def confirm(string)
+      @hash[:confirm] = string
+      self
     end
 
     def css_class(name)
@@ -118,7 +124,9 @@ class TableSettings
       css=case type
             when :show then "btn btn-success"
             when :edit then "btn btn-warning"
+            when :delete then "btn btn-danger"
             when :destroy then "btn btn-danger"
+            when :log then "btn btn-inverse"
             else "btn"
           end
       @hash[:class] = css

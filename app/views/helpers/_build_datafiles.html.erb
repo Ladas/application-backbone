@@ -1,5 +1,7 @@
-<% form_id = "fileupload_#{object.id}" %>
-<% index_url = url_for(:controller => "/datafiles", "datafile[owner_type]" => "#{object.class.name.to_s}", "datafile[owner_id]" => "#{object.id.to_s}") %>
+<% id = "fileupload_#{object.id}"
+   id += sub_type.to_s unless sub_type.blank?
+   form_id = id %>
+<% index_url = url_for(:controller => "/datafiles", "datafile[owner_type]" => "#{object.class.name.to_s}", "datafile[owner_id]" => "#{object.id.to_s}", "datafile[sub_type]" => sub_type) %>
 <%
    #if is_tree_node?(object)
    #  tree_node = object
@@ -77,6 +79,7 @@
 
                       <%= text_field_tag "datafile[owner_type]", "#{object.class.name.to_s}" %>
                       <%= text_field_tag "datafile[owner_id]", "#{object.id.to_s}" %>
+                      <%= hidden_field_tag "datafile[sub_type]", sub_type unless sub_type.nil? %>
                       <%= f.file_field :file, :multiple => true %>
                       <%#= f.file_field :file%>
                     </span>

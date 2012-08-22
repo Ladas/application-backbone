@@ -67,7 +67,6 @@ function tinymce_datafile_url(settings, type) {
             if (typeof(settings['sub_type']) != "undefined") {
                 datafile_url = datafile_url + "&datafile[sub_type]="+settings['sub_type']
             }
-            console.log(datafile_url)
         }
         else {
             var datafile_url = "";

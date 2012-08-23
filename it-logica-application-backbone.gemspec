@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "it-logica-application-backbone"
-  s.version = "1.0.12"
+  s.version = "1.0.13"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ladas"]
-  s.date = "2012-08-22"
+  s.date = "2012-08-23"
   s.description = "longer description of your gem"
   s.email = "ladislav.smola@it-logica.cz"
   s.extra_rdoc_files = [
@@ -130,6 +130,7 @@ Gem::Specification.new do |s|
     "app/assets/javascripts/backbone_js/jquery.iframe-transport.js",
     "app/assets/javascripts/backbone_js/jquery.jstree.js",
     "app/assets/javascripts/backbone_js/jquery.multiselect.min.js",
+    "app/assets/javascripts/backbone_js/jquery.multiselect.zfilter.js",
     "app/assets/javascripts/backbone_js/jquery.ui.datepicker-cs.js",
     "app/assets/javascripts/backbone_js/jquery.ui.widget.js",
     "app/assets/javascripts/backbone_js/ladas_alert.js.coffee",

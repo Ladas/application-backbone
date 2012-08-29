@@ -106,6 +106,10 @@ class TableBuilder
       else
         TableBuilder.html +=  ' onclick="load_page(' + stringified_settings + ',this); return false;"'
 
+    else if settings.js_code?
+      # a javascrip code can be passed, it will be put as onclick javascript of the button
+      TableBuilder.html +=  ' onclick="'+ settings.js_code +'"'
+
     TableBuilder.html += '>' + sliced_text
 
     if it_is_link

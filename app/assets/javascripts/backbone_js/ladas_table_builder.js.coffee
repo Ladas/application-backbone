@@ -108,7 +108,8 @@ class TableBuilder
 
     else if settings.js_code?
       # a javascrip code can be passed, it will be put as onclick javascript of the button
-      TableBuilder.html +=  ' onclick="'+ settings.js_code +'"'
+      TableBuilder.html +=  ' onclick="'+ settings.js_code
+      TableBuilder.html += '"'
 
     TableBuilder.html += '>' + sliced_text
 

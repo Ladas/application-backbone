@@ -33,6 +33,20 @@ class TableSettings
       button
     end
 
+    # Add summary value to page
+    def summarize_page_value(value)
+      @buttons_hash[:summarize_page_value] = value
+
+      self
+    end
+
+    # Add summary value to whole column
+    def summarize_page_all_value(value)
+      @buttons_hash[:summarize_page_all] = value
+
+      self
+    end
+
   end
 
   class Row

@@ -6,8 +6,13 @@ module ModelMixins
 
       params[:order_by] = settings[:default][:order] if params[:order_by].blank? && !settings[:default][:order].blank?
 
+      # todo pokud budu predavat per page, mel bz byt i parametr s povolenymi hodnotami per page
+      params[:per_page] = params["per_page"] unless params["per_page"].blank?
 
-      params[:per_page] = per_page
+      params[:per_page] = settings[:default][:per_page] if params[:per_page].blank? && !settings[:default][:per_page].blank?
+      params[:per_page] = per_page if params[:per_page].blank?
+      per_page = params[:per_page]
+
 
       # method below can change this if there were some virtual non exixtent columns
       params[:real_order_by] = params[:order_by]
@@ -21,6 +26,8 @@ module ModelMixins
         items = not_selected_items.selection(settings)
       end
 
+      # the array of items, Will be filled with column method values, formatting values, etc.
+      all_items = items.all # maybe can be done more optimal
 
       if settings[:template].blank?
         # initialize another_global_formats,another_formats and column_methods
@@ -28,6 +35,18 @@ module ModelMixins
         another_formats = []
         column_methods = []
         settings[:columns].each do |col|
+          if !col[:summarize_page].blank? && col[:summarize_page]
+            # mysql SUM of the collumn on the page
+            # passing all_items.total_entries because I don't want it to count again
+            col[:summarize_page_value] = sumarize(object, col, object.filter(object, settings, params, per_page, all_items.total_entries).selection(settings))
+          end
+
+          if !col[:summarize_all].blank? && col[:summarize_all]
+            # mysql SUM of the collumn off all data
+            col[:summarize_all_value] = sumarize(object, col, object.filter(object, settings, params, false).selection(settings))
+          end
+
+
           unless col[:global_format_method].blank?
             # ToDo dodelat moznost predani parametru do formatovaci metody
             col[:name] = col[:name].blank? ? "non_existing_column___" + col[:global_format_method] : col[:name]
@@ -54,8 +73,6 @@ module ModelMixins
         end
 
 
-        # the array of items, Will be filled with column method values, formatting values
-        all_items = items.all # maybe can be done more optimal
         # same as template_items below, loads objects so column method are better to use
         # todo think about, but I dont need object, because it's making the same query twice, I just need class and with one outer join it return filtered data, and i include includes to it
         #template_items = object.joins("RIGHT OUTER JOIN (" + not_selected_items.select(settings[:row][:id] + " AS row_id").to_sql + ") temp_template_query ON #{settings[:row][:id]} = temp_template_query.row_id")
@@ -162,7 +179,7 @@ module ModelMixins
           end
           if val.kind_of?(Hash)
             summary[:value] = val[:value]
-            summary[:class] = val[:class]            
+            summary[:class] = val[:class]
           else
             summary[:value] = val
           end
@@ -174,6 +191,25 @@ module ModelMixins
       settings.merge!({:data_paginate => items})
       settings.merge!({:params => params})
       settings
+    end
+
+    def sumarize(object, col, items)
+      #method for sumarizing values in column
+
+      if col[:sql_expression].blank?
+        col_name = "#{col[:table]}_#{col[:name]}"
+      else
+        col_name = col[:name]
+      end
+
+      if object.respond_to?(:klass)
+        mysql_count = object.klass.find_by_sql("SELECT SUM(#{col_name}) AS sum_column FROM (" + items.to_sql + ") count")
+      else
+        mysql_count = object.find_by_sql("SELECT SUM(#{col_name}) AS sum_column FROM (" + items.to_sql + ") count")
+      end
+
+      #count = items.sum(col[:name])
+      count = mysql_count.first[:sum_column]
     end
 
     def selection(settings)
@@ -217,7 +253,7 @@ module ModelMixins
       select(select_string)
     end
 
-    def filter(object, settings, params, per_page = 10)
+    def filter(object, settings, params, per_page = 10, total_count = nil)
       order_by = params[:real_order_by]
 
       cond_str = ""
@@ -348,20 +384,28 @@ module ModelMixins
       settings[:columns].each do |col|
         col[:table_primary_key] = "id" if col[:table_primary_key].blank?
         if !col[:join_on].blank?
-          col[:select] += ", #{col[:table_primary_key]}" # adding primary key so it can be used in on condition
-          ret= ret.joins("LEFT OUTER JOIN (SELECT #{col[:select]} FROM #{col[:table]}) #{col[:select_as]} ON #{col[:select_as]}.#{col[:table_primary_key]}=#{col[:join_on]}")
+          join_on_select = col[:select] + ", #{col[:table_primary_key]}" # adding primary key so it can be used in on condition
+          ret= ret.joins("LEFT OUTER JOIN (SELECT #{join_on_select} FROM #{col[:table]}) #{col[:select_as]} ON #{col[:select_as]}.#{col[:table_primary_key]}=#{col[:join_on]}")
         end
       end
 
+      if per_page && per_page > 0
+        # only when i need pagination
+        if total_count.blank?
+          # if I call this more times, I can pass the total count and not count it multiple times
 
-      # fuck will paginate, if there are agregated queries that I use for condition, will_paginage will delete it
-      # i am counting rows on my own
-      if object.respond_to?(:klass)
-        mysql_count = object.klass.find_by_sql("SELECT COUNT(*) AS count_all FROM (" + ret.selection(settings).to_sql + ") count")
-      else
-        mysql_count = object.find_by_sql("SELECT COUNT(*) AS count_all FROM (" + ret.selection(settings).to_sql + ") count")
+          # fuck will paginate, if there are agregated queries that I use for condition, will_paginage will delete it
+          # i am counting rows on my own (as sugested in will paginete gem, when the query got more complex)
+          if object.respond_to?(:klass)
+            mysql_count = object.klass.find_by_sql("SELECT COUNT(*) AS count_all FROM (" + ret.selection(settings).to_sql + ") count")
+          else
+            mysql_count = object.find_by_sql("SELECT COUNT(*) AS count_all FROM (" + ret.selection(settings).to_sql + ") count")
+          end
+          ret = ret.paginate(:page => params[:page], :per_page => per_page, :total_entries => mysql_count.first[:count_all])
+        else
+          ret = ret.paginate(:page => params[:page], :per_page => per_page, :total_entries => total_count)
+        end
       end
-      ret = ret.paginate(:page => params[:page], :per_page => per_page, :total_entries => mysql_count.first[:count_all])
 
       ret
     end

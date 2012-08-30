@@ -1,5 +1,5 @@
 class TableBuilder
-  @render_tbody:(obj) ->
+  @render_tbody: (obj) ->
     TableBuilder.obj = obj
 
     TableBuilder.html = ""
@@ -13,14 +13,65 @@ class TableBuilder
       do (row) ->
         TableBuilder.html += '<tr>'
 
+        # todo make possible to insertt function on the first or last column
+        TableBuilder.add_row_checkboxes(row)
         TableBuilder.add_row_functions(row)
         TableBuilder.add_row_columns(row)
 
         TableBuilder.html += '</tr>'
-  @make_row: ->
+
+    TableBuilder.add_summary_row()
+
+  @add_summary_row: ->
+    functions_present = TableBuilder.obj.row? && TableBuilder.obj.row.functions?
+
+    # code for sumarizes of the page (paginated)
+    TableBuilder.html += '<tr class="summarize_page">'
+    # todo make sure functions collumn got skipped when placement is different, eg. on the end
+    TableBuilder.html += '<td class="summarize"></td>' if functions_present
+    TableBuilder.html += '<td class="summarize"></td>' if TableBuilder.obj.checkboxes?
+    for col in TableBuilder.obj.columns
+      do (col) ->
+        TableBuilder.html += '<td class="summarize">'
+        if col.summarize_page? || col.summarize_page_value?
+          TableBuilder.html += '<div class="summarize_page">'
+          TableBuilder.html += if col.summarize_page_label? then col.summarize_page_label else '<span class="label">Celkem na stránce: </span>'
+          TableBuilder.html += if col.summarize_page_value? then col.summarize_page_value else 0
+          TableBuilder.html += '</div>'
+
+        TableBuilder.html += '</td>'
+    TableBuilder.html += '</tr>'
+
+    # code for sumarizes of the all filtered data (paginated is not used)
+    TableBuilder.html += '<tr class="summarize_all">'
+    TableBuilder.html += '<td class="summarize"></td>' if functions_present
+    TableBuilder.html += '<td class="summarize"></td>' if TableBuilder.obj.checkboxes?
+    for col in TableBuilder.obj.columns
+      do (col) ->
+        TableBuilder.html += '<td class="summarize">'
+        if col.summarize_all? || col.summarize_all_value?
+          TableBuilder.html += '<div class="summarize_all">'
+          TableBuilder.html += if col.summarize_all_label? then col.summarize_all_label else '<span class="label">Celkem: </span>'
+          TableBuilder.html += if col.summarize_all_value? then col.summarize_all_value else 0
+          TableBuilder.html += '</div>'
+        TableBuilder.html += '</td>'
+    TableBuilder.html += '</tr>'
+
+  @add_row_checkboxes: (row) ->
+    if TableBuilder.obj.checkboxes?
+      TableBuilder.html += '<td class="checkbox_collumn">'
+      TableBuilder.html += '<input type="checkbox" class="row_checkboxes" name="checkboxes[' + row.row_id + ']"'
+      TableBuilder.html += ' onclick="CheckboxPool.change($(this))"'
+      #console.log CheckboxPool.get_pool_by_form_id(TableBuilder.obj.form_id, row.row_id)
+      #console.log CheckboxPool.include_value(TableBuilder.obj.form_id, row.row_id)
+      TableBuilder.html += ' checked="checked"' if CheckboxPool.include_value(TableBuilder.obj.form_id, row.row_id)
+      TableBuilder.html += ' value="' + row.row_id + '">'
 
 
-  @add_row_functions:(row) ->
+      TableBuilder.html += '</td>'
+
+
+  @add_row_functions: (row) ->
     if TableBuilder.obj.row? && TableBuilder.obj.row.functions?
       TableBuilder.html += '<td>'
 
@@ -30,7 +81,7 @@ class TableBuilder
 
       TableBuilder.html += '</td>'
 
-  @add_row_columns:(row) ->
+  @add_row_columns: (row) ->
     for col in TableBuilder.obj.columns
       do (col) ->
         TableBuilder.html += '<td class="' + col.class + '">'
@@ -67,15 +118,14 @@ class TableBuilder
           text = ""
           text = row[col.table + '_' + col.name] if row[col.table + '_' + col.name]?
           text = row[col.name] if row[col.name]? && text? && text.length <= 0
-          console.log[text]
+          # console.log[text]
 
           TableBuilder.html += '<span title="' + text + '">' + text + '</span>'
 
         TableBuilder.html += '</td>'
 
 
-  @make_href_button:(settings, row, col) ->
-
+  @make_href_button: (settings, row, col) ->
     sliced_text = settings['name']
     if col?
       if (col.max_text_length)
@@ -89,7 +139,8 @@ class TableBuilder
     if it_is_link
       stringified_settings = JSON.stringify(settings)
 
-      stringified_settings = stringified_settings.replace(/"/g,'&quot;') # this is crutial unless the double quotes will fuck up html
+      stringified_settings = stringified_settings.replace(/"/g, '&quot;')
+      # this is crutial unless the double quotes will fuck up html
       non_ajax_url = build_get_url(settings)
       TableBuilder.html += '<a href="' + non_ajax_url + '"'
     else
@@ -104,28 +155,29 @@ class TableBuilder
       if (settings.confirm)
         TableBuilder.html += ' onclick="if (confirm(\'' + settings.confirm + '\')){ load_page(' + stringified_settings + ',this); }; return false;"'
       else
-        TableBuilder.html +=  ' onclick="load_page(' + stringified_settings + ',this); return false;"'
+        TableBuilder.html += ' onclick="load_page(' + stringified_settings + ',this); return false;"'
 
     else if settings.js_code?
       # a javascrip code can be passed, it will be put as onclick javascript of the button
-      TableBuilder.html +=  ' onclick="'+ settings.js_code
+      TableBuilder.html += ' onclick="' + settings.js_code
       TableBuilder.html += '"'
 
     TableBuilder.html += '>' + sliced_text
 
     if it_is_link
-      TableBuilder.html +='</a>'
+      TableBuilder.html += '</a>'
     else
       TableBuilder.html += '</span>'
 
 
 
 
-  @make_row_function_button:(button_settings, row, col) ->
-    button_settings.symlink_id = row.row_id if row?  # only for generic row functions, they are defined without the id
+  @make_row_function_button: (button_settings, row, col) ->
+    button_settings.symlink_id = row.row_id if row?
+    # only for generic row functions, they are defined without the id
     TableBuilder.make_href_button(button_settings, row, col)
 
-  @make_column_from_hash:(button_settings, row, col) ->
+  @make_column_from_hash: (button_settings, row, col) ->
     button_settings['origin'] = 'table'
     TableBuilder.make_href_button(button_settings, row, col)
 

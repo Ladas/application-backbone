@@ -6,6 +6,23 @@
     </th>
   </tr>
   <tr>
+    <% if !settings[:checkboxes].blank? && settings[:checkboxes] %>
+        <th>
+
+          <div class="checkboxes_filtered">
+            Filtrováno položek:
+            <span id="<%= settings[:form_id]+ "_active_checkboxes_count" %>"><%= !settings[:params]["checkbox_pool"].blank? ? settings[:params]["checkbox_pool"].split(",").count - 1 : 0 %></span>
+            <a onclick="CheckboxPool.clear_by_form_id('<%= settings[:form_id] %>')" class="btn uncheck">Odznačit vše</a>
+          </div>
+
+          <div class="checkboxes_menu">
+            <a onclick="CheckboxPool.uncheck_page('<%= settings[:form_id] %>')" class="btn">Odznačit vše</a>
+            <a onclick="CheckboxPool.check_page('<%= settings[:form_id] %>')" class="btn">Označit vše</a>
+          </div>
+
+
+        </th>
+    <% end %>
     <% if !settings[:row].blank? && !settings[:row][:functions].blank? %>
         <th></th>
     <% end %>
@@ -49,13 +66,13 @@
                               <% saved_param = (!settings[:params].blank? && !settings[:params]['date_from'].blank? && !settings[:params]['date_from']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['date_from']["#{col[:table]}.#{col[:name]}"] : "" %>
 
                   <%= text_field_tag "number_from[#{col[:table]}.#{col[:name]}]", saved_param, {:class => "input-small input-mini #{settings[:form_id] + '_column_find'}",
-                                                                                              :onchange => "form_submit_watcher('#{settings[:form_id]}')",
-                                                                                              :title => "Vetší nebo rovno"} %>
+                                                                                                :onchange => "form_submit_watcher('#{settings[:form_id]}')",
+                                                                                                :title => "Vetší nebo rovno"} %>
                   <% saved_param = (!settings[:params].blank? && !settings[:params]['date_to'].blank? && !settings[:params]['date_to']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['date_to']["#{col[:table]}.#{col[:name]}"] : "" %>
                   <%#= label_tag "date_to[#{col[:table]}.#{col[:name]}]", "Do", :class => "datetime_class_label" %>
                   <%= text_field_tag "number_to[#{col[:table]}.#{col[:name]}]", saved_param, {:class => "input-small input-mini #{settings[:form_id] + '_column_find'}",
-                                                                                            :onchange => "form_submit_watcher('#{settings[:form_id]}')",
-                                                                                            :title => "Menší nebo rovno"} %>
+                                                                                              :onchange => "form_submit_watcher('#{settings[:form_id]}')",
+                                                                                              :title => "Menší nebo rovno"} %>
                   <span></span>
               <% when :date %>
                   <% saved_param = (!settings[:params].blank? && !settings[:params]['date_from'].blank? && !settings[:params]['date_from']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['date_from']["#{col[:table]}.#{col[:name]}"] : "" %>
@@ -124,7 +141,7 @@
         checkAllText:"Označit vše",
         uncheckAllText:"Zrušit vše",
         minWidth:100
-    }, function () {
+    },function () {
         form_submit_watcher('<%=settings[:form_id] %>');
     }).multiselectfilter();
     //$('#filled_value_' + fid + '_' + rid).multiselect("open");

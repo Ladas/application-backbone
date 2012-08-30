@@ -13,6 +13,8 @@
 
 //= require ./tinymce/jscripts/tiny_mce/jquery.tinymce.js
 
+//= require ./ladas_table_checkbox_pool.js.coffee
+
 //= require_directory .
 
 

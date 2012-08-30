@@ -11,7 +11,7 @@
 
           <div class="checkboxes_filtered">
             Filtrováno položek:
-            <span id="<%= settings[:form_id]+ "_active_checkboxes_count" %>"><%= !settings[:params]["checkbox_pool"].blank? ? settings[:params]["checkbox_pool"].split(",").count - 1 : 0 %></span>
+            <span id="<%= settings[:form_id]+ "_active_checkboxes_count" %>"><%= !settings[:params]["checkbox_pool"].blank? ? settings[:params]["checkbox_pool"].split(",").count : 0 %></span>
             <a onclick="CheckboxPool.clear_by_form_id('<%= settings[:form_id] %>')" class="btn uncheck">Odznačit vše</a>
           </div>
 

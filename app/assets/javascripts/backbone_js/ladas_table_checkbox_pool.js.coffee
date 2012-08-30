@@ -12,8 +12,7 @@ class CheckboxPool
   @update_pool: (obj, pool_string) ->
     form = $(obj).parents("form")
     form_id = form.attr("id")
-    console.log(pool_string)
-    console.log($('#' + form_id + '_checkbox_pool'))
+
     $('#' + form_id + '_checkbox_pool').val(pool_string)
     CheckboxPool.update_number_of_checked(form_id)
 
@@ -28,7 +27,6 @@ class CheckboxPool
 
   @check_page: (form_id) ->
     $('#' + form_id + " .row_checkboxes").each (index, element) =>
-      console.log(element)
       $(element).attr("checked", true)
       CheckboxPool.change(element)
 
@@ -46,10 +44,13 @@ class CheckboxPool
 
     val = $(obj).val()
     pool = CheckboxPool.get_pool(obj)
-    pool.push(val)
+    if pool.length <= 0
+      pool = Array(val)
+    else
+      pool.push(val)
 
     new_pool_string = pool.join(",")
-    console.log(new_pool_string)
+
     CheckboxPool.update_pool(obj, new_pool_string)
 
   @remove: (obj) ->
@@ -58,7 +59,11 @@ class CheckboxPool
     pool = CheckboxPool.get_pool(obj)
     pool.splice(CheckboxPool.position(obj), 1)
 
-    new_pool_string = pool.join(",")
+    if pool.length <= 0
+      new_pool_string = ""
+    else
+      new_pool_string = pool.join(",")
+
     CheckboxPool.update_pool(obj, new_pool_string)
 
 
@@ -73,17 +78,20 @@ class CheckboxPool
   @get_pool: (obj) ->
     form = $(obj).parents("form")
     form_id = form.attr("id")
-    pool_string = $('#' + form_id + '_checkbox_pool').val()
 
-    pool = pool_string.split(",")
-    return pool
+    return CheckboxPool.get_pool_by_form_id(form_id)
 
   @get_pool_by_form_id: (form_id) ->
     pool_string = $('#' + form_id + '_checkbox_pool').val()
+    if pool_string.length <= 0
+      pool = Array()
+    else
+      pool = pool_string.split(",")
 
-    pool = pool_string.split(",")
+    return pool
+
   @update_number_of_checked: (form_id) ->
-    $('#' + form_id + '_active_checkboxes_count').html(CheckboxPool.get_pool_by_form_id(form_id).length - 1)
+    $('#' + form_id + '_active_checkboxes_count').html(CheckboxPool.get_pool_by_form_id(form_id).length)
 
 window.CheckboxPool = CheckboxPool
 

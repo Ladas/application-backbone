@@ -157,6 +157,10 @@ class TableSettings
     self
   end
 
+  def per_page(number = 10)
+    @settings[:default][:per_page] = number
+  end
+
   def filter_path(path)
     @settings[:filter_path] = path
 

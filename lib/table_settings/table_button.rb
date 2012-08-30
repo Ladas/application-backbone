@@ -120,6 +120,16 @@ class TableSettings
       self
     end
 
+    # javascript method for button
+    def js_method(string)
+      @hash[:js_method] = string
+    end
+
+    # javascript code for button onclick
+    def js_code(string)
+      @hash[:js_code] = string
+    end
+
     def css_class_type(type)
       css=case type
             when :show then "btn btn-success"

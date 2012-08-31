@@ -6,8 +6,13 @@ module ModelMixins
 
       params[:order_by] = settings[:default][:order] if params[:order_by].blank? && !settings[:default][:order].blank?
 
-      # todo pokud budu predavat per page, mel bz byt i parametr s povolenymi hodnotami per page
-      params[:per_page] = params["per_page"] unless params["per_page"].blank?
+      # there are allowed per_pages in the settings[:per_page]
+      unless settings[:per_page].blank?
+        unless params["per_page_chosen"].blank?
+          params[:per_page] = settings[:per_page].include?(params["per_page_chosen"].to_i) ? params["per_page_chosen"].to_i : settings[:per_page].first
+        end
+      end
+
 
       params[:per_page] = settings[:default][:per_page] if params[:per_page].blank? && !settings[:default][:per_page].blank?
       params[:per_page] = per_page if params[:per_page].blank?

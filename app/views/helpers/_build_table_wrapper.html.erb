@@ -1,3 +1,8 @@
+<% unless settings[:per_page].blank? %>
+    <span class="select_for_per_page" style="float: right">Zobrazit na stránku: <%= select_tag("per_page_chosen", options_for_select(settings[:per_page], settings[:params]['per_page'].to_i),
+                                                                   :onchange => "form_submit_watcher('#{settings[:form_id]}')",
+                                                                   :class => "") %></span>
+<% end %>
 <table class="table table-bordered table-condensed table_special">
   <thead>
   <tr>

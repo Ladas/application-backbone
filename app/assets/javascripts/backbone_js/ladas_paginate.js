@@ -64,6 +64,15 @@ function formatLinkForPagination(container_class) {
     })
 }
 
+function paginate_by_enter(form_id, obj, e) {
+    if ((e.keyCode ? e.keyCode : e.which) == 13) {
+        $("#" + form_id + "_page").val($(obj).val());
+        $("#" + form_id).submit();
+        return false;
+    }
+}
+
+
 //function filter_sort(form_id, order_by_value) {
 //    var default_direction = 'DESC';
 //    var order_by_id = '#' + form_id + '_order_by';

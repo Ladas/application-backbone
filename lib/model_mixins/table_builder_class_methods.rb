@@ -13,8 +13,13 @@ module ModelMixins
         end
       end
 
+      if params[:per_page].blank?
+        #default per page from Class variable set in initializer
+        params[:per_page] = ModelMixins::TableBuilderClassMethods::PER_PAGE if defined?(ModelMixins::TableBuilderClassMethods::PER_PAGE)
 
-      params[:per_page] = settings[:default][:per_page] if params[:per_page].blank? && !settings[:default][:per_page].blank?
+        #or with higher priority from table definition
+        params[:per_page] = settings[:default][:per_page] if params[:per_page].blank? && !settings[:default][:per_page].blank?
+      end
       params[:per_page] = per_page if params[:per_page].blank?
       per_page = params[:per_page]
 

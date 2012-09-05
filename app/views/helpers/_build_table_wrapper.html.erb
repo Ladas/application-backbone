@@ -1,29 +1,32 @@
-<% unless settings[:per_page].blank? %>
-    <span class="select_for_per_page" style="float: right">Zobrazit na stránku: <%= select_tag("per_page_chosen", options_for_select(settings[:per_page], settings[:params]['per_page'].to_i),
-                                                                   :onchange => "form_submit_watcher('#{settings[:form_id]}')",
-                                                                   :class => "") %></span>
-<% end %>
 <table class="table table-bordered table-condensed table_special">
   <thead>
-  <tr>
-    <th colspan="100" class="<%= settings[:form_id] + '_ajax_pager' %>">
-      <%= render :partial => 'helpers/build_table_pager', :locals => {:settings => settings} %>
-    </th>
-  </tr>
+  <!--<tr>-->
+  <!--<th colspan="100" class="<%= settings[:form_id] + '_ajax_pager' %>">-->
+  <!--<%#= render :partial => 'helpers/build_table_pager', :locals => {:settings => settings} %>-->
+  <!--</th>-->
+  <!--</tr>-->
   <tr>
     <% if !settings[:checkboxes].blank? && settings[:checkboxes] %>
-        <th>
+        <th class="chbox">
 
-          <div class="checkboxes_filtered">
-            Filtrováno položek:
-            <span id="<%= settings[:form_id]+ "_active_checkboxes_count" %>"><%= !settings[:params]["checkbox_pool"].blank? ? settings[:params]["checkbox_pool"].split(",").count : 0 %></span>
-            <a onclick="CheckboxPool.clear_by_form_id('<%= settings[:form_id] %>')" class="btn uncheck">Odznačit vše</a>
-          </div>
+          <!--<div class="checkboxes_filtered">-->
+          <!--Filtrováno položek:-->
+          <!--<span id="<%#= settings[:form_id]+ "_active_checkboxes_count" %>">-->
+          <!--<%#= !settings[:params]["checkbox_pool"].blank? ? settings[:params]["checkbox_pool"].split(",").count : 0 %>-->
+          <!--</span>-->
+          <!--<a onclick="CheckboxPool.clear_by_form_id('<%#= settings[:form_id] %>')" class="btn uncheck">Odznačit vše</a>-->
+          <!--</div>-->
 
-          <div class="checkboxes_menu">
-            <a onclick="CheckboxPool.uncheck_page('<%= settings[:form_id] %>')" class="btn">Odznačit vše</a>
-            <a onclick="CheckboxPool.check_page('<%= settings[:form_id] %>')" class="btn">Označit vše</a>
-          </div>
+          <span title="Počet označených řádků na všech stránkách" id="<%= settings[:form_id]+ "_active_checkboxes_count" %>">
+                                  <%= !settings[:params]["checkbox_pool"].blank? ? settings[:params]["checkbox_pool"].split(",").count : 0 %>
+                                </span>
+          <br/>
+          <input type="checkbox" title="Označit/odznačit vše na stránce" onclick="CheckboxPool.check_or_uncheck_page(this, '<%= settings[:form_id] %>')" id=""/>
+
+          <!--<div class="checkboxes_menu">-->
+          <!--<a onclick="CheckboxPool.uncheck_page('<%#= settings[:form_id] %>')" class="btn">Odznačit vše</a>-->
+          <!--<a onclick="CheckboxPool.check_page('<%#= settings[:form_id] %>')" class="btn">Označit vše</a>-->
+          <!--</div>-->
 
 
         </th>
@@ -37,66 +40,85 @@
         <% order_desc_id = (col[:table].blank? || col[:name].blank?) ? "" : (col[:table] + "___" + col[:name] + "___desc") %>
         <th class="<%= col[:class] %>">
           <div class="th_label">
-            <span><%= col[:label].html_safe %></span>
+            <strong>
+              <span><%= col[:label].html_safe %></span>
+            </strong>
           </div>
 
-          <div class="th_filter">
-            <span class="sortButtons az">
+          <div class="sortable clearfix">
             <% if col[:column_method].blank? && col[:row_method].blank? && !col[:name].blank? %>
+                <a href="#"
+                   onclick="TableSorting.change_sorting('<%= settings[:form_id] %>','<%= col[:table] + "." +col[:name] %>', 'asc', this); return false;"
+                   ondblclick="TableSorting.force_change_sorting('<%= settings[:form_id] %>','<%= col[:table] + "." +col[:name] %>', 'asc', this); return false;"
+                   title="Seřadit od nejnižší hodnoty"
+                   class="btn first sort_button <%= (order_by_arr.include?(col[:table] + "." + col[:name] + " asc")) ? "btn-success" : "" %>"
+                   id="<%= order_asc_id %>">
+                  <i class="icon-arrow-up"></i>
+                </a>
 
-          <span onclick="TableSorting.change_sorting('<%= settings[:form_id] %>','<%= col[:table] + "." +col[:name] %>', 'asc', this); return false;"
-                ondblclick="TableSorting.force_change_sorting('<%= settings[:form_id] %>','<%= col[:table] + "." +col[:name] %>', 'asc', this); return false;"
-                title="Seřadit vzestupně"
-                class="icon-arrow-up sort_button sort-up <%= (order_by_arr.include?(col[:table] + "." + col[:name] + " asc")) ? "active" : "inactive" %>"
-                id="<%= order_asc_id %>">
-            <span class="oos"></span></span>
-           <span onclick="TableSorting.change_sorting('<%= settings[:form_id] %>','<%= col[:table] + "." +col[:name] %>', 'desc', this); return false;"
-                 ondblclick="TableSorting.force_change_sorting('<%= settings[:form_id] %>','<%= col[:table] + "." +col[:name] %>', 'desc', this); return false;"
-                 title="Seřadit sestupně"
-                 class="icon-arrow-down sort_button sort-down <%= (order_by_arr.include?(col[:table] + "." + col[:name] + " desc")) ? "active" : "inactive" %>"
-                 id="<%= order_desc_id %>">
-            <span class="oos "></span></span>
+                <a href="#"
+                   onclick="TableSorting.change_sorting('<%= settings[:form_id] %>','<%= col[:table] + "." +col[:name] %>', 'desc', this); return false;"
+                   ondblclick="TableSorting.force_change_sorting('<%= settings[:form_id] %>','<%= col[:table] + "." +col[:name] %>', 'desc', this); return false;"
+                   title="Seřadit od nejvyšší hodnoty"
+                   class="btn sort_button <%= (order_by_arr.include?(col[:table] + "." + col[:name] + " desc")) ? "btn-success" : "" %>"
+                   id="<%= order_desc_id %>">
+                  <i class="icon-arrow-down"></i>
+                </a>
             <% end %>
-              <% case col[:filter] %>
-            <% when :find %>
-                <% saved_param = (!settings[:params].blank? && !settings[:params]['find'].blank? && !settings[:params]['find']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['find']["#{col[:table]}.#{col[:name]}"] : "" %>
-                  <span><%= text_field_tag "find[#{col[:table]}.#{col[:name]}]", saved_param,
-                                           {:class => "input-small text #{settings[:form_id] + '_column_find'}"} %>
-                     </span>
-            <% when :multichoice %>
-                <% saved_param = (!settings[:params].blank? && !settings[:params]['multichoice'].blank? && !settings[:params]['multichoice']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['multichoice']["#{col[:table]}.#{col[:name]}"] : [] %>
-                  <span><%= select_tag("multichoice[#{col[:table]}.#{col[:name]}]", options_for_select(col[:filter_data], saved_param),
-                                       :onchange => "form_submit_watcher('#{settings[:form_id]}')",
-                                       :multiple => true,
-                                       :class => "multiselect_class") %></span>
-              <% when :number %>
-                              <% saved_param = (!settings[:params].blank? && !settings[:params]['date_from'].blank? && !settings[:params]['date_from']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['date_from']["#{col[:table]}.#{col[:name]}"] : "" %>
-
-                  <%= text_field_tag "number_from[#{col[:table]}.#{col[:name]}]", saved_param, {:class => "input-small input-mini #{settings[:form_id] + '_column_find'}",
-                                                                                                :onchange => "form_submit_watcher('#{settings[:form_id]}')",
-                                                                                                :title => "Vetší nebo rovno"} %>
-                  <% saved_param = (!settings[:params].blank? && !settings[:params]['date_to'].blank? && !settings[:params]['date_to']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['date_to']["#{col[:table]}.#{col[:name]}"] : "" %>
-                  <%#= label_tag "date_to[#{col[:table]}.#{col[:name]}]", "Do", :class => "datetime_class_label" %>
-                  <%= text_field_tag "number_to[#{col[:table]}.#{col[:name]}]", saved_param, {:class => "input-small input-mini #{settings[:form_id] + '_column_find'}",
-                                                                                              :onchange => "form_submit_watcher('#{settings[:form_id]}')",
-                                                                                              :title => "Menší nebo rovno"} %>
-                  <span></span>
-              <% when :date %>
-                  <% saved_param = (!settings[:params].blank? && !settings[:params]['date_from'].blank? && !settings[:params]['date_from']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['date_from']["#{col[:table]}.#{col[:name]}"] : "" %>
-                  <%#= label_tag "date_from[#{col[:table]}.#{col[:name]}]", "Od", :class => "datetime_class_label" %>
-                  <%= text_field_tag "date_from[#{col[:table]}.#{col[:name]}]", saved_param, {:class => "datetime_class input-small",
-                                                                                              :onchange => "form_submit_watcher('#{settings[:form_id]}')",
-                                                                                              :title => "Datum od"} %>
-                  <% saved_param = (!settings[:params].blank? && !settings[:params]['date_to'].blank? && !settings[:params]['date_to']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['date_to']["#{col[:table]}.#{col[:name]}"] : "" %>
-                  <%#= label_tag "date_to[#{col[:table]}.#{col[:name]}]", "Do", :class => "datetime_class_label" %>
-                  <%= text_field_tag "date_to[#{col[:table]}.#{col[:name]}]", saved_param, {:class => "datetime_class input-small",
-                                                                                            :onchange => "form_submit_watcher('#{settings[:form_id]}')",
-                                                                                            :title => "Datum do"} %>
-                  <span></span>
-                  <% else %>
-              <% end %>
-            </span>
           </div>
+          <script type="text/javascript">
+              <%= (order_by_arr.include?(col[:table] + "." + col[:name] + " asc")) ? "btn-success" : "" %>
+          </script>
+
+
+            <% case col[:filter] %>
+            <% when :find %>
+              <div class="inputs clearfix">
+                <% saved_param = (!settings[:params].blank? && !settings[:params]['find'].blank? && !settings[:params]['find']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['find']["#{col[:table]}.#{col[:name]}"] : "" %>
+                <%= text_field_tag "find[#{col[:table]}.#{col[:name]}]", saved_param,
+                                         {:class => "text first #{settings[:form_id] + '_column_find'}"} %>
+              </div>
+            <% when :multichoice %>
+              <div class="inputs clearfix">
+              <% saved_param = (!settings[:params].blank? && !settings[:params]['multichoice'].blank? && !settings[:params]['multichoice']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['multichoice']["#{col[:table]}.#{col[:name]}"] : [] %>
+                <%= select_tag("multichoice[#{col[:table]}.#{col[:name]}]", options_for_select(col[:filter_data], saved_param),
+                                     :onchange => "form_submit_watcher('#{settings[:form_id]}')",
+                                     :multiple => true,
+                                     :class => "multiselect_class") %>
+              </div>
+            <% when :number %>
+                <% saved_param = (!settings[:params].blank? && !settings[:params]['date_from'].blank? && !settings[:params]['date_from']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['date_from']["#{col[:table]}.#{col[:name]}"] : "" %>
+
+                <%= text_field_tag "number_from[#{col[:table]}.#{col[:name]}]", saved_param, {:class => "text first #{settings[:form_id] + '_column_find'}",
+                                                                                              :onchange => "form_submit_watcher('#{settings[:form_id]}')",
+                                                                                              :placeholder => "min.",
+                                                                                              :title => "Hodnota musí být vetší nebo rovna zadané hodnotě"} %>
+                <% saved_param = (!settings[:params].blank? && !settings[:params]['date_to'].blank? && !settings[:params]['date_to']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['date_to']["#{col[:table]}.#{col[:name]}"] : "" %>
+                <%#= label_tag "date_to[#{col[:table]}.#{col[:name]}]", "Do", :class => "datetime_class_label" %>
+                <%= text_field_tag "number_to[#{col[:table]}.#{col[:name]}]", saved_param, {:class => "text #{settings[:form_id] + '_column_find'}",
+                                                                                            :onchange => "form_submit_watcher('#{settings[:form_id]}')",
+                                                                                            :placeholder => "max.",
+                                                                                            :title => "Hodnota musí být menší nebo rovna zadané hodnotě"} %>
+                <span></span>
+            <% when :date %>
+              <div class="inputs range clearfix">
+              <% saved_param = (!settings[:params].blank? && !settings[:params]['date_from'].blank? && !settings[:params]['date_from']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['date_from']["#{col[:table]}.#{col[:name]}"] : "" %>
+                <%#= label_tag "date_from[#{col[:table]}.#{col[:name]}]", "Od", :class => "datetime_class_label" %>
+                <%= text_field_tag "date_from[#{col[:table]}.#{col[:name]}]", saved_param, {:class => "text datetime_class first",
+                                                                                            :onchange => "form_submit_watcher('#{settings[:form_id]}')",
+                                                                                            :placeholder => "od",
+                                                                                            :title => "Datum od"} %>
+                <% saved_param = (!settings[:params].blank? && !settings[:params]['date_to'].blank? && !settings[:params]['date_to']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['date_to']["#{col[:table]}.#{col[:name]}"] : "" %>
+                <%#= label_tag "date_to[#{col[:table]}.#{col[:name]}]", "Do", :class => "datetime_class_label" %>
+                <%= text_field_tag "date_to[#{col[:table]}.#{col[:name]}]", saved_param, {:class => "text datetime_class",
+                                                                                          :onchange => "form_submit_watcher('#{settings[:form_id]}')",
+                                                                                          :placeholder => "do",
+                                                                                          :title => "Datum do"} %>
+                </div>
+            <% else %>
+            <% end %>
+
+
         </th>
     <% end %>
   </tr>
@@ -108,11 +130,11 @@
   <% end %>
   </tbody>
   <tfoot>
-  <tr>
-    <th colspan="100" class="<%= settings[:form_id] + '_ajax_pager' %>">
-      <%= render :partial => 'helpers/build_table_pager', :locals => {:settings => settings} %>
-    </th>
-  </tr>
+  <!--<tr>-->
+  <!--<th colspan="100" class="<%= settings[:form_id] + '_ajax_pager' %>">-->
+  <!--<%#= render :partial => 'helpers/build_table_pager', :locals => {:settings => settings} %>-->
+  <!--</th>-->
+  <!--</tr>-->
   </tfoot>
 </table>
 

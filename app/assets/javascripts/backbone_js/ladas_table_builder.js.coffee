@@ -59,7 +59,7 @@ class TableBuilder
 
   @add_row_checkboxes: (row) ->
     if TableBuilder.obj.checkboxes?
-      TableBuilder.html += '<td class="checkbox_collumn">'
+      TableBuilder.html += '<td class="chbox">'
       TableBuilder.html += '<input type="checkbox" class="row_checkboxes" name="checkboxes[' + row.row_id + ']"'
       TableBuilder.html += ' onclick="CheckboxPool.change($(this))"'
       #console.log CheckboxPool.get_pool_by_form_id(TableBuilder.obj.form_id, row.row_id)

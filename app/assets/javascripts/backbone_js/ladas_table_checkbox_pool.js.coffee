@@ -35,6 +35,14 @@ class CheckboxPool
       $(element).attr("checked", false)
       CheckboxPool.change(element)
 
+  @check_or_uncheck_page: (obj, form_id) ->
+    if $(obj).attr('checked')
+      CheckboxPool.check_page(form_id)
+    else
+      CheckboxPool.uncheck_page(form_id)
+
+
+
   #######################################################
   #private
   #######################################################

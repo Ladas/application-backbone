@@ -1,7 +1,20 @@
-<%= form_tag settings[:filter_path], :html => {:'data-type' => 'html'}, :method => 'POST', :class => 'forms', :remote => true, :id => settings[:form_id] do |f| %>
+<%= form_tag settings[:filter_path], :html => {:'data-type' => 'html'}, :method => 'POST', :class => 'well dataGrid', :remote => true, :id => settings[:form_id] do |f| %>
     <% if content_for?(:table_form) %>
         <%= yield :table_form %>
     <% end %>
-    <%= render :partial => "/helpers/build_table_filter", :locals => {:settings => settings} %>
-    <%= render :partial => "/helpers/build_table_wrapper", :locals => {:settings => settings} %>
+    <fieldset>
+      <%= render :partial => "/helpers/build_table_filter", :locals => {:settings => settings} %>
+      <% unless settings[:per_page].blank? %>
+          <span class="select_for_per_page" style="float: right">Zobrazit na stránku: <%= select_tag("per_page_chosen", options_for_select(settings[:per_page], settings[:params]['per_page'].to_i),
+                                                                         :onchange => "form_submit_watcher('#{settings[:form_id]}')",
+                                                                         :class => "") %></span>
+      <% end %>
+      <div class="<%= settings[:form_id] + '_ajax_pager' %>">
+        <%= render :partial => 'helpers/build_table_pager', :locals => {:settings => settings} %>
+      </div>
+      <%= render :partial => "/helpers/build_table_wrapper", :locals => {:settings => settings} %>
+      <div class="<%= settings[:form_id] + '_ajax_pager' %>">
+        <%= render :partial => 'helpers/build_table_pager', :locals => {:settings => settings} %>
+      </div>
+    </fieldset>
 <% end %>

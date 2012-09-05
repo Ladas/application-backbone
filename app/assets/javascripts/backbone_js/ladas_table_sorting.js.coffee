@@ -41,8 +41,8 @@ class TableSorting
 
 
     $("#" + form_id + " .sort_button").each (index, element) =>
-      $(element).removeClass("active")
-      $(element).addClass("inactive")  # give all disabled class
+      $(element).removeClass("btn-success")
+      #$(element).addClass("inactive")  # give all disabled class
     
 
     new_order_by_val = ""
@@ -55,8 +55,8 @@ class TableSorting
   
       order_by_button_id = "#" + element.replace(" ", "___").replace(".", "___")
       #console.log(order_by_button_id)
-      $(order_by_button_id).removeClass("inactive")
-      $(order_by_button_id).addClass("active")
+      #$(order_by_button_id).removeClass("inactive")
+      $(order_by_button_id).addClass("btn-success")
       
     #console.log(new_order_by_val)
 
@@ -74,13 +74,13 @@ class TableSorting
     order_by_id = '#' + form_id + '_order_by'
 
     $("#" + form_id + " .sort_button").each (index, element) =>
-      $(element).removeClass("active")
-      $(element).addClass("inactive")  # give all disabled class
+      $(element).removeClass("btn-success")
+      #$(element).addClass("inactive")  # give all disabled class
 
     element = order_by_value + " " + dir
     order_by_button_id = "#" + element.replace(" ", "___").replace(".", "___")
-    $(order_by_button_id).removeClass("inactive")
-    $(order_by_button_id).addClass("active")
+    #$(order_by_button_id).removeClass("inactive")
+    $(order_by_button_id).addClass("btn-success")
 
     $(order_by_id).val(element)
 

@@ -1,0 +1,61 @@
+/* added by Tomas LAch for just as a default design */
+
+
+
+
+.table.groupStats {width: 100%;border-collapse: collapse;margin-bottom: 30px;}
+.table.groupStats tr:hover th, .table.groupStats tr:hover td {background: none !important;}
+.table.groupStats th, .table.groupStats td {padding: 5px 10px 5px 0;border: 0;}
+.table.groupStats td {padding: 10px 10px 5px 0;border: 0;}
+.table.groupStats td a.summary {margin-left: 10px;color: #000;text-decoration: underline;}
+.table.groupStats td a.summary:hover {text-decoration: none;}
+.table.groupStats .sep td hr {margin: 10px 0 !important;}
+.table.groupStats td .sep {font-weight: normal;color: #000;padding: 0 3px;}
+.table.groupStats th {text-align: left;font-weight: normal;}
+.table.groupStats .subThead th {color: #7f7f7f;}
+
+.table.messages tr:hover th, .table.messages tr:hover td {background: none !important;}
+.table.messages td {padding: 8px 0;}
+.table.messages a {display: block;padding-left: 25px;}
+
+.table.messages .from {text-align: right;}
+.table.messages .from a {padding-left: 0;color: #9c8866;font-size: 0.9em;}
+
+
+
+.dataGrid {padding: 0 !important;}
+.dataGrid .filter-paging {height: 56px !important;overflow: hidden;}
+.dataGrid .filter-paging .reset {float: left;padding: 15px 0;text-align: center;border-right: 1px solid #cccccc;width: 125px;}
+.dataGrid .filter-paging .paging {float: left;padding: 15px;width: 710px;}
+.dataGrid .filter-paging .btn {margin: 0 !important;font-weight: bold;}
+.dataGrid .filter-paging .paging .btn {margin: 0 4px !important;}
+.dataGrid .filter-paging input {float: left;margin: 0 8px 0 0 !important;}
+.dataGrid table {width: 100%;border: 1px solid #cccccc;border-collapse: collapse;border-left: 0;border-right: 0;}
+.dataGrid table td, .dataGrid table th {border: 1px solid #cccccc;padding: 15px 12px;}
+.dataGrid table tr td:first-child, .dataGrid table tr th:first-child {border-left: 0;}
+.dataGrid table tr td:last-child, .dataGrid table tr th:last-child {border-right: 0;}
+.dataGrid table thead th, .dataGrid table tfoot td {background: #f5f3ef;}
+.dataGrid table tbody tr:hover td {background: #f1fadf !important;}
+.dataGrid table tbody tr.checked td {background: #faf9f8;}
+.dataGrid table tbody tr td .btn {margin: 0 !important;}
+.dataGrid table thead th {text-align: left;width: 115px;}
+.dataGrid table thead th.small {width: 55px;}
+.dataGrid table thead th.chbox {width: 55px;max-width: 55px;text-align: center;}
+.dataGrid table td.chbox {width: 55px;text-align: center;}
+.dataGrid table thead th .sortable {padding: 5px 0 8px;}
+.dataGrid table thead th .sortable .btn {width: 24px;padding-left: 0 !important;padding-right: 0 !important;margin: 0 0 0 3px !important;float: left;}
+.dataGrid table thead th .sortable .btn.first {margin-left: 0 !important;}
+.dataGrid table thead th .inputs.range {width: 115px;}
+.dataGrid table thead th .inputs .text {width: 45px !important;float: left;margin: 0 0 0 5px !important;}
+.dataGrid table thead th .inputs .text.first {margin: 0 !important;}
+.dataGrid table thead th.sorted {background: #f1fadf;}
+.dataGrid table tfoot td {font-size: 0.9em;padding: 7px 12px !important;}
+
+
+.positive {color: #5a8700;}
+.negative {color: #ca5856;}
+
+
+
+.alignCenter {text-align: center !important;}
+.alignRight {text-align: right !important;} 

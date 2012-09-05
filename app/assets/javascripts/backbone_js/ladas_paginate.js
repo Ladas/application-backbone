@@ -13,7 +13,8 @@ function formatLinkForPaginationURL(form_id) {
 
         linkElement.attr({
             "url":paginationURL,
-            "href":"#"
+            "href":"#",
+            "class":"btn"
         });
 
         linkElement.click(function () {

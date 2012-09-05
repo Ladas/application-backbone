@@ -25,6 +25,11 @@ table.table_special span.sort_button.active {
   background-color: $marked_item_color;
 }
 
+table.table_special div.sortable {
+  min-width: 55px;
+}
+
+
 table.table_special div.th_filter {
   width: 90px;
   height: 20px;

@@ -145,6 +145,12 @@ class TableSettings
     self
   end
 
+  # Adds or removes checkboxes from table
+  def checkboxes(enabled = true)
+    @settings[:checkboxes] = enabled
+    self
+  end
+
   def order_by_direction(direction = "asc")
     @settings[:default][:order_by_direction] = direction
 

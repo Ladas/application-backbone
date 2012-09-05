@@ -146,8 +146,8 @@ class TableSettings
   end
 
   # Adds or removes checkboxes from table
-  def checkboxes(bool)
-    @settings[:checkboxes] = bool
+  def checkboxes(enabled = true)
+    @settings[:checkboxes] = enabled
     self
   end
 

@@ -54,9 +54,36 @@ class TableSettings
       self
     end
 
+    # Sets global format method used for values
     def global_format_method(method_name)
       @column_hash[:global_format_method] = method_name
 
+      self
+    end
+
+    # Sets if column has summarization cell per page
+    # Standard column will be computed
+    # Custom column have to set TableSettings::Buttons.summarize_page_value in callback method
+    #
+    # @param [Boolean] enabled - has/has not this cell
+    # @param [String|nil] label in this cell (for example "Summary")
+    #
+    def summarize_page(enabled = true, label = nil)
+      @column_hash[:summarize_page] = true
+      @column_hash[:summarize_page_label] = label unless label.nil?
+      self
+    end
+
+    # Sets if column has summarization cell per table
+    # Standard column will be computed
+    # Custom column have to set TableSettings::Buttons.summarize_all_value in callback method
+    #
+    # @param [Boolean] enabled - has/has not this cell
+    # @param [String|nil] label in this cell (for example "Summary")
+    #
+    def summarize_all(enabled = true, label = nil)
+      @column_hash[:summarize_all] = true
+      @column_hash[:summarize_all_label] = label unless label.nil?
       self
     end
 

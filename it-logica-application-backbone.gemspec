@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "it-logica-application-backbone"
-  s.version = "1.0.18"
+  s.version = "1.0.19"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ladas"]
-  s.date = "2012-08-31"
+  s.date = "2012-09-05"
   s.description = "longer description of your gem"
   s.email = "ladislav.smola@it-logica.cz"
   s.extra_rdoc_files = [
@@ -441,6 +441,7 @@ Gem::Specification.new do |s|
     "app/assets/javascripts/backbone_js/tinymce/jscripts/tiny_mce/utils/validate.js",
     "app/assets/javascripts/backbone_js/tmpl.min.js",
     "app/assets/stylesheets/backbone_css/bootstrap_and_overrides.css.scss",
+    "app/assets/stylesheets/backbone_css/design.css",
     "app/assets/stylesheets/backbone_css/index.css.scss",
     "app/assets/stylesheets/backbone_css/jquery.fileupload-ui.css",
     "app/assets/stylesheets/backbone_css/jquery_datetime_picker.css.scss",

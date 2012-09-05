@@ -26,7 +26,7 @@
 .dataGrid {padding: 0 !important;}
 .dataGrid .filter-paging {height: 56px !important;overflow: hidden;}
 .dataGrid .filter-paging .reset {float: left;padding: 15px 0;text-align: center;border-right: 1px solid #cccccc;width: 125px;}
-.dataGrid .filter-paging .paging {float: left;padding: 15px;width: 710px;}
+.dataGrid .filter-paging .paging {float: left;padding: 15px;}
 .dataGrid .filter-paging .btn {margin: 0 !important;font-weight: bold;}
 .dataGrid .filter-paging .paging .btn {margin: 0 4px !important;}
 .dataGrid .filter-paging input {float: left;margin: 0 8px 0 0 !important;}

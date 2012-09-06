@@ -1,4 +1,6 @@
 class TableSorting
+  @max_together = 2
+
   @change_sorting: (form_id, order_by_value, dir, obj) ->
     order_by_value = order_by_value.toLowerCase()
     dir = dir.toLowerCase()
@@ -37,6 +39,7 @@ class TableSorting
 
     else  # i am not ordering by element value, I will append it to end
       #console.log("pridavam")
+      order_by_array.pop() if order_by_array.length >= TableSorting.max_together
       order_by_array.push(order_by_value + " " + dir)
 
 

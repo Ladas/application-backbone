@@ -83,6 +83,8 @@ function load_page(settings, caller_object) {
                     //console.log(data)
                     Breadcrumbs.mark_active_menu_items();
                     Alert.show(content_id);
+
+                    $(document).trigger('page_loader.loaded',[settings]);
                 }
 
                 ladas_loading_hide();

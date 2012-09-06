@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "it-logica-application-backbone"
-  s.version = "1.0.23"
+  s.version = "1.0.24"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ladas"]
-  s.date = "2012-09-05"
+  s.date = "2012-09-06"
   s.description = "longer description of your gem"
   s.email = "ladislav.smola@it-logica.cz"
   s.extra_rdoc_files = [
@@ -139,6 +139,7 @@ Gem::Specification.new do |s|
     "app/assets/javascripts/backbone_js/ladas_functions.js",
     "app/assets/javascripts/backbone_js/ladas_initialize_history.js",
     "app/assets/javascripts/backbone_js/ladas_jstree.js",
+    "app/assets/javascripts/backbone_js/ladas_jstree_methods.js.coffee",
     "app/assets/javascripts/backbone_js/ladas_live_search.js",
     "app/assets/javascripts/backbone_js/ladas_loading.js",
     "app/assets/javascripts/backbone_js/ladas_paginate.js",

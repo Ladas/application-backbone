@@ -399,19 +399,37 @@ module ModelMixins
         end
       end
 
+
       if per_page && per_page > 0
         # only when i need pagination
         if total_count.blank?
           # if I call this more times, I can pass the total count and not count it multiple times
-
           # fuck will paginate, if there are agregated queries that I use for condition, will_paginage will delete it
           # i am counting rows on my own (as sugested in will paginete gem, when the query got more complex)
-          if object.respond_to?(:klass)
-            mysql_count = object.klass.find_by_sql("SELECT COUNT(*) AS count_all FROM (" + ret.selection(settings).to_sql + ") count")
+          if (settings[:total_count_cache].blank?)
+            # I am not caching total count. Be advised in table cca. 200 000 rows total count take about 1 second to compute, it very much.
+            if object.respond_to?(:klass)
+              mysql_count = object.klass.find_by_sql("SELECT COUNT(*) AS count_all FROM (" + ret.selection(settings).to_sql + ") count")
+            else
+              mysql_count = object.find_by_sql("SELECT COUNT(*) AS count_all FROM (" + ret.selection(settings).to_sql + ") count")
+            end
+
+            ret = ret.paginate(:page => params[:page], :per_page => per_page, :total_entries => mysql_count.first[:count_all])
           else
-            mysql_count = object.find_by_sql("SELECT COUNT(*) AS count_all FROM (" + ret.selection(settings).to_sql + ") count")
+            # I am caching total count
+            # todo find out how to cache this when everything can change, maybe I can cache only not filtered version
+            # !!!!!!1 dont turn this on till then
+            
+            total_count = Rails.cache.fetch(settings[:form_id] + "__cached_total_count", :expires_in => settings[:total_count_cache]) do
+              if object.respond_to?(:klass)
+                mysql_count = object.klass.find_by_sql("SELECT COUNT(*) AS count_all FROM (" + ret.selection(settings).to_sql + ") count")
+              else
+                mysql_count = object.find_by_sql("SELECT COUNT(*) AS count_all FROM (" + ret.selection(settings).to_sql + ") count")
+              end
+              mysql_count.first[:count_all]
+            end
+            ret = ret.paginate(:page => params[:page], :per_page => per_page, :total_entries => total_count)
           end
-          ret = ret.paginate(:page => params[:page], :per_page => per_page, :total_entries => mysql_count.first[:count_all])
         else
           ret = ret.paginate(:page => params[:page], :per_page => per_page, :total_entries => total_count)
         end

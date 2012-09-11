@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "it-logica-application-backbone"
-  s.version = "1.0.25"
+  s.version = "1.0.26"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ladas"]
-  s.date = "2012-09-06"
+  s.date = "2012-09-11"
   s.description = "longer description of your gem"
   s.email = "ladislav.smola@it-logica.cz"
   s.extra_rdoc_files = [
@@ -465,6 +465,7 @@ Gem::Specification.new do |s|
     "app/views/helpers/_build_table_data.html.erb",
     "app/views/helpers/_build_table_filter.html.erb",
     "app/views/helpers/_build_table_pager.html.erb",
+    "app/views/helpers/_build_table_text_description.html.erb",
     "app/views/helpers/_build_table_wrapper.html.erb",
     "it-logica-application-backbone.gemspec",
     "lib/backbone_css/engine.rb",

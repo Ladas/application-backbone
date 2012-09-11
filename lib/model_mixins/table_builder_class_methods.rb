@@ -30,7 +30,7 @@ module ModelMixins
 
       not_selected_items = object.filter(object, settings, params, per_page)
       items = not_selected_items.selection(settings)
-      if params[:page].to_i > items.total_pages && items.total_pages > 0
+      if items.respond_to?(:total_pages) && params[:page].to_i > items.total_pages && items.total_pages > 0
         params[:page] = 1
         not_selected_items = object.filter(object, settings, params, per_page)
         items = not_selected_items.selection(settings)
@@ -271,124 +271,132 @@ module ModelMixins
       having_cond_str = ""
       having_cond_hash = {}
 
+      case settings[:filter_method]
+        when "only_by_checkboxes"
+          # filtering only by checkboxes
+          cond_str = "(#{settings[:row][:id]} IN (:checkboxes))"
+          cond_hash = {:checkboxes => params["checkbox_pool"].split(",")}
+          per_page = nil # no paginate for checkbox filter
+        else
+          # filtering by table filters
+          if !params.blank? && params['find']
+            params['find'].each_pair do |i, v|
+              i = i.gsub(/___unknown___\./, "") #some cleaning job
+              unless v.blank?
+                if i.match(/^.*?non_existing_column___.*$/i)
+                  identifier = i.split("non_existing_column___").second
+                  settings[:columns].each do |col|
+                    if !col[:select_as].blank? && !col[:format_method].blank? && col[:format_method] == identifier
+                      cond_str += " AND " unless cond_str.blank?
+                      cond_str += "( "
+                      sub_cond = ""
+                      col[:select].split(",").each do |sub_cond_col|
+                        sub_cond += " OR " unless sub_cond.blank?
+                        non_existing_column_i = col[:select_as] + "." + sub_cond_col.gsub(" ", "")
+                        cond_id = "find_#{non_existing_column_i.gsub(/\./, '_')}"
+                        sub_cond += "#{non_existing_column_i} LIKE :#{cond_id}" #OR guest_email LIKE :find"
+                        cond_hash.merge!({cond_id.to_sym => "%#{v}%"})
+                      end
+                      cond_str += sub_cond + " )"
+                    else
+                      ""
+                    end
+                  end
+                else
+                  if i.match(/^.*?___sql_expression___.*$/i)
+                    i = i.gsub(/___sql_expression___\./, "") #some cleaning job
 
-      if !params.blank? && params['find']
-        params['find'].each_pair do |i, v|
-          i = i.gsub(/___unknown___\./, "") #some cleaning job
-          unless v.blank?
-            if i.match(/^.*?non_existing_column___.*$/i)
-              identifier = i.split("non_existing_column___").second
-              settings[:columns].each do |col|
-                if !col[:select_as].blank? && !col[:format_method].blank? && col[:format_method] == identifier
-                  cond_str += " AND " unless cond_str.blank?
-                  cond_str += "( "
-                  sub_cond = ""
-                  col[:select].split(",").each do |sub_cond_col|
-                    sub_cond += " OR " unless sub_cond.blank?
-                    non_existing_column_i = col[:select_as] + "." + sub_cond_col.gsub(" ", "")
-                    cond_id = "find_#{non_existing_column_i.gsub(/\./, '_')}"
-                    sub_cond += "#{non_existing_column_i} LIKE :#{cond_id}" #OR guest_email LIKE :find"
+                    having_cond_str += " AND " unless having_cond_str.blank?
+                    cond_id = "find_#{i.gsub(/\./, '_')}"
+                    having_cond_str += "#{i} LIKE :#{cond_id}" #OR guest_email LIKE :find"
+                    having_cond_hash.merge!({cond_id.to_sym => "%#{v}%"})
+                  else
+                    cond_str += " AND " unless cond_str.blank?
+                    cond_id = "find_#{i.gsub(/\./, '_')}"
+                    cond_str += "#{i} LIKE :#{cond_id}" #OR guest_email LIKE :find"
                     cond_hash.merge!({cond_id.to_sym => "%#{v}%"})
                   end
-                  cond_str += sub_cond + " )"
-                else
-                  ""
                 end
               end
-            else
-              if i.match(/^.*?___sql_expression___.*$/i)
-                i = i.gsub(/___sql_expression___\./, "") #some cleaning job
+            end
+          end
 
-                having_cond_str += " AND " unless having_cond_str.blank?
-                cond_id = "find_#{i.gsub(/\./, '_')}"
-                having_cond_str += "#{i} LIKE :#{cond_id}" #OR guest_email LIKE :find"
-                having_cond_hash.merge!({cond_id.to_sym => "%#{v}%"})
-              else
+
+          # ToDo ladas add having condition to others
+          if !params.blank? && params['multichoice']
+            params['multichoice'].each_pair do |i, v|
+              i = i.gsub(/___unknown___\./, "") #some cleaning job
+              unless v.blank?
                 cond_str += " AND " unless cond_str.blank?
-                cond_id = "find_#{i.gsub(/\./, '_')}"
-                cond_str += "#{i} LIKE :#{cond_id}" #OR guest_email LIKE :find"
-                cond_hash.merge!({cond_id.to_sym => "%#{v}%"})
+                cond_id = "multichoice_#{i.gsub(/\./, '_')}"
+
+                cond_str += "#{i} IN (:#{cond_id})" #OR guest_email LIKE :find"
+                cond_hash.merge!({cond_id.to_sym => v})
               end
             end
           end
-        end
-      end
 
-
-      # ToDo ladas add having condition to others
-      if !params.blank? && params['multichoice']
-        params['multichoice'].each_pair do |i, v|
-          i = i.gsub(/___unknown___\./, "") #some cleaning job
-          unless v.blank?
-            cond_str += " AND " unless cond_str.blank?
-            cond_id = "multichoice_#{i.gsub(/\./, '_')}"
-
-            cond_str += "#{i} IN (:#{cond_id})" #OR guest_email LIKE :find"
-            cond_hash.merge!({cond_id.to_sym => v})
-          end
-        end
-      end
-
-      if !params.blank? && (params['date_from'] || params['number_from'])
-        from_hash = params['date_from']
-        if from_hash.blank?
-          from_hash = params['number_from']
-        else
-          from_hash.merge!(params['number_from']) unless params['number_from'].blank?
-        end
-        from_hash.each_pair do |i, v|
-          i = i.gsub(/___unknown___\./, "") #some cleaning job
-          unless v.blank?
-            if i.match(/^.*?___sql_expression___.*$/i)
-              i = i.gsub(/___sql_expression___\./, "") #some cleaning job
-              having_cond_str += " AND " unless having_cond_str.blank?
-              cond_id = "date_from_#{i.gsub(/\./, '_')}"
-              having_cond_str += "#{i} >= :#{cond_id}" #OR guest_email LIKE :find"
-              having_cond_hash.merge!({cond_id.to_sym => "#{v}"})
+          if !params.blank? && (params['date_from'] || params['number_from'])
+            from_hash = params['date_from']
+            if from_hash.blank?
+              from_hash = params['number_from']
             else
-              cond_str += " AND " unless cond_str.blank?
-              cond_id = "date_from_#{i.gsub(/\./, '_')}"
-              cond_str += "#{i} >= :#{cond_id}" #OR guest_email LIKE :find"
-              cond_hash.merge!({cond_id.to_sym => "#{v}"})
+              from_hash.merge!(params['number_from']) unless params['number_from'].blank?
+            end
+            from_hash.each_pair do |i, v|
+              i = i.gsub(/___unknown___\./, "") #some cleaning job
+              unless v.blank?
+                if i.match(/^.*?___sql_expression___.*$/i)
+                  i = i.gsub(/___sql_expression___\./, "") #some cleaning job
+                  having_cond_str += " AND " unless having_cond_str.blank?
+                  cond_id = "date_from_#{i.gsub(/\./, '_')}"
+                  having_cond_str += "#{i} >= :#{cond_id}" #OR guest_email LIKE :find"
+                  having_cond_hash.merge!({cond_id.to_sym => "#{v}"})
+                else
+                  cond_str += " AND " unless cond_str.blank?
+                  cond_id = "date_from_#{i.gsub(/\./, '_')}"
+                  cond_str += "#{i} >= :#{cond_id}" #OR guest_email LIKE :find"
+                  cond_hash.merge!({cond_id.to_sym => "#{v}"})
+                end
+              end
             end
           end
-        end
-      end
 
-      if !params.blank? && (params['date_to'] || params['number_to'])
-        to_hash = params['date_to']
-        if to_hash.blank?
-          to_hash = params['number_to']
-        else
-          to_hash.merge!(params['number_to']) unless params['number_to'].blank?
-        end
-        to_hash.each_pair do |i, v|
-          i = i.gsub(/___unknown___\./, "") #some cleaning job
-          unless v.blank?
-            if i.match(/^.*?___sql_expression___.*$/i)
-              i = i.gsub(/___sql_expression___\./, "") #some cleaning job
-              having_cond_str += " AND " unless having_cond_str.blank?
-              cond_id = "date_to_#{i.gsub(/\./, '_')}"
-              having_cond_str += "#{i} <= :#{cond_id}" #OR guest_email LIKE :find"
-              having_cond_hash.merge!({cond_id.to_sym => "#{v}"})
+          if !params.blank? && (params['date_to'] || params['number_to'])
+            to_hash = params['date_to']
+            if to_hash.blank?
+              to_hash = params['number_to']
             else
-              cond_str += " AND " unless cond_str.blank?
-              cond_id = "date_to_#{i.gsub(/\./, '_')}"
-              cond_str += "#{i} <= :#{cond_id}" #OR guest_email LIKE :find"
-              cond_hash.merge!({cond_id.to_sym => "#{v}"})
+              to_hash.merge!(params['number_to']) unless params['number_to'].blank?
+            end
+            to_hash.each_pair do |i, v|
+              i = i.gsub(/___unknown___\./, "") #some cleaning job
+              unless v.blank?
+                if i.match(/^.*?___sql_expression___.*$/i)
+                  i = i.gsub(/___sql_expression___\./, "") #some cleaning job
+                  having_cond_str += " AND " unless having_cond_str.blank?
+                  cond_id = "date_to_#{i.gsub(/\./, '_')}"
+                  having_cond_str += "#{i} <= :#{cond_id}" #OR guest_email LIKE :find"
+                  having_cond_hash.merge!({cond_id.to_sym => "#{v}"})
+                else
+                  cond_str += " AND " unless cond_str.blank?
+                  cond_id = "date_to_#{i.gsub(/\./, '_')}"
+                  cond_str += "#{i} <= :#{cond_id}" #OR guest_email LIKE :find"
+                  cond_hash.merge!({cond_id.to_sym => "#{v}"})
+                end
+              end
             end
           end
-        end
-      end
 
+        #items = self.joins("LEFT OUTER JOIN intranet_text_pages ON resource_id = intranet_text_pages.id").where(cond_str, cond_hash).paginate(:page => params[:page], :per_page => per_page).order(order_by).selection(settings)
+        #if params[:page].to_i > items.total_pages && items.total_pages > 0
+        #  params[:page] = 1
+        #  items = self.where(cond_str, cond_hash).paginate(:page => params[:page], :per_page => per_page).order(order_by).selection(settings)
+        #end
+        #items
+      end
       ret = where(cond_str, cond_hash).order(order_by)
       ret = ret.having(having_cond_str, having_cond_hash) unless having_cond_str.blank?
-      #items = self.joins("LEFT OUTER JOIN intranet_text_pages ON resource_id = intranet_text_pages.id").where(cond_str, cond_hash).paginate(:page => params[:page], :per_page => per_page).order(order_by).selection(settings)
-      #if params[:page].to_i > items.total_pages && items.total_pages > 0
-      #  params[:page] = 1
-      #  items = self.where(cond_str, cond_hash).paginate(:page => params[:page], :per_page => per_page).order(order_by).selection(settings)
-      #end
-      #items
 
       # if there are additional joins i will add them
       settings[:columns].each do |col|
@@ -419,7 +427,7 @@ module ModelMixins
             # I am caching total count
             # todo find out how to cache this when everything can change, maybe I can cache only not filtered version
             # !!!!!!1 dont turn this on till then
-            
+
             total_count = Rails.cache.fetch(settings[:form_id] + "__cached_total_count", :expires_in => settings[:total_count_cache]) do
               if object.respond_to?(:klass)
                 mysql_count = object.klass.find_by_sql("SELECT COUNT(*) AS count_all FROM (" + ret.selection(settings).to_sql + ") count")

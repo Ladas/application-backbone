@@ -12,7 +12,9 @@
                onkeypress="paginate_by_enter('<%= settings[:form_id] %>', this, event);">
         <button class="btn" onclick='$("#" + "<%= settings[:form_id] %>" + "_page").val($(this).prev("input").val()); $("#" + "<%= settings[:form_id] %>").submit(); return false;'>Přejít</button>
         <%= will_paginate settings[:data_paginate], {:container => false, :inner_window => 1, :outer_window => 1} %>
+        <%= page_entries_info settings[:data_paginate] %>
       </div>
+
   <% end %>
 </div>
 

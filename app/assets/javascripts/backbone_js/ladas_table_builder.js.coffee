@@ -26,36 +26,47 @@ class TableBuilder
     functions_present = TableBuilder.obj.row? && TableBuilder.obj.row.functions?
 
     # code for sumarizes of the page (paginated)
-    TableBuilder.html += '<tr class="summarize_page">'
+    summarize_page_present = false
+    summarize_page = ""
+    summarize_page += '<tr class="summarize_page">'
     # todo make sure functions collumn got skipped when placement is different, eg. on the end
-    TableBuilder.html += '<td class="summarize"></td>' if functions_present
-    TableBuilder.html += '<td class="summarize"></td>' if TableBuilder.obj.checkboxes?
+    summarize_page += '<td class="summarize"></td>' if functions_present
+    summarize_page += '<td class="summarize"></td>' if TableBuilder.obj.checkboxes?
     for col in TableBuilder.obj.columns
       do (col) ->
-        TableBuilder.html += '<td class="summarize">'
+        summarize_page += '<td class="summarize">'
         if col.summarize_page? || col.summarize_page_value?
-          TableBuilder.html += '<div class="summarize_page">'
-          TableBuilder.html += if col.summarize_page_label? then col.summarize_page_label else '<span class="label">Celkem na stránce: </span>'
-          TableBuilder.html += if col.summarize_page_value? then col.summarize_page_value else 0
-          TableBuilder.html += '</div>'
+          summarize_page_present = true
+          summarize_page += '<div class="summarize_page">'
+          summarize_page += if col.summarize_page_label? then col.summarize_page_label else '<span class="label">Celkem na stránce: </span>'
+          summarize_page += if col.summarize_page_value? then col.summarize_page_value else 0
+          summarize_page += '</div>'
 
-        TableBuilder.html += '</td>'
-    TableBuilder.html += '</tr>'
+        summarize_page += '</td>'
+    summarize_page += '</tr>'
+
+
+    TableBuilder.html += summarize_page if summarize_page_present
 
     # code for sumarizes of the all filtered data (paginated is not used)
-    TableBuilder.html += '<tr class="summarize_all">'
-    TableBuilder.html += '<td class="summarize"></td>' if functions_present
-    TableBuilder.html += '<td class="summarize"></td>' if TableBuilder.obj.checkboxes?
+    summarize_all_present = false
+    summarize_all = ""
+    summarize_all += '<tr class="summarize_all">'
+    summarize_all += '<td class="summarize"></td>' if functions_present
+    summarize_all += '<td class="summarize"></td>' if TableBuilder.obj.checkboxes?
     for col in TableBuilder.obj.columns
       do (col) ->
-        TableBuilder.html += '<td class="summarize">'
+        summarize_all += '<td class="summarize">'
         if col.summarize_all? || col.summarize_all_value?
-          TableBuilder.html += '<div class="summarize_all">'
-          TableBuilder.html += if col.summarize_all_label? then col.summarize_all_label else '<span class="label">Celkem: </span>'
-          TableBuilder.html += if col.summarize_all_value? then col.summarize_all_value else 0
-          TableBuilder.html += '</div>'
-        TableBuilder.html += '</td>'
-    TableBuilder.html += '</tr>'
+          summarize_all_present = true
+          summarize_all += '<div class="summarize_all">'
+          summarize_all += if col.summarize_all_label? then col.summarize_all_label else '<span class="label">Celkem: </span>'
+          summarize_all += if col.summarize_all_value? then col.summarize_all_value else 0
+          summarize_all += '</div>'
+        summarize_all += '</td>'
+    summarize_all += '</tr>'
+
+    TableBuilder.html += summarize_all if summarize_all_present
 
   @add_row_checkboxes: (row) ->
     if TableBuilder.obj.checkboxes?

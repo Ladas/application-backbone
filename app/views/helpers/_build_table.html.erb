@@ -1,24 +1,64 @@
 <%= yield :above_table_form %>
 
 <%= render :partial => "/helpers/build_table_text_description", :locals => {:settings => settings} %>
+<% if settings[:display_method].blank? %>
+    <% if settings[:checkboxes] %>
+        <script type="text/javascript">
+            function submit_in_new_window(form_id) {
+                var form_original = $("#" + form_id);
+                var form = form_original.clone(true, true);
+                form.attr("data-remote", "false");
+                form.attr("target", "_blank");
+
+                //Create an input type dynamically.
+                var element = document.createElement("input");
+
+                //Assign different attributes to the element.
+                element.setAttribute("type", "hidden");
+                element.setAttribute("value", "print_by_checkboxes");
+                element.setAttribute("name", "___display_method___");
+
+
+                //Append the element in form
+                form.append(element);
+                form.submit();
+            }
+
+        </script>
+        <a href="#" class="btn" onclick="submit_in_new_window('<%= settings[:form_id] %>'); return false;">Tisk</a>
+    <% end %>
+<% end %>
 
 <%= form_tag settings[:filter_path], :html => {:'data-type' => 'html'}, :method => 'POST', :class => 'well dataGrid', :remote => true, :id => settings[:form_id] do |f| %>
-    <% if content_for?(:table_form) %>
-        <%= yield :table_form %>
+    <% if settings[:display_method].blank? %>
+        <% if content_for?(:table_form) %>
+            <%= yield :table_form %>
+        <% end %>
     <% end %>
+
     <fieldset>
       <%= render :partial => "/helpers/build_table_filter", :locals => {:settings => settings} %>
-      <% unless settings[:per_page].blank? %>
+
+      <% if settings[:display_method].blank? %>
+          <% unless settings[:per_page].blank? %>
           <span class="select_for_per_page" style="float: right">Zobrazit na stránku: <%= select_tag("per_page_chosen", options_for_select(settings[:per_page], settings[:params]['per_page'].to_i),
-                                                                         :onchange => "form_submit_watcher('#{settings[:form_id]}')",
-                                                                         :class => "") %></span>
+                                                                                                     :onchange => "form_submit_watcher('#{settings[:form_id]}')",
+                                                                                                     :class => "") %></span>
+          <% end %>
+
+
+
+          <div class="<%= settings[:form_id] + '_ajax_pager' %>">
+            <%= render :partial => 'helpers/build_table_pager', :locals => {:settings => settings} %>
+          </div>
       <% end %>
-      <div class="<%= settings[:form_id] + '_ajax_pager' %>">
-        <%= render :partial => 'helpers/build_table_pager', :locals => {:settings => settings} %>
-      </div>
+
       <%= render :partial => "/helpers/build_table_wrapper", :locals => {:settings => settings} %>
-      <div class="<%= settings[:form_id] + '_ajax_pager' %>">
-        <%= render :partial => 'helpers/build_table_pager', :locals => {:settings => settings} %>
-      </div>
+
+      <% if settings[:display_method].blank? %>
+          <div class="<%= settings[:form_id] + '_ajax_pager' %>">
+            <%= render :partial => 'helpers/build_table_pager', :locals => {:settings => settings} %>
+          </div>
+      <% end %>
     </fieldset>
 <% end %>

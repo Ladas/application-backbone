@@ -1,7 +1,7 @@
 <table class="table table-bordered table-condensed table_special">
   <thead>
   <!--<tr>-->
-  <!--<th colspan="100" class="<%= settings[:form_id] + '_ajax_pager' %>">-->
+  <!--<th colspan="100" class="<%#= settings[:form_id] + '_ajax_pager' %>">-->
   <!--<%#= render :partial => 'helpers/build_table_pager', :locals => {:settings => settings} %>-->
   <!--</th>-->
   <!--</tr>-->
@@ -45,80 +45,82 @@
             </strong>
           </div>
 
-          <div class="sortable clearfix">
-            <% if col[:column_method].blank? && col[:row_method].blank? && !col[:name].blank? %>
-                <a href="#"
-                   onclick="TableSorting.change_sorting('<%= settings[:form_id] %>','<%= col[:table] + "." +col[:name] %>', 'asc', this); return false;"
-                   ondblclick="TableSorting.force_change_sorting('<%= settings[:form_id] %>','<%= col[:table] + "." +col[:name] %>', 'asc', this); return false;"
-                   title="Seřadit od nejnižší hodnoty"
-                   class="btn first sort_button <%= (order_by_arr.include?(col[:table] + "." + col[:name] + " asc")) ? "btn-success" : "" %>"
-                   id="<%= order_asc_id %>">
-                  <i class="icon-arrow-up"></i>
-                </a>
+          <% if settings[:display_method].blank? %>
+              <div class="sortable clearfix">
+                <% if col[:column_method].blank? && col[:row_method].blank? && !col[:name].blank? %>
+                    <a href="#"
+                       onclick="TableSorting.change_sorting('<%= settings[:form_id] %>','<%= col[:table] + "." +col[:name] %>', 'asc', this); return false;"
+                       ondblclick="TableSorting.force_change_sorting('<%= settings[:form_id] %>','<%= col[:table] + "." +col[:name] %>', 'asc', this); return false;"
+                       title="Seřadit od nejnižší hodnoty"
+                       class="btn first sort_button <%= (order_by_arr.include?(col[:table] + "." + col[:name] + " asc")) ? "btn-success" : "" %>"
+                       id="<%= order_asc_id %>">
+                      <i class="icon-arrow-up"></i>
+                    </a>
 
-                <a href="#"
-                   onclick="TableSorting.change_sorting('<%= settings[:form_id] %>','<%= col[:table] + "." +col[:name] %>', 'desc', this); return false;"
-                   ondblclick="TableSorting.force_change_sorting('<%= settings[:form_id] %>','<%= col[:table] + "." +col[:name] %>', 'desc', this); return false;"
-                   title="Seřadit od nejvyšší hodnoty"
-                   class="btn sort_button <%= (order_by_arr.include?(col[:table] + "." + col[:name] + " desc")) ? "btn-success" : "" %>"
-                   id="<%= order_desc_id %>">
-                  <i class="icon-arrow-down"></i>
-                </a>
-            <% end %>
-          </div>
-
-
-
-            <% case col[:filter] %>
-            <% when :find %>
-              <div class="inputs clearfix">
-                <% saved_param = (!settings[:params].blank? && !settings[:params]['find'].blank? && !settings[:params]['find']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['find']["#{col[:table]}.#{col[:name]}"] : "" %>
-                <%= text_field_tag "find[#{col[:table]}.#{col[:name]}]", saved_param,
-                                         {:class => "text first #{settings[:form_id] + '_column_find'}"} %>
+                    <a href="#"
+                       onclick="TableSorting.change_sorting('<%= settings[:form_id] %>','<%= col[:table] + "." +col[:name] %>', 'desc', this); return false;"
+                       ondblclick="TableSorting.force_change_sorting('<%= settings[:form_id] %>','<%= col[:table] + "." +col[:name] %>', 'desc', this); return false;"
+                       title="Seřadit od nejvyšší hodnoty"
+                       class="btn sort_button <%= (order_by_arr.include?(col[:table] + "." + col[:name] + " desc")) ? "btn-success" : "" %>"
+                       id="<%= order_desc_id %>">
+                      <i class="icon-arrow-down"></i>
+                    </a>
+                <% end %>
               </div>
-            <% when :multichoice %>
-              <div class="inputs clearfix">
-              <% saved_param = (!settings[:params].blank? && !settings[:params]['multichoice'].blank? && !settings[:params]['multichoice']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['multichoice']["#{col[:table]}.#{col[:name]}"] : [] %>
-                <%= select_tag("multichoice[#{col[:table]}.#{col[:name]}]", options_for_select(col[:filter_data], saved_param),
-                                     :onchange => "form_submit_watcher('#{settings[:form_id]}')",
-                                     :multiple => true,
-                                     :class => "multiselect_class") %>
-              </div>
-            <% when :number %>
-              <div class="inputs range clearfix">
-                <% saved_param = (!settings[:params].blank? && !settings[:params]['date_from'].blank? && !settings[:params]['date_from']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['date_from']["#{col[:table]}.#{col[:name]}"] : "" %>
 
-                <%= text_field_tag "number_from[#{col[:table]}.#{col[:name]}]", saved_param, {:class => "text first #{settings[:form_id] + '_column_find'}",
+
+
+              <% case col[:filter] %>
+          <% when :find %>
+                  <div class="inputs clearfix">
+                    <% saved_param = (!settings[:params].blank? && !settings[:params]['find'].blank? && !settings[:params]['find']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['find']["#{col[:table]}.#{col[:name]}"] : "" %>
+                    <%= text_field_tag "find[#{col[:table]}.#{col[:name]}]", saved_param,
+                                       {:class => "text first #{settings[:form_id] + '_column_find'}"} %>
+                  </div>
+              <% when :multichoice %>
+                  <div class="inputs clearfix">
+                    <% saved_param = (!settings[:params].blank? && !settings[:params]['multichoice'].blank? && !settings[:params]['multichoice']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['multichoice']["#{col[:table]}.#{col[:name]}"] : [] %>
+                    <%= select_tag("multichoice[#{col[:table]}.#{col[:name]}]", options_for_select(col[:filter_data], saved_param),
+                                   :onchange => "form_submit_watcher('#{settings[:form_id]}')",
+                                   :multiple => true,
+                                   :class => "multiselect_class") %>
+                  </div>
+              <% when :number %>
+                  <div class="inputs range clearfix">
+                    <% saved_param = (!settings[:params].blank? && !settings[:params]['date_from'].blank? && !settings[:params]['date_from']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['date_from']["#{col[:table]}.#{col[:name]}"] : "" %>
+
+                    <%= text_field_tag "number_from[#{col[:table]}.#{col[:name]}]", saved_param, {:class => "text first #{settings[:form_id] + '_column_find'}",
+                                                                                                  :onchange => "form_submit_watcher('#{settings[:form_id]}')",
+                                                                                                  :placeholder => "min.",
+                                                                                                  :title => "Hodnota musí být vetší nebo rovna zadané hodnotě"} %>
+                    <% saved_param = (!settings[:params].blank? && !settings[:params]['date_to'].blank? && !settings[:params]['date_to']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['date_to']["#{col[:table]}.#{col[:name]}"] : "" %>
+                    <%#= label_tag "date_to[#{col[:table]}.#{col[:name]}]", "Do", :class => "datetime_class_label" %>
+                    <%= text_field_tag "number_to[#{col[:table]}.#{col[:name]}]", saved_param, {:class => "text #{settings[:form_id] + '_column_find'}",
+                                                                                                :onchange => "form_submit_watcher('#{settings[:form_id]}')",
+                                                                                                :placeholder => "max.",
+                                                                                                :title => "Hodnota musí být menší nebo rovna zadané hodnotě"} %>
+                  </div>
+              <% when :date %>
+                  <div class="inputs range clearfix">
+                    <% saved_param = (!settings[:params].blank? && !settings[:params]['date_from'].blank? && !settings[:params]['date_from']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['date_from']["#{col[:table]}.#{col[:name]}"] : "" %>
+                    <%#= label_tag "date_from[#{col[:table]}.#{col[:name]}]", "Od", :class => "datetime_class_label" %>
+                    <%= text_field_tag "date_from[#{col[:table]}.#{col[:name]}]", saved_param, {:class => "text datetime_class first",
+                                                                                                :onchange => "form_submit_watcher('#{settings[:form_id]}')",
+                                                                                                :placeholder => "od",
+                                                                                                :title => "Datum od"} %>
+                    <% saved_param = (!settings[:params].blank? && !settings[:params]['date_to'].blank? && !settings[:params]['date_to']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['date_to']["#{col[:table]}.#{col[:name]}"] : "" %>
+                    <%#= label_tag "date_to[#{col[:table]}.#{col[:name]}]", "Do", :class => "datetime_class_label" %>
+                    <%= text_field_tag "date_to[#{col[:table]}.#{col[:name]}]", saved_param, {:class => "text datetime_class",
                                                                                               :onchange => "form_submit_watcher('#{settings[:form_id]}')",
-                                                                                              :placeholder => "min.",
-                                                                                              :title => "Hodnota musí být vetší nebo rovna zadané hodnotě"} %>
-                <% saved_param = (!settings[:params].blank? && !settings[:params]['date_to'].blank? && !settings[:params]['date_to']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['date_to']["#{col[:table]}.#{col[:name]}"] : "" %>
-                <%#= label_tag "date_to[#{col[:table]}.#{col[:name]}]", "Do", :class => "datetime_class_label" %>
-                <%= text_field_tag "number_to[#{col[:table]}.#{col[:name]}]", saved_param, {:class => "text #{settings[:form_id] + '_column_find'}",
-                                                                                            :onchange => "form_submit_watcher('#{settings[:form_id]}')",
-                                                                                            :placeholder => "max.",
-                                                                                            :title => "Hodnota musí být menší nebo rovna zadané hodnotě"} %>
-                </div>
-            <% when :date %>
-              <div class="inputs range clearfix">
-              <% saved_param = (!settings[:params].blank? && !settings[:params]['date_from'].blank? && !settings[:params]['date_from']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['date_from']["#{col[:table]}.#{col[:name]}"] : "" %>
-                <%#= label_tag "date_from[#{col[:table]}.#{col[:name]}]", "Od", :class => "datetime_class_label" %>
-                <%= text_field_tag "date_from[#{col[:table]}.#{col[:name]}]", saved_param, {:class => "text datetime_class first",
-                                                                                            :onchange => "form_submit_watcher('#{settings[:form_id]}')",
-                                                                                            :placeholder => "od",
-                                                                                            :title => "Datum od"} %>
-                <% saved_param = (!settings[:params].blank? && !settings[:params]['date_to'].blank? && !settings[:params]['date_to']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['date_to']["#{col[:table]}.#{col[:name]}"] : "" %>
-                <%#= label_tag "date_to[#{col[:table]}.#{col[:name]}]", "Do", :class => "datetime_class_label" %>
-                <%= text_field_tag "date_to[#{col[:table]}.#{col[:name]}]", saved_param, {:class => "text datetime_class",
-                                                                                          :onchange => "form_submit_watcher('#{settings[:form_id]}')",
-                                                                                          :placeholder => "do",
-                                                                                          :title => "Datum do"} %>
-                </div>
-            <% else %>
-            <% end %>
+                                                                                              :placeholder => "do",
+                                                                                              :title => "Datum do"} %>
+                  </div>
+              <% else %>
+              <% end %>
 
-
+          <% end %>
         </th>
+
     <% end %>
   </tr>
 
@@ -130,7 +132,7 @@
   </tbody>
   <tfoot>
   <!--<tr>-->
-  <!--<th colspan="100" class="<%= settings[:form_id] + '_ajax_pager' %>">-->
+  <!--<th colspan="100" class="<%#= settings[:form_id] + '_ajax_pager' %>">-->
   <!--<%#= render :partial => 'helpers/build_table_pager', :locals => {:settings => settings} %>-->
   <!--</th>-->
   <!--</tr>-->

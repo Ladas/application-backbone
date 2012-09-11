@@ -5,30 +5,41 @@ module ControllerMixins
       data = yield
       class_obj = data.respond_to?(:klass) ? data.klass : data
       if action_name == "filter"
-        default_params = params
-        if !params.blank? && params["clear"]
-          default_params = @settings[:default].dup
-          default_params[:order_by] = @settings[:default][:order_by] + " " + @settings[:default][:order_by_direction] if !@settings[:default][:order_by].blank? && !@settings[:default][:order_by_direction].blank?
-          default_params[:order_by] = @settings[:default][:order] if !@settings[:default][:order].blank?
-        end
+        case params["___display_method___"]
+          when "print_by_checkboxes"
+            # printing page, it should be opened in new window
+            @settings = class_obj.prepare_settings(logged_user, data, @settings, default_params)
 
-        @settings = class_obj.prepare_settings(logged_user, data, @settings, default_params)
-        if !params.blank? && params["clear"]
-          session["#{@settings[:form_id]}_params"] = ""
-          render :layout => false, :action => :index
-        else
-          @paginate = render_to_string(:partial => "/helpers/build_table_pager", :locals => {:settings => @settings})
-          session["#{@settings[:form_id]}_params"] = params
-          if @settings[:template].blank?
-            # if there is no template a will return json and tbody renders in javascript template
-            returned_t_body = @settings.to_json
+
+            render :layout => "print", :action => :index
           else
-            # or there is template so i will return template rendered here in ruby
-            returned_t_body = render_to_string(:partial => @settings[:template], :locals => {:settings => @settings})
-          end
+            # default print of table
+            default_params = params
+            if !params.blank? && params["clear"]
+              default_params = @settings[:default].dup
+              default_params[:order_by] = @settings[:default][:order_by] + " " + @settings[:default][:order_by_direction] if !@settings[:default][:order_by].blank? && !@settings[:default][:order_by_direction].blank?
+              default_params[:order_by] = @settings[:default][:order] if !@settings[:default][:order].blank?
+            end
 
-          render :layout => false, :json => {:settings => returned_t_body, :paginate => @paginate}.to_json
+            @settings = class_obj.prepare_settings(logged_user, data, @settings, default_params)
+            if !params.blank? && params["clear"]
+              session["#{@settings[:form_id]}_params"] = ""
+              render :layout => false, :action => :index
+            else
+              @paginate = render_to_string(:partial => "/helpers/build_table_pager", :locals => {:settings => @settings})
+              session["#{@settings[:form_id]}_params"] = params
+              if @settings[:template].blank?
+                # if there is no template a will return json and tbody renders in javascript template
+                returned_t_body = @settings.to_json
+              else
+                # or there is template so i will return template rendered here in ruby
+                returned_t_body = render_to_string(:partial => @settings[:template], :locals => {:settings => @settings})
+              end
+
+              render :layout => false, :json => {:settings => returned_t_body, :paginate => @paginate}.to_json
+            end
         end
+
       elsif action_name == "index"
         default_params = @settings[:default].dup
         default_params[:order_by] = @settings[:default][:order_by] + " " + @settings[:default][:order_by_direction] if !@settings[:default][:order_by].blank? && !@settings[:default][:order_by_direction].blank?
@@ -52,32 +63,47 @@ module ControllerMixins
       data = yield
       class_obj = data.respond_to?(:klass) ? data.klass : data
 
-      filter_method     = settings[:filter_method]
+      filter_method = settings[:filter_method]
       show_table_method = settings[:show_table_method]
 
       default_params = set_default_params(filter_method, show_table_method, settings)
 
-      settings = class_obj.prepare_settings(logged_user, data, settings, default_params)
+      case display_method
+        when "print_by_checkboxes"
+          # vyjímka pro tisk tabulek
+          # printing page, it should be opened in new window
+          settings[:filter_method] = "only_by_checkboxes"
+          settings[:display_method] = display_method
+          settings = class_obj.prepare_settings(logged_user, data, settings, default_params)
 
-      # Filtrovani se renderuje zde
-      if is_filtering?(filter_method)
+          render_table_for_printing(settings, show_table_method)
+        else
+          settings = class_obj.prepare_settings(logged_user, data, settings, default_params)
 
-        if clear_filter?  # Tlacitko Smazat filtr
-          render_table_on_clear_filter(settings, show_table_method)
-        else              # Ostatni filtry
-          render_tbody_on_filter(settings)
-        end
+          # Filtrovani se renderuje zde
+          if is_filtering?(filter_method)
 
+            if clear_filter? # Tlacitko Smazat filtr
+              render_table_on_clear_filter(settings, show_table_method)
+            else # Ostatni filtry
+              render_tbody_on_filter(settings)
+            end
+
+          end
       end
 
       # Cele vykresleni stranky normalne z metody, ktera toto zavolala
     end
 
-    def set_default_params(filter_method, show_table_method, settings )
+    def set_default_params(filter_method, show_table_method, settings)
       default_params = params
       default_params = default_params_for_clear_filter(settings) if is_filtering?(filter_method) && clear_filter?
       default_params = default_params_for_show_table(settings) if is_showing_table?(show_table_method)
       default_params
+    end
+
+    def render_table_for_printing(settings, show_table_method)
+      render :layout => "print", :action => (show_table_method.blank? ? :index : show_table_method)
     end
 
     def render_table_on_clear_filter(settings, show_table_method)
@@ -101,6 +127,10 @@ module ControllerMixins
 
     def clear_filter?
       !params.blank? && params["clear"]
+    end
+
+    def display_method
+      params["___display_method___"]
     end
 
     def default_params_for_clear_filter(settings)

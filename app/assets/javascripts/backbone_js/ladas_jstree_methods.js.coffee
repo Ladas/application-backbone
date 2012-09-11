@@ -16,13 +16,13 @@ class JstreeMethods
   ############### private ##########3
 
   @show: (element) ->
-    element.show()
+    element.show("fast")
     element.parent("li").removeClass("jstree-closed")
     element.parent("li").addClass("jstree-open")
     element.parent("li").children("button").html("-")
 
   @hide: (element) ->
-    element.hide()
+    element.hide("fast")
     element.parent("li").removeClass("jstree-open")
     element.parent("li").addClass("jstree-closed")
     element.parent("li").children("button").html("+")

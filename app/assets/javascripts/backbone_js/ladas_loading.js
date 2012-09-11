@@ -204,7 +204,7 @@ function build_url(settings) {
         }
 
         if (settings['symlink_params']) {
-            url += settings['params'];
+            url += settings['symlink_params'];
         }
     }
 

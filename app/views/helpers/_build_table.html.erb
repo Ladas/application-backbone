@@ -1,3 +1,7 @@
+<%= yield :above_table_form %>
+
+<%= render :partial => "/helpers/build_table_text_description", :locals => {:settings => settings} %>
+
 <%= form_tag settings[:filter_path], :html => {:'data-type' => 'html'}, :method => 'POST', :class => 'well dataGrid', :remote => true, :id => settings[:form_id] do |f| %>
     <% if content_for?(:table_form) %>
         <%= yield :table_form %>

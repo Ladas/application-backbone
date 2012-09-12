@@ -39,7 +39,7 @@ module ModelMixins
       # todo when template passed, this code is not probably needed
       # the array of items, Will be filled with column method values, formatting values, etc.
       all_items = items.all # maybe can be done more optimal
-      all_items_row_ids = all_items.collect{|x| x.row_id}.uniq
+      all_items_row_ids = all_items.collect { |x| x.row_id }.uniq
 
 
       if settings[:template].blank?
@@ -226,6 +226,21 @@ module ModelMixins
 
       #count = items.sum(col[:name])
       count = mysql_count.first[:sum_column]
+
+      format_method = nil
+
+      format_method = col[:format_method] unless col[:format_method].blank?
+      format_method = col[:global_format_method] unless col[:global_format_method].blank?
+
+      unless format_method.blank?
+        if object.respond_to?(:klass)
+          count = object.klass.new.send(format_method.to_sym, count)
+        else
+          count = object.new.send(format_method.to_sym, count)
+        end
+      end
+
+      count
     end
 
     def selection(settings)

@@ -39,7 +39,9 @@ class TableBuilder
           summarize_page_present = true
           summarize_page += '<div class="summarize_page">'
           summarize_page += if col.summarize_page_label? then col.summarize_page_label else '<span class="label">Celkem na stránce: </span>'
+          summarize_page += '<span class="value">'
           summarize_page += if col.summarize_page_value? then col.summarize_page_value else 0
+          summarize_pagel += '</span>'
           summarize_page += '</div>'
 
         summarize_page += '</td>'
@@ -61,7 +63,9 @@ class TableBuilder
           summarize_all_present = true
           summarize_all += '<div class="summarize_all">'
           summarize_all += if col.summarize_all_label? then col.summarize_all_label else '<span class="label">Celkem: </span>'
+          summarize_all += '<span class="value">'
           summarize_all += if col.summarize_all_value? then col.summarize_all_value else 0
+          summarize_all += '</span>'
           summarize_all += '</div>'
         summarize_all += '</td>'
     summarize_all += '</tr>'

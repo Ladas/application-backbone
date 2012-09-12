@@ -36,6 +36,7 @@ module ModelMixins
         items = not_selected_items.selection(settings)
       end
 
+      # todo when template passed, this code is not probably needed
       # the array of items, Will be filled with column method values, formatting values, etc.
       all_items = items.all # maybe can be done more optimal
       all_items_row_ids = all_items.collect{|x| x.row_id}.uniq

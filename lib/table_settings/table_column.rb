@@ -141,17 +141,6 @@ class TableSettings
       self
     end
 
-    # Count summary for page
-    def summarize_page
-      @column_hash[:summarize_page]
-      self
-    end
-
-    # Count summary for column
-    def summarize_all
-      @column_hash[:summarize_all]
-      self
-    end
   end
 
 end

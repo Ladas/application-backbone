@@ -38,6 +38,8 @@ module ModelMixins
 
       # the array of items, Will be filled with column method values, formatting values, etc.
       all_items = items.all # maybe can be done more optimal
+      all_items_row_ids = all_items.collect{|x| x.row_id}.uniq
+
 
       if settings[:template].blank?
         # initialize another_global_formats,another_formats and column_methods
@@ -88,9 +90,12 @@ module ModelMixins
         #template_items = object.joins("RIGHT OUTER JOIN (" + not_selected_items.select(settings[:row][:id] + " AS row_id").to_sql + ") temp_template_query ON #{settings[:row][:id]} = temp_template_query.row_id")
         # the AREL with items
         if object.respond_to?(:klass)
-          template_items = object.klass.joins("RIGHT OUTER JOIN (" + items.uniq.to_sql + ") temp_template_query ON #{settings[:row][:id]} = temp_template_query.row_id")
+          #template_items = object.klass.joins("RIGHT OUTER JOIN (" + items.uniq.to_sql + ") temp_template_query ON #{settings[:row][:id]} = temp_template_query.row_id")
+          # more optimalized
+          template_items = object.klass.where("#{settings[:row][:id]}" => all_items_row_ids)
         else
-          template_items = object.joins("RIGHT OUTER JOIN (" + items.uniq.to_sql + ") temp_template_query ON #{settings[:row][:id]} = temp_template_query.row_id")
+          #template_items = object.joins("RIGHT OUTER JOIN (" + items.uniq.to_sql + ") temp_template_query ON #{settings[:row][:id]} = temp_template_query.row_id")
+          template_items = object.where("#{settings[:row][:id]}" => all_items_row_ids)
         end
 
         template_items = template_items.includes(settings[:includes])

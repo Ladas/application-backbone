@@ -357,13 +357,56 @@ module ModelMixins
             end
           end
 
-          if !params.blank? && (params['date_from'] || params['number_from'])
+          if !params.blank? && (params['date_from'])
             from_hash = params['date_from']
-            if from_hash.blank?
-              from_hash = params['number_from']
-            else
-              from_hash.merge!(params['number_from']) unless params['number_from'].blank?
+
+            from_hash.each_pair do |i, v|
+              i = i.gsub(/___unknown___\./, "") #some cleaning job
+              unless v.blank?
+                if i.match(/^.*?___sql_expression___.*$/i)
+                  i = i.gsub(/___sql_expression___\./, "") #some cleaning job
+                  having_cond_str += " AND " unless having_cond_str.blank?
+                  cond_id = "date_from_#{i.gsub(/\./, '_')}"
+                  having_cond_str += "#{i} >= :#{cond_id}" #OR guest_email LIKE :find"
+                  having_cond_hash.merge!({cond_id.to_sym => "#{v}"})
+                else
+                  cond_str += " AND " unless cond_str.blank?
+                  cond_id = "date_from_#{i.gsub(/\./, '_')}"
+                  cond_str += "#{i} >= :#{cond_id}" #OR guest_email LIKE :find"
+                  v = Time.parse(v)  # queries to database has to be in utc date
+                  cond_hash.merge!({cond_id.to_sym => "#{v.utc}"})
+                end
+              end
             end
+          end
+
+          if !params.blank? && (params['date_to'])
+            to_hash = params['date_to']
+
+            to_hash.each_pair do |i, v|
+              i = i.gsub(/___unknown___\./, "") #some cleaning job
+              unless v.blank?
+                if i.match(/^.*?___sql_expression___.*$/i)
+                  i = i.gsub(/___sql_expression___\./, "") #some cleaning job
+                  having_cond_str += " AND " unless having_cond_str.blank?
+                  cond_id = "date_to_#{i.gsub(/\./, '_')}"
+                  having_cond_str += "#{i} <= :#{cond_id}" #OR guest_email LIKE :find"
+                  having_cond_hash.merge!({cond_id.to_sym => "#{v}"})
+                else
+                  cond_str += " AND " unless cond_str.blank?
+                  cond_id = "date_to_#{i.gsub(/\./, '_')}"
+                  cond_str += "#{i} <= :#{cond_id}" #OR guest_email LIKE :find"
+                  v = Time.parse(v)  # queries to database has to be in utc date
+                  cond_hash.merge!({cond_id.to_sym => "#{v.utc}"})
+                end
+              end
+            end
+          end
+
+
+          if !params.blank? && (params['number_from'])
+            from_hash = params['number_from']
+
             from_hash.each_pair do |i, v|
               i = i.gsub(/___unknown___\./, "") #some cleaning job
               unless v.blank?
@@ -383,13 +426,9 @@ module ModelMixins
             end
           end
 
-          if !params.blank? && (params['date_to'] || params['number_to'])
-            to_hash = params['date_to']
-            if to_hash.blank?
-              to_hash = params['number_to']
-            else
-              to_hash.merge!(params['number_to']) unless params['number_to'].blank?
-            end
+          if !params.blank? && (params['number_to'])
+            to_hash = params['number_to']
+
             to_hash.each_pair do |i, v|
               i = i.gsub(/___unknown___\./, "") #some cleaning job
               unless v.blank?
@@ -408,6 +447,7 @@ module ModelMixins
               end
             end
           end
+
 
         #items = self.joins("LEFT OUTER JOIN intranet_text_pages ON resource_id = intranet_text_pages.id").where(cond_str, cond_hash).paginate(:page => params[:page], :per_page => per_page).order(order_by).selection(settings)
         #if params[:page].to_i > items.total_pages && items.total_pages > 0

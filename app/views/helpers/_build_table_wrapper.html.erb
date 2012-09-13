@@ -17,10 +17,10 @@
           <!--<a onclick="CheckboxPool.clear_by_form_id('<%#= settings[:form_id] %>')" class="btn uncheck">Odznačit vše</a>-->
           <!--</div>-->
 
-          <span title="Počet označených řádků na všech stránkách" id="<%= settings[:form_id]+ "_active_checkboxes_count" %>">
-                                  <%= !settings[:params]["checkbox_pool"].blank? ? settings[:params]["checkbox_pool"].split(",").count : 0 %>
-                                </span>
-          <br/>
+          <!--<span title="Počet označených řádků na všech stránkách" id="<%#= settings[:form_id]+ "_active_checkboxes_count" %>">-->
+                                  <!--<%#= !settings[:params]["checkbox_pool"].blank? ? settings[:params]["checkbox_pool"].split(",").count : 0 %>-->
+                                <!--</span>-->
+          <!--<br/>-->
           <input type="checkbox" title="Označit/odznačit vše na stránce" onclick="CheckboxPool.check_or_uncheck_page(this, '<%= settings[:form_id] %>')" id=""/>
 
           <!--<div class="checkboxes_menu">-->

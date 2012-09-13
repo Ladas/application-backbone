@@ -19,13 +19,13 @@ class JstreeMethods
     element.show("fast")
     element.parent("li").removeClass("jstree-closed")
     element.parent("li").addClass("jstree-open")
-    element.parent("li").children("button").html("-")
+    element.parent("li").children("button").html('<i class="icon-minus-sign"></i>')
 
   @hide: (element) ->
     element.hide("fast")
     element.parent("li").removeClass("jstree-open")
     element.parent("li").addClass("jstree-closed")
-    element.parent("li").children("button").html("+")
+    element.parent("li").children("button").html('<i class="icon-plus-sign"></i>')
 
 
 window.JstreeMethods = JstreeMethods

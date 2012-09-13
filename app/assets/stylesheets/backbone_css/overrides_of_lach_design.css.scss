@@ -1,0 +1,47 @@
+#intranet_left_menu  button.left_menu_plus_button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  z-index: 20;
+  display: inline;
+  margin: 0px;
+
+
+}
+
+#intranet_left_menu  li.hasSubmenu {
+  position: relative
+}
+
+
+li.active > a {
+  background-color: #9C8866 !important;
+  border-color: #9CCB3B !important;
+  color: white !important;
+}
+
+
+.dataGrid table {
+  margin: 0;
+}
+
+
+.icon-shopping-card {
+  background-position: -359px -118px;
+  width: 15px;
+  height: 15px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.summarize_all .value, .summarize_page .value {
+  display: block;
+}
+
+
+.tabs {
+  min-height: 49px;
+}
+

@@ -8,11 +8,16 @@
 
   <% if settings[:data_paginate].total_pages > 1 %>
       <div id="<%= settings[:form_id] %>_pagination" class="paging <%= settings[:form_id] %>_pager">
-        <input type="text" class="own_page" value="<%= settings[:params].blank? ? 1 : settings[:params]["page"] %>"
-               onkeypress="paginate_by_enter('<%= settings[:form_id] %>', this, event);">
-        <button class="btn" onclick='$("#" + "<%= settings[:form_id] %>" + "_page").val($(this).prev("input").val()); $("#" + "<%= settings[:form_id] %>").submit(); return false;'>Přejít</button>
-        <%= will_paginate settings[:data_paginate], {:container => false, :inner_window => 1, :outer_window => 1} %>
-        <%= page_entries_info settings[:data_paginate] %>
+        <div class="goToPage">
+          <input type="text" class="own_page" value="<%= settings[:params].blank? ? 1 : settings[:params]["page"] %>"
+                 placeholder="Strana"
+                 onkeypress="paginate_by_enter('<%= settings[:form_id] %>', this, event);">
+          <button class="btn" onclick='$("#" + "<%= settings[:form_id] %>" + "_page").val($(this).prev("input").val()); $("#" + "<%= settings[:form_id] %>").submit(); return false;'>Přejít</button>
+        </div>
+        <div class="pages">
+          <%= will_paginate settings[:data_paginate], {:container => false, :inner_window => 1, :outer_window => 1} %>
+          <%= page_entries_info settings[:data_paginate] %>
+        </div>
       </div>
 
   <% end %>

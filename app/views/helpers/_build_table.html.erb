@@ -1,33 +1,48 @@
-<%= yield :above_table_form %>
-
 <%= render :partial => "/helpers/build_table_text_description", :locals => {:settings => settings} %>
-<% if settings[:display_method].blank? %>
-    <% if settings[:checkboxes] %>
-        <script type="text/javascript">
-            function submit_in_new_window(form_id) {
-                var form_original = $("#" + form_id);
-                var form = form_original.clone(true, true);
-                form.attr("data-remote", "false");
-                form.attr("target", "_blank");
 
-                //Create an input type dynamically.
-                var element = document.createElement("input");
+<div class="tabs">
+  <%= yield :table_form_tabs %>
 
-                //Assign different attributes to the element.
-                element.setAttribute("type", "hidden");
-                element.setAttribute("value", "print_by_checkboxes");
-                element.setAttribute("name", "___display_method___");
+  <div class="info">
 
 
-                //Append the element in form
-                form.append(element);
-                form.submit();
-            }
 
-        </script>
-        <a href="#" class="btn" onclick="submit_in_new_window('<%= settings[:form_id] %>'); return false;">Tisk</a>
+    <span>Vybraných řádků: <strong>
+      <span title="Počet označených řádků na všech stránkách" id="<%= settings[:form_id]+ "_active_checkboxes_count" %>">
+                                         <%= !settings[:params]["checkbox_pool"].blank? ? settings[:params]["checkbox_pool"].split(",").count : 0 %>
+                                       </span>
+    </strong>
+    </span>
+
+    <% if settings[:display_method].blank? %>
+        <% if settings[:checkboxes] %>
+            <script type="text/javascript">
+                function submit_in_new_window(form_id) {
+                    var form_original = $("#" + form_id);
+                    var form = form_original.clone(true, true);
+                    form.attr("data-remote", "false");
+                    form.attr("target", "_blank");
+
+                    //Create an input type dynamically.
+                    var element = document.createElement("input");
+
+                    //Assign different attributes to the element.
+                    element.setAttribute("type", "hidden");
+                    element.setAttribute("value", "print_by_checkboxes");
+                    element.setAttribute("name", "___display_method___");
+
+
+                    //Append the element in form
+                    form.append(element);
+                    form.submit();
+                }
+
+            </script>
+            <a href="#" class="btn" onclick="submit_in_new_window('<%= settings[:form_id] %>'); return false;"><i class="icon-print"></i>&nbsp; Tisknout výběr</a>
+        <% end %>
     <% end %>
-<% end %>
+  </div>
+</div>
 
 <%= form_tag settings[:filter_path], :html => {:'data-type' => 'html'}, :method => 'POST', :class => 'well dataGrid', :remote => true, :id => settings[:form_id] do |f| %>
     <% if settings[:display_method].blank? %>

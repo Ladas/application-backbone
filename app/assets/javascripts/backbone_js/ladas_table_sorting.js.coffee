@@ -49,7 +49,7 @@ class TableSorting
     
 
     new_order_by_val = ""
-    for index,element of order_by_array
+    for element in order_by_array
       if (new_order_by_val != "")
         new_order_by_val += ","
   

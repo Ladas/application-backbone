@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = "it-logica-application-backbone"
-  s.version = "1.0.35"
+  s.version = "1.0.36"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ladas"]
@@ -448,6 +448,7 @@ Gem::Specification.new do |s|
     "app/assets/stylesheets/backbone_css/jquery_datetime_picker.css.scss",
     "app/assets/stylesheets/backbone_css/jquery_ui.css.scss",
     "app/assets/stylesheets/backbone_css/left_menu.css.scss",
+    "app/assets/stylesheets/backbone_css/overrides_of_lach_design.css.scss",
     "app/assets/stylesheets/backbone_css/tables.css.scss",
     "app/assets/stylesheets/backbone_css/themes/default-rtl/d.gif",
     "app/assets/stylesheets/backbone_css/themes/default-rtl/d.png",

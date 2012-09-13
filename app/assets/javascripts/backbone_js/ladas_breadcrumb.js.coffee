@@ -25,6 +25,8 @@ class Breadcrumbs
     $('a[data-breadcrumb-id],li[data-breadcrumb-id]').each (index, element) =>
       $(element).removeClass('active')
 
+    array_of_breadcrubm_texts = Array()
+
     $('.main_breadcrumb li').each (index, element) =>
       bc = $(element)
       href = bc.find('a')
@@ -35,21 +37,40 @@ class Breadcrumbs
 
       text = text.replace(/\n/g, ' ').replace(/\r/g, ' ');
 
+      array_of_breadcrubm_texts.push(text)
+      Breadcrumbs.mark_menu_item(text, array_of_breadcrubm_texts)
 
-      Breadcrumbs.mark_menu_item(text)
       Breadcrumbs.change_document_title(title_prefix, title_suffix, text) if (index + 1) >= $('.main_breadcrumb li').length
 
     # default title if there is no breadcrumbs
     Breadcrumbs.change_document_title("","", title_default) if $('.main_breadcrumb li').lenght <= 0
 
 
-  @mark_menu_item: (val) ->
-    finding_string = "li[data-breadcrumb-id='" + val + "']"
-    finding_string += ",a[data-breadcrumb-id='" + val + "']"
+  @mark_menu_item: (val, array_of_breadcrubm_texts) ->
+    finding_string = Breadcrumbs.make_finding_string(val)
     #console.log $(finding_string)
 
     found = $(finding_string)
-    found.addClass('active') if found
+    # todo add possibility to bypass this, like with class not_tree
+    # if breadcrumb is al least 3 long (the main page is not probably in the tree)
+    # I have to find also previous element as the parent of the active element in the TREE
+    if found
+      if array_of_breadcrubm_texts.length > 2
+        previous_val = array_of_breadcrubm_texts[array_of_breadcrubm_texts.length - 2]
+#        console.log("here")
+#        console.log(val)
+#        console.log(previous_val)
+        found_previous = found.parents(Breadcrumbs.make_finding_string(previous_val))
+        if found_previous
+          found = found_previous.find(finding_string)
+          found.addClass('active') if found
+      else
+        found.addClass('active')
+
+  @make_finding_string: (val) ->
+    finding_string = "li[data-breadcrumb-id='" + val + "']"
+    finding_string += ",a[data-breadcrumb-id='" + val + "']"
+    return finding_string
 
   @change_document_title: (title_prefix,suffix, val) ->
     $(document).attr('title', title_prefix + val + suffix);

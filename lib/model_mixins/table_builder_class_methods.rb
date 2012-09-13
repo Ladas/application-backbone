@@ -1,5 +1,11 @@
 module ModelMixins
   module TableBuilderClassMethods
+    @@can_edit_description = false
+    class << self
+      attr_accessor :can_edit_description
+    end
+
+
     def prepare_settings(logged_user, object, settings, params, per_page = 10)
       params[:page] = 1 if params[:page].blank?
       params[:order_by] = settings[:default][:order_by] + " " + settings[:default][:order_by_direction] if params[:order_by].blank? && !settings[:default][:order_by].blank? && !settings[:default][:order_by_direction].blank?

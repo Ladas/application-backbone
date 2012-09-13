@@ -21,8 +21,8 @@
 
      edit_right = true if settings[:can_edit_description]
 
-     if defined?(ModelMixins::TableBuilderClassMethods::CAN_EDIT_DESCRIPTION)
-       ModelMixins::TableBuilderClassMethods::CAN_EDIT_DESCRIPTION &&
+     if defined?(ModelMixins::TableBuilderClassMethods.can_edit_description)
+       ModelMixins::TableBuilderClassMethods.can_edit_description &&
                edit_right = true
      end
 
@@ -42,9 +42,9 @@
        else
          edit_description_path[:symlink_action] = :new
          edit_description_path[:symlink_params] = "?form_id="+settings[:form_id]
+         edit_description_path[:no_tracking] = true
        end
-       edit_description_path[:symlink_remote] = true
-       edit_description_path[:no_tracking] = true
+       edit_description_path[:symlink_remote] = true       
      end
    end
 

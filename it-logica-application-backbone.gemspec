@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = "it-logica-application-backbone"
-  s.version = "1.0.39"
+  s.version = "1.0.40"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ladas"]
@@ -83,6 +83,17 @@ Gem::Specification.new do |s|
     "app/assets/images/backbone_images/control_icons/trash_can.png",
     "app/assets/images/backbone_images/control_icons/unlock.png",
     "app/assets/images/backbone_images/control_icons/wrench.png",
+    "app/assets/images/backbone_images/date_select_and_multiselect/arrow-left.png",
+    "app/assets/images/backbone_images/date_select_and_multiselect/arrow-right.png",
+    "app/assets/images/backbone_images/date_select_and_multiselect/btn-close.png",
+    "app/assets/images/backbone_images/date_select_and_multiselect/btn-green.png",
+    "app/assets/images/backbone_images/date_select_and_multiselect/btn-select.png",
+    "app/assets/images/backbone_images/date_select_and_multiselect/btn.png",
+    "app/assets/images/backbone_images/date_select_and_multiselect/select-all.png",
+    "app/assets/images/backbone_images/date_select_and_multiselect/select-close.png",
+    "app/assets/images/backbone_images/date_select_and_multiselect/slide.png",
+    "app/assets/images/backbone_images/date_select_and_multiselect/time.png",
+    "app/assets/images/backbone_images/date_select_and_multiselect/top-arrow.png",
     "app/assets/images/backbone_images/fancy_close.png",
     "app/assets/images/backbone_images/fancy_loading.png",
     "app/assets/images/backbone_images/fancy_nav_left.png",
@@ -459,6 +470,8 @@ Gem::Specification.new do |s|
     "app/assets/stylesheets/backbone_css/themes/default/d.png",
     "app/assets/stylesheets/backbone_css/themes/default/style.css",
     "app/assets/stylesheets/backbone_css/themes/default/throbber.gif",
+    "app/assets/stylesheets/backbone_css/z_date_select.css.scss",
+    "app/assets/stylesheets/backbone_css/z_multi_select.css.scss",
     "app/views/helpers/_build_ajax_callback_code.html.erb",
     "app/views/helpers/_build_breadcrumb.html.erb",
     "app/views/helpers/_build_datafiles.html.erb",

@@ -156,15 +156,15 @@ class TableSettings
       end
     end
 
-    def column_hash
-
-      unless @column_hash.include?(:class)
-        model = @column_hash[:table].classify.constantize
-        set_css_class_from_type(model) unless model.nil?
-      end
-
-      @column_hash
-    end
+    #def column_hash
+    #
+    #  unless @column_hash.include?(:class)
+    #    model = @column_hash[:table].classify.constantize
+    #    set_css_class_from_type(model) unless model.nil?
+    #  end
+    #
+    #  @column_hash
+    #end
 
   end
 

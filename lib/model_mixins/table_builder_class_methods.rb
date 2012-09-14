@@ -348,6 +348,30 @@ module ModelMixins
             end
           end
 
+          if !params.blank? && params['find_exact']
+            params['find'].each_pair do |i, v|
+              i = i.gsub(/___unknown___\./, "") #some cleaning job
+              unless v.blank?
+                if i.match(/^.*?non_existing_column___.*$/i)
+                  puts "It has to be existing column for exact match"
+                else
+                  if i.match(/^.*?___sql_expression___.*$/i)
+                    i = i.gsub(/___sql_expression___\./, "") #some cleaning job
+
+                    having_cond_str += " AND " unless having_cond_str.blank?
+                    cond_id = "find_#{i.gsub(/\./, '_')}"
+                    having_cond_str += "#{i} = :#{cond_id}" #OR guest_email LIKE :find"
+                    having_cond_hash.merge!({cond_id.to_sym => "%#{v}%"})
+                  else
+                    cond_str += " AND " unless cond_str.blank?
+                    cond_id = "find_#{i.gsub(/\./, '_')}"
+                    cond_str += "#{i} = :#{cond_id}" #OR guest_email LIKE :find"
+                    cond_hash.merge!({cond_id.to_sym => "%#{v}%"})
+                  end
+                end
+              end
+            end
+          end
 
           # ToDo ladas add having condition to others
           if !params.blank? && params['multichoice']
@@ -379,7 +403,7 @@ module ModelMixins
                   cond_str += " AND " unless cond_str.blank?
                   cond_id = "date_from_#{i.gsub(/\./, '_')}"
                   cond_str += "#{i} >= :#{cond_id}" #OR guest_email LIKE :find"
-                  v = Time.parse(v)  # queries to database has to be in utc date
+                  v = Time.parse(v) # queries to database has to be in utc date
                   cond_hash.merge!({cond_id.to_sym => "#{v.utc}"})
                 end
               end
@@ -402,7 +426,7 @@ module ModelMixins
                   cond_str += " AND " unless cond_str.blank?
                   cond_id = "date_to_#{i.gsub(/\./, '_')}"
                   cond_str += "#{i} <= :#{cond_id}" #OR guest_email LIKE :find"
-                  v = Time.parse(v)  # queries to database has to be in utc date
+                  v = Time.parse(v) # queries to database has to be in utc date
                   cond_hash.merge!({cond_id.to_sym => "#{v.utc}"})
                 end
               end

@@ -18,8 +18,8 @@
           <!--</div>-->
 
           <!--<span title="Počet označených řádků na všech stránkách" id="<%#= settings[:form_id]+ "_active_checkboxes_count" %>">-->
-                                  <!--<%#= !settings[:params]["checkbox_pool"].blank? ? settings[:params]["checkbox_pool"].split(",").count : 0 %>-->
-                                <!--</span>-->
+          <!--<%#= !settings[:params]["checkbox_pool"].blank? ? settings[:params]["checkbox_pool"].split(",").count : 0 %>-->
+          <!--</span>-->
           <!--<br/>-->
           <input type="checkbox" title="Označit/odznačit vše na stránce" onclick="CheckboxPool.check_or_uncheck_page(this, '<%= settings[:form_id] %>')" id=""/>
 
@@ -76,6 +76,12 @@
                     <% saved_param = (!settings[:params].blank? && !settings[:params]['find'].blank? && !settings[:params]['find']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['find']["#{col[:table]}.#{col[:name]}"] : "" %>
                     <%= text_field_tag "find[#{col[:table]}.#{col[:name]}]", saved_param,
                                        {:class => "text first #{settings[:form_id] + '_column_find'}"} %>
+                  </div>
+              <% when :find_exact %>
+                  <div class="inputs clearfix">
+                    <% saved_param = (!settings[:params].blank? && !settings[:params]['find_exact'].blank? && !settings[:params]['find_exact']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['find_exact']["#{col[:table]}.#{col[:name]}"] : "" %>
+                    <%= text_field_tag "find_exact[#{col[:table]}.#{col[:name]}]", saved_param,
+                                       {:class => "text first #{settings[:form_id] + '_column_find_exact'}"} %>
                   </div>
               <% when :multichoice %>
                   <div class="inputs clearfix">

@@ -3,7 +3,7 @@ class TableSettings
   attr_accessor :table_settings
 
   class Column
-    attr_accessor :column_hash, :index
+    attr_accessor :index
 
     def initialize(table_settings, index)
       @table_settings = table_settings
@@ -11,9 +11,12 @@ class TableSettings
       @index = index
     end
 
+    def column_hash
+      @column_hash
+    end
 
     def css_class(class_name)
-      @column_hash[:class_name] = class_name
+      @column_hash[:class] = class_name
 
       self
     end
@@ -139,6 +142,28 @@ class TableSettings
     def table(name)
       @column_hash[:table] = name
       self
+    end
+
+
+    def set_css_class_from_type(model)
+      column_params = model.columns_hash[@column_hash[:name]]
+      case column_params.type
+        when :boolean then css_class("boolean")
+        when :datetime then css_class("datetime")
+        when :string then css_class("string")
+        when :decimal then css_class("decimal")
+        else nil
+      end
+    end
+
+    def column_hash
+
+      unless @column_hash.include?(:class)
+        model = @column_hash[:table].classify.constantize
+        set_css_class_from_type(model) unless model.nil?
+      end
+
+      @column_hash
     end
 
   end

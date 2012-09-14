@@ -50,7 +50,7 @@ class TableSettings
     end
 
     def global_format_method(col_name, fnc_name)
-      @hash[:global_format_method][:col_name] = fnc_name
+      @hash[:global_format_method][col_name] = fnc_name
       self
     end
 

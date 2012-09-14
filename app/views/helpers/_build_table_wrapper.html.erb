@@ -184,4 +184,11 @@
     $(".ui-multiselect-menu").css("width", "240px");
     $("button.ui-multiselect").css("width", "55px");
     $("button.ui-multiselect").css("height", "28px");
+
+    $('.multiselect_class').bind("multiselectcheckall", function (event, ui) {
+        form_submit_watcher('<%=settings[:form_id] %>');
+    });
+    $('.multiselect_class').bind("multiselectuncheckall", function (event, ui) {
+        form_submit_watcher('<%=settings[:form_id] %>');
+    });
 </script>

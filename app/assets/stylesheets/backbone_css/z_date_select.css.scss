@@ -1,0 +1,207 @@
+// Datapicker all classes
+.ui-datepicker {
+  background: #f5f3ef !important;
+  border: 1px solid #ababab;
+  box-shadow: 0 1px 3px #b3b3b3;
+  width: 17em;
+  padding: .2em .2em 0;
+  display: none;
+  font-family: georgia, sans-serif !important;
+  font-size: 13px;
+
+  // Datapicker header
+
+  .ui-datepicker-header {
+    background: none !important;
+    border: 0 none !important;
+    position: relative;
+    padding: .2em 0;
+    margin-bottom: 10px;
+  }
+
+  .ui-datepicker-prev,
+  .ui-datepicker-next {
+    position: absolute;
+    top: 2px;
+    width: 30px !important;
+    height: 30px !important;
+  }
+  .ui-datepicker-prev {
+    background: asset-url('/assets/backbone_images/date_select_and_multiselect/arrow-left.png', image) no-repeat left top;
+    left: 2px;
+  }
+  .ui-datepicker-next {
+    background: asset-url('/assets/backbone_images/date_select_and_multiselect/arrow-right.png', image) no-repeat left top;
+    right: 2px;
+  }
+  .ui-datepicker-prev-hover,
+  .ui-datepicker-next-hover {
+    top: 2px;
+    border: 0 none !important;
+  }
+  .ui-datepicker-prev-hover {
+    left: 2px;
+  }
+  .ui-datepicker-next-hover {
+    right: 2px;
+  }
+  .ui-datepicker-prev span,
+  .ui-datepicker-next span {
+    display: none !important;
+    position: absolute;
+    left: 50%;
+    margin-left: -8px;
+    top: 50%;
+    margin-top: -8px;
+  }
+  .ui-datepicker-title {
+    margin: 0 2.3em;
+    line-height: 1.8em;
+    text-align: center;
+  }
+
+  .ui-datepicker-title select {
+    font-size: 1em;
+    margin: -1px 0 !important;
+  }
+  select.ui-datepicker-month-year {
+    width: 100%;
+  }
+  select.ui-datepicker-month,
+  select.ui-datepicker-year {
+    width: 45% !important;
+  }
+  select.ui-datepicker-year {
+    width: 40% !important;
+    margin-left: 5px !important;
+  }
+  table {
+    width: 100%;
+    font-size: .9em;
+    border-collapse: collapse;
+    margin: 0 0 .4em;
+  }
+  th {
+    padding: .7em .3em;
+    text-align: center;
+    font-weight: bold;
+    border: 0;
+  }
+  td {
+    border: 0;
+    padding: 1px;
+
+    span, a {
+      display: block;
+      padding: .2em;
+      text-align: center;
+      text-decoration: none;
+    }
+  }
+  dd, dt {
+    margin: 10px;
+  }
+}
+
+.ui-datepicker-calendar {
+  background: #ffffff !important;
+  border: 1px solid #cccccc !important;
+  border-radius: 2px;
+  margin: 10px 5px;
+}
+
+.ui-datepicker-calendar th {
+  background: none;
+  color: #777777 !important;
+  text-transform: uppercase;
+  border-bottom: 1px solid #cccccc !important;
+}
+
+/* Interaction states
+----------------------------------*/
+.ui-widget-content .ui-state-default,
+.ui-widget-header .ui-state-default {
+  border: 0 none;
+  background: none;
+  font-weight: normal;
+  color: #000000;
+}
+.ui-widget-content .ui-state-default.ui-state-active {
+  border: 0 none;
+  background-color: #beda87 !important;
+  font-weight: normal;
+  color: #000000;
+}
+
+
+.ui-state-default a,
+.ui-state-default a:link,
+.ui-state-default a:visited {
+  color: #000000;
+  text-decoration: none;
+}
+
+.ui-state-highlight,
+.ui-widget-content .ui-state-highlight,
+.ui-widget-header .ui-state-highlight {
+  border: 0 none;
+  background: #97c635 !important;
+  color: #ffffff !important;
+  font-weight: bold;
+}
+
+.ui-state-highlight a,
+.ui-widget-content .ui-state-highlight a,
+.ui-widget-header .ui-state-highlight a {
+  color: #ffffff !important;
+}
+
+/* Component containers
+----------------------------------*/
+.ui-widget-content {
+  border: 1px solid #b2b2b2;
+  background: #ffffff;
+  color: #000000;
+}
+
+.ui-widget-content a {
+  color: #000000;
+}
+.ui_tpicker_time_label {
+  float: left;
+  margin-top: 5px !important;
+}
+.ui_tpicker_time {
+  background: asset-url('/assets/backbone_images/date_select_and_multiselect/time.png', image) no-repeat left top !important;
+  width: 56px;
+  height: 24px;
+  color: #898989 !important;
+  margin-left: 45px !important;
+  padding: 3px 0px 0 5px;
+}
+.ui-slider {
+  background: #cccccc !important;
+  border: 1px solid #ababab !important;
+  height: 4px !important;
+}
+.ui-datepicker-current {
+  background: asset-url('/assets/backbone_images/date_select_and_multiselect/btn.png', image) no-repeat left top !important;
+  width: 62px !important;
+  height: 30px !important;
+  color: #000000 !important;
+  font-size: 14px !important;
+}
+.ui-datepicker-close {
+  background: asset-url('/assets/backbone_images/date_select_and_multiselect/btn-green.png', image) no-repeat left top !important;
+  width: 69px !important;
+  height: 30px !important;
+  color: #ffffff !important;
+  font-size: 14px !important;
+  text-shadow: -1px 0 #739924;
+}
+.ui-slider-handle {
+  background: asset-url('/assets/backbone_images/date_select_and_multiselect/slide.png', image) no-repeat left top !important;
+  width: 18px !important;
+  height: 18px !important;
+  top: -6px !important;
+}

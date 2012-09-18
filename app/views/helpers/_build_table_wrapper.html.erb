@@ -49,7 +49,7 @@
               <div class="sortable clearfix">
                 <% if col[:column_method].blank? && col[:row_method].blank? && !col[:name].blank? %>
                     <a href="#"
-                       onclick="TableSorting.change_sorting('<%= settings[:form_id] %>','<%= col[:table] + "." +col[:name] %>', 'asc', this); return false;"
+                       onclick="TableSorting.force_change_sorting('<%= settings[:form_id] %>','<%= col[:table] + "." +col[:name] %>', 'asc', this); return false;"
                        ondblclick="TableSorting.force_change_sorting('<%= settings[:form_id] %>','<%= col[:table] + "." +col[:name] %>', 'asc', this); return false;"
                        title="Seřadit od nejnižší hodnoty"
                        class="btn first sort_button <%= (order_by_arr.include?(col[:table] + "." + col[:name] + " asc")) ? "btn-success" : "" %>"
@@ -58,7 +58,7 @@
                     </a>
 
                     <a href="#"
-                       onclick="TableSorting.change_sorting('<%= settings[:form_id] %>','<%= col[:table] + "." +col[:name] %>', 'desc', this); return false;"
+                       onclick="TableSorting.force_change_sorting('<%= settings[:form_id] %>','<%= col[:table] + "." +col[:name] %>', 'desc', this); return false;"
                        ondblclick="TableSorting.force_change_sorting('<%= settings[:form_id] %>','<%= col[:table] + "." +col[:name] %>', 'desc', this); return false;"
                        title="Seřadit od nejvyšší hodnoty"
                        class="btn sort_button <%= (order_by_arr.include?(col[:table] + "." + col[:name] + " desc")) ? "btn-success" : "" %>"

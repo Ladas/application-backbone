@@ -1,5 +1,5 @@
 <div class="page">
-<%= render :partial => "/helpers/build_table_text_description", :locals => {:settings => settings} %>
+  <%= render :partial => "/helpers/build_table_text_description", :locals => {:settings => settings} %>
 </div>
 <div class="tabs">
   <%= yield :table_form_tabs %>
@@ -20,9 +20,19 @@
             <script type="text/javascript">
                 function submit_in_new_window(form_id) {
                     var form_original = $("#" + form_id);
-                    var form = form_original.clone(true, true);
-                    form.attr("data-remote", "false");
+
+                    // create new form by cloning without events
+                    var form = form_original.clone(false)
+
+                    // disabling ajax
+                    form.removeAttr("data-remote");
+
                     form.attr("target", "_blank");
+                    form.attr("action", form_original.attr("action"));
+                    form.attr("style", "display: none;");
+
+                    // need to append it to browser html, otherwise it wont send in many browsers (with clone it works only with chrome)
+                    form_original.after(form);
 
                     //Create an input type dynamically.
                     var element = document.createElement("input");
@@ -32,14 +42,16 @@
                     element.setAttribute("value", "print_by_checkboxes");
                     element.setAttribute("name", "___display_method___");
 
-
                     //Append the element in form
                     form.append(element);
+
                     form.submit();
+                    form.remove();
                 }
 
             </script>
-            <a href="#" class="btn" onclick="submit_in_new_window('<%= settings[:form_id] %>'); return false;"><i class="icon-print"></i>&nbsp; Tisknout výběr</a>
+            <a href="#" class="btn" onclick="submit_in_new_window('<%= settings[:form_id] %>'); return false;"><i class="icon-print"></i>&nbsp;
+              Tisknout výběr</a>
         <% end %>
     <% end %>
   </div>

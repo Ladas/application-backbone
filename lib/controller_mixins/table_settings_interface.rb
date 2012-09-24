@@ -12,7 +12,11 @@ module ControllerMixins
       par = params
       path.each do |p|
         break if par.blank?
-        par = par[p.to_s]
+        unless par[p.to_s].blank?
+          par = par[p.to_s]
+        else
+          par = nil
+        end
       end
       selected = par unless par.blank?
 
@@ -21,7 +25,11 @@ module ControllerMixins
 
         path.each do |p|
           break if par.blank?
-          par = par[p.to_s] unless par[p.to_s].blank?
+          unless par[p.to_s].blank?
+            par = par[p.to_s]
+          else
+            par = nil
+          end
         end
         selected = par
       end

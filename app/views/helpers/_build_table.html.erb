@@ -7,13 +7,14 @@
   <div class="info">
 
 
-
+    <% if settings[:checkboxes] %>
     <span>Vybraných řádků: <strong>
       <span title="Počet označených řádků na všech stránkách" id="<%= settings[:form_id]+ "_active_checkboxes_count" %>">
                                          <%= !settings[:params]["checkbox_pool"].blank? ? settings[:params]["checkbox_pool"].split(",").count : 0 %>
                                        </span>
     </strong>
     </span>
+    <% end %>
 
     <% if settings[:display_method].blank? %>
         <% if settings[:checkboxes] %>

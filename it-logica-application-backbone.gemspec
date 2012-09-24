@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = "it-logica-application-backbone"
-  s.version = "1.0.46"
+  s.version = "1.0.47"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ladas"]
@@ -80,6 +80,10 @@ Gem::Specification.new do |s|
     "app/assets/images/backbone_images/control_icons/new.png",
     "app/assets/images/backbone_images/control_icons/preview.png",
     "app/assets/images/backbone_images/control_icons/questionmark-orange.gif",
+    "app/assets/images/backbone_images/control_icons/sort_asc.png",
+    "app/assets/images/backbone_images/control_icons/sort_asc_hover.png",
+    "app/assets/images/backbone_images/control_icons/sort_desc.png",
+    "app/assets/images/backbone_images/control_icons/sort_desc_hover.png",
     "app/assets/images/backbone_images/control_icons/trash_can.png",
     "app/assets/images/backbone_images/control_icons/unlock.png",
     "app/assets/images/backbone_images/control_icons/wrench.png",

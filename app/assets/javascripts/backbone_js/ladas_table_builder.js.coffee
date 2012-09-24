@@ -30,21 +30,25 @@ class TableBuilder
     summarize_page = ""
     summarize_page += '<tr class="summarize_page">'
     # todo make sure functions collumn got skipped when placement is different, eg. on the end
+    summarize_page += '<td class="summarize" colspan="2"><span class="label">Celkem na stránce: </span></td>' if TableBuilder.obj.checkboxes?
     summarize_page += '<td class="summarize"></td>' if functions_present
-    summarize_page += '<td class="summarize"></td>' if TableBuilder.obj.checkboxes?
+    col_count = 0
     for col in TableBuilder.obj.columns
       do (col) ->
-        summarize_page += '<td class="summarize">'
-        if col.summarize_page? || col.summarize_page_value?
-          summarize_page_present = true
-          summarize_page += '<div class="summarize_page">'
-          summarize_page += if col.summarize_page_label? then col.summarize_page_label else '<span class="label">Celkem na stránce: </span>'
-          summarize_page += '<span class="value">'
-          summarize_page += if col.summarize_page_value? then col.summarize_page_value else 0
-          summarize_pagel += '</span>'
-          summarize_page += '</div>'
+        col_count += 1
+        # the sumarize label has 2 colspan, so it has to be without 1 first column if there is no function column
+        unless col_count == 1 && !functions_present
+          summarize_page += '<td class="summarize">'
+          if col.summarize_page? || col.summarize_page_value?
+            summarize_page_present = true
+            summarize_page += '<div class="summarize_page">'
+            summarize_page += if col.summarize_page_label? then col.summarize_page_label else ''
+            summarize_page += '<span class="value">'
+            summarize_page += if col.summarize_page_value? then col.summarize_page_value else 0
+            summarize_pagel += '</span>'
+            summarize_page += '</div>'
 
-        summarize_page += '</td>'
+          summarize_page += '</td>'
     summarize_page += '</tr>'
 
 
@@ -54,20 +58,27 @@ class TableBuilder
     summarize_all_present = false
     summarize_all = ""
     summarize_all += '<tr class="summarize_all">'
-    summarize_all += '<td class="summarize"></td>' if functions_present
-    summarize_all += '<td class="summarize"></td>' if TableBuilder.obj.checkboxes?
+
+    summarize_all += '<td class="summarize" colspan="2"><span class="label">Celkem: </span></td>' if TableBuilder.obj.checkboxes?
+    #it has colspan 2 so there is no function column
+    #summarize_all += '<td class="summarize"></td>' if functions_present
+
+    col_count = 0
     for col in TableBuilder.obj.columns
       do (col) ->
-        summarize_all += '<td class="summarize">'
-        if col.summarize_all? || col.summarize_all_value?
-          summarize_all_present = true
-          summarize_all += '<div class="summarize_all">'
-          summarize_all += if col.summarize_all_label? then col.summarize_all_label else '<span class="label">Celkem: </span>'
-          summarize_all += '<span class="value">'
-          summarize_all += if col.summarize_all_value? then col.summarize_all_value else 0
-          summarize_all += '</span>'
-          summarize_all += '</div>'
-        summarize_all += '</td>'
+        col_count += 1
+        # the sumarize label has 2 colspan, so it has to without 1 first column if there is no function column
+        unless col_count == 1 && !functions_present
+          summarize_all += '<td class="summarize">'
+          if col.summarize_all? || col.summarize_all_value?
+            summarize_all_present = true
+            summarize_all += '<div class="summarize_all">'
+            summarize_all += if col.summarize_all_label? then col.summarize_all_label else ''
+            summarize_all += '<span class="value">'
+            summarize_all += if col.summarize_all_value? then col.summarize_all_value else 0
+            summarize_all += '</span>'
+            summarize_all += '</div>'
+          summarize_all += '</td>'
     summarize_all += '</tr>'
 
     TableBuilder.html += summarize_all if summarize_all_present

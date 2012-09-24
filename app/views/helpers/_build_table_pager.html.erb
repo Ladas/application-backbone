@@ -20,6 +20,12 @@
         </div>
       </div>
 
+  <% else %>
+      <div id="<%= settings[:form_id] %>_pagination" class="paging <%= settings[:form_id] %>_pager">
+        <div class="pages">
+          <%= page_entries_info settings[:data_paginate] %>
+        </div>
+      </div>
   <% end %>
 </div>
 

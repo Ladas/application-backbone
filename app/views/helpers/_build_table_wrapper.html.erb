@@ -1,84 +1,26 @@
 <table class="table table-bordered table-condensed table_special">
   <thead>
-  <!--<tr>-->
-  <!--<th colspan="100" class="<%#= settings[:form_id] + '_ajax_pager' %>">-->
-  <!--<%#= render :partial => 'helpers/build_table_pager', :locals => {:settings => settings} %>-->
-  <!--</th>-->
-  <!--</tr>-->
-  <tr>
+  <tr class="filtering_tr">
     <% if !settings[:checkboxes].blank? && settings[:checkboxes] %>
-        <th class="chbox">
-
-          <!--<div class="checkboxes_filtered">-->
-          <!--Filtrováno položek:-->
-          <!--<span id="<%#= settings[:form_id]+ "_active_checkboxes_count" %>">-->
-          <!--<%#= !settings[:params]["checkbox_pool"].blank? ? settings[:params]["checkbox_pool"].split(",").count : 0 %>-->
-          <!--</span>-->
-          <!--<a onclick="CheckboxPool.clear_by_form_id('<%#= settings[:form_id] %>')" class="btn uncheck">Odznačit vše</a>-->
-          <!--</div>-->
-
-          <!--<span title="Počet označených řádků na všech stránkách" id="<%#= settings[:form_id]+ "_active_checkboxes_count" %>">-->
-          <!--<%#= !settings[:params]["checkbox_pool"].blank? ? settings[:params]["checkbox_pool"].split(",").count : 0 %>-->
-          <!--</span>-->
-          <!--<br/>-->
-          <input type="checkbox" title="Označit/odznačit vše na stránce" onclick="CheckboxPool.check_or_uncheck_page(this, '<%= settings[:form_id] %>')" id=""/>
-
-          <!--<div class="checkboxes_menu">-->
-          <!--<a onclick="CheckboxPool.uncheck_page('<%#= settings[:form_id] %>')" class="btn">Odznačit vše</a>-->
-          <!--<a onclick="CheckboxPool.check_page('<%#= settings[:form_id] %>')" class="btn">Označit vše</a>-->
-          <!--</div>-->
-
-
+        <th class="chbox filtering_th">
         </th>
     <% end %>
     <% if !settings[:row].blank? && !settings[:row][:functions].blank? %>
-        <th></th>
+        <th class="filtering_th"></th>
     <% end %>
     <% order_by_arr = settings[:params][:order_by].downcase.split(",") unless  settings[:params][:order_by].blank? %>
     <% settings[:columns].each do |col| %>
-        <% order_asc_id = (col[:table].blank? || col[:name].blank?) ? "" : (col[:table] + "___" + col[:name] + "___asc") %>
-        <% order_desc_id = (col[:table].blank? || col[:name].blank?) ? "" : (col[:table] + "___" + col[:name] + "___desc") %>
-        <th class="<%= col[:class] %>">
-          <div class="th_label">
-            <strong>
-              <span><%= col[:label].html_safe %></span>
-            </strong>
-          </div>
-
+        <th class="filtering_th">
           <% if settings[:display_method].blank? %>
-              <div class="sortable clearfix">
-                <% if col[:column_method].blank? && col[:row_method].blank? && !col[:name].blank? %>
-                    <a href="#"
-                       onclick="TableSorting.force_change_sorting('<%= settings[:form_id] %>','<%= col[:table] + "." +col[:name] %>', 'asc', this); return false;"
-                       ondblclick="TableSorting.force_change_sorting('<%= settings[:form_id] %>','<%= col[:table] + "." +col[:name] %>', 'asc', this); return false;"
-                       title="Seřadit od nejnižší hodnoty"
-                       class="btn first sort_button <%= (order_by_arr.include?(col[:table] + "." + col[:name] + " asc")) ? "btn-success" : "" %>"
-                       id="<%= order_asc_id %>">
-                      <i class="icon-arrow-up"></i>
-                    </a>
-
-                    <a href="#"
-                       onclick="TableSorting.force_change_sorting('<%= settings[:form_id] %>','<%= col[:table] + "." +col[:name] %>', 'desc', this); return false;"
-                       ondblclick="TableSorting.force_change_sorting('<%= settings[:form_id] %>','<%= col[:table] + "." +col[:name] %>', 'desc', this); return false;"
-                       title="Seřadit od nejvyšší hodnoty"
-                       class="btn sort_button <%= (order_by_arr.include?(col[:table] + "." + col[:name] + " desc")) ? "btn-success" : "" %>"
-                       id="<%= order_desc_id %>">
-                      <i class="icon-arrow-down"></i>
-                    </a>
-                <% end %>
-              </div>
-
-
-
               <% case col[:filter] %>
           <% when :find %>
-                  <div class="inputs clearfix">
+                  <div class="inputs clearfix small_padding">
                     <% saved_param = (!settings[:params].blank? && !settings[:params]['find'].blank? && !settings[:params]['find']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['find']["#{col[:table]}.#{col[:name]}"] : "" %>
                     <%= text_field_tag "find[#{col[:table]}.#{col[:name]}]", saved_param,
                                        {:class => "text first #{settings[:form_id] + '_column_find'}"} %>
                   </div>
               <% when :find_exact %>
-                  <div class="inputs clearfix">
+                  <div class="inputs clearfix small_padding">
                     <% saved_param = (!settings[:params].blank? && !settings[:params]['find_exact'].blank? && !settings[:params]['find_exact']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['find_exact']["#{col[:table]}.#{col[:name]}"] : "" %>
                     <%= text_field_tag "find_exact[#{col[:table]}.#{col[:name]}]", saved_param,
                                        {:class => "text first #{settings[:form_id] + '_column_find_exact'}"} %>
@@ -129,6 +71,54 @@
 
     <% end %>
   </tr>
+
+  <tr class="sorting_tr">
+    <% if !settings[:checkboxes].blank? && settings[:checkboxes] %>
+        <th class="chbox">
+          <input type="checkbox" title="Označit/odznačit vše na stránce" onclick="CheckboxPool.check_or_uncheck_page(this, '<%= settings[:form_id] %>')" id=""/>
+        </th>
+    <% end %>
+    <% if !settings[:row].blank? && !settings[:row][:functions].blank? %>
+        <th></th>
+    <% end %>
+    <% order_by_arr = settings[:params][:order_by].downcase.split(",") unless  settings[:params][:order_by].blank? %>
+    <% settings[:columns].each do |col| %>
+        <% order_id = (col[:table].blank? || col[:name].blank?) ? "" : (col[:table] + "___" + col[:name] + "") %>
+        <% order_asc_id = (col[:table].blank? || col[:name].blank?) ? "" : (col[:table] + "___" + col[:name] + "___asc") %>
+        <% order_desc_id = (col[:table].blank? || col[:name].blank?) ? "" : (col[:table] + "___" + col[:name] + "___desc") %>
+
+        <%
+           sorted_class = ""
+           if col[:column_method].blank? && col[:row_method].blank? && !col[:name].blank?
+             sorted_class += "sorting_th "
+
+             sorting_onclick = "TableSorting.force_toggled_change_sorting('#{settings[:form_id]}','#{col[:table] + "." +col[:name]}', this); return false;"
+             sorting_mouseover = "TableSorting.mouse_over_hover_sorting('#{settings[:form_id]}','#{col[:table] + "." +col[:name]}', this); return false;"
+             sorting_mouseout = "TableSorting.mouse_out_hover_sorting('#{settings[:form_id]}','#{col[:table] + "." +col[:name]}', this); return false;"
+
+             if (order_by_arr.include?(col[:table] + "." + col[:name] + " desc"))
+               sorted_class +="sorted sorted_desc"
+             elsif (order_by_arr.include?(col[:table] + "." + col[:name] + " asc"))
+               sorted_class +="sorted sorted_asc"
+             end
+           end
+
+        %>
+
+        <th class="<%= order_asc_id %> <%= order_desc_id %> <%= col[:class] %> <%= sorted_class %>"
+            onmouseover="<%= sorting_mouseover %>"
+            onmouseout="<%= sorting_mouseout %>"
+            onclick="<%= sorting_onclick %>">
+          <div class="th_label">
+            <strong>
+              <span><%= col[:label].html_safe %></span>
+            </strong>
+          </div>
+        </th>
+
+    <% end %>
+  </tr>
+
 
   </thead>
   <tbody id="<%= settings[:form_id] %>_ajax_content">
@@ -183,7 +173,7 @@
     //$('#filled_value_' + fid + '_' + rid).multiselect("open");
     $(".ui-multiselect-menu").css("width", "240px");
     $("button.ui-multiselect").css("width", "55px");
-    $("button.ui-multiselect").css("height", "28px");
+    $("button.ui-multiselect").css("height", "22px");
 
     $('.multiselect_class').bind("multiselectcheckall", function (event, ui) {
         form_submit_watcher('<%=settings[:form_id] %>');

@@ -45,22 +45,22 @@ class TableSorting
 
     $("#" + form_id + " .sort_button").each (index, element) =>
       $(element).removeClass("btn-success")
-      #$(element).addClass("inactive")  # give all disabled class
-    
+    #$(element).addClass("inactive")  # give all disabled class
+
 
     new_order_by_val = ""
     for element in order_by_array
       if (new_order_by_val != "")
         new_order_by_val += ","
-  
+
       #console.log(element)
       new_order_by_val += element
-  
+
       order_by_button_id = "#" + element.replace(" ", "___").replace(".", "___")
       #console.log(order_by_button_id)
       #$(order_by_button_id).removeClass("inactive")
       $(order_by_button_id).addClass("btn-success")
-      
+
     #console.log(new_order_by_val)
 
     $(order_by_id).val(new_order_by_val)
@@ -78,7 +78,7 @@ class TableSorting
 
     $("#" + form_id + " .sort_button").each (index, element) =>
       $(element).removeClass("btn-success")
-      #$(element).addClass("inactive")  # give all disabled class
+    #$(element).addClass("inactive")  # give all disabled class
 
     element = order_by_value + " " + dir
     order_by_button_id = "#" + element.replace(" ", "___").replace(".", "___")
@@ -89,6 +89,79 @@ class TableSorting
 
     #$('#' + form_id).submit()
     form_submit_watcher(form_id)
+
+
+  @force_toggled_change_sorting: (form_id, order_by_value, obj) ->
+    order_by_value = order_by_value.toLowerCase()
+
+    parent_th = $(obj)
+    if parent_th.hasClass("sorted")
+      if parent_th.hasClass("sorted_asc")
+        dir = "desc"
+      else
+        dir = "asc"
+    else
+      dir = "asc"
+
+    order_by_id = '#' + form_id + '_order_by'
+
+    $("#" + form_id + " .sorting_th").each (index, element) =>
+      $(element).removeClass("sorted").removeClass("sorted_desc").removeClass("sorted_asc")
+      $(element).removeClass("sorted_desc_hover").removeClass("sorted_asc_hover")
+
+    element = order_by_value + " " + dir
+    order_by_button_class = "." + element.replace(" ", "___").replace(".", "___")
+    #$(order_by_button_id).removeClass("inactive")
+    $(order_by_button_class).addClass("sorted").addClass("sorted_" + dir)
+    ;
+
+    $(order_by_id).val(element)
+
+    #$('#' + form_id).submit()
+    form_submit_watcher(form_id)
+
+
+  @mouse_over_hover_sorting: (form_id, order_by_value, obj) ->
+    order_by_value = order_by_value.toLowerCase()
+
+    parent_th = $(obj)
+    if parent_th.hasClass("sorted")
+      if parent_th.hasClass("sorted_asc")
+        dir = "desc"
+      else
+        dir = "asc"
+    else
+      dir = "asc"
+
+    order_by_id = '#' + form_id + '_order_by'
+
+    $("#" + form_id + " .sorting_th").each (index, element) =>
+      $(element).removeClass("sorted_desc_hover").removeClass("sorted_asc_hover")
+
+    element = order_by_value + " " + dir
+    order_by_button_class = "." + element.replace(" ", "___").replace(".", "___")
+    #$(order_by_button_id).removeClass("inactive")
+    $(order_by_button_class).addClass("sorted_" + dir + "_hover")
+
+
+
+  @mouse_out_hover_sorting: (form_id, order_by_value, obj) ->
+    order_by_value = order_by_value.toLowerCase()
+
+    parent_th = $(obj)
+    if parent_th.hasClass("sorted")
+      if parent_th.hasClass("sorted_asc")
+        dir = "desc"
+      else
+        dir = "asc"
+    else
+      dir = "asc"
+
+    order_by_id = '#' + form_id + '_order_by'
+
+    $("#" + form_id + " .sorting_th").each (index, element) =>
+      $(element).removeClass("sorted_desc_hover").removeClass("sorted_asc_hover")
+
 
 
 

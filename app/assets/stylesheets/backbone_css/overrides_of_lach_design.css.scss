@@ -45,3 +45,52 @@ li.active > a {
   min-height: 49px;
 }
 
+
+.dataGrid table thead th.sorted_desc_hover {
+  background-image: url('/assets/backbone_images/control_icons/sort_desc_hover.png') !important;
+  background-repeat: no-repeat;
+  background-position: right top;
+  background-color: #F5F3EF;
+}
+
+.dataGrid table thead th.sorted_asc_hover {
+  background-image: url('/assets/backbone_images/control_icons/sort_asc_hover.png') !important;
+  background-repeat: no-repeat;
+  background-position: right top;
+  background-color: #F5F3EF;
+}
+
+.dataGrid table thead th.sorted_asc {
+  background-image: url('/assets/backbone_images/control_icons/sort_asc.png');
+  background-repeat: no-repeat;
+  background-position: right top;
+  background-color: #F1FADF;
+}
+
+.dataGrid table thead th.sorted_desc {
+  background-image: url('/assets/backbone_images/control_icons/sort_desc.png');
+  background-repeat: no-repeat;
+  background-position: right top;
+  background-color: #F1FADF;
+}
+
+.dataGrid table thead th.sorting_th {
+  cursor: pointer;
+}
+
+.dataGrid table th.filtering_th {
+  border: 1px solid #CCC;
+  padding: 4px 12px;
+}
+
+.dataGrid table thead th .inputs.small_padding input.text {
+  padding: 1px;
+}
+
+
+
+
+
+
+
+

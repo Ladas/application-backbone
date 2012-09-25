@@ -74,6 +74,7 @@ li.active > a {
   background-color: #F1FADF;
 }
 
+
 .dataGrid table thead th.sorting_th {
   cursor: pointer;
 }
@@ -87,10 +88,34 @@ li.active > a {
   padding: 1px;
 }
 
-
-.dataGrid table thead .sorting_tr th {
+.dataGrid table thead .sorting_tr th, .dataGrid table thead .filtering_tr th {
   vertical-align: middle;
   text-align: center;
+}
+
+.dataGrid table thead th .inputs .text {
+  min-width: 22px;
+  width: 100% !important;
+}
+
+.dataGrid table thead th .inputs.range input.text {
+  min-width: 22px;
+  width: 39% !important;
+}
+
+.dataGrid table thead th .inputs.range {
+  margin: auto;
+  min-width: 59px;
+  width: 100%;
+  text-align: center;
+}
+
+.dataGrid table thead th {
+  //width: auto;
+}
+
+.dataGrid table td {
+  padding: 5px 5px;
 }
 
 

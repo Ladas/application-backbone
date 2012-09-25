@@ -96,3 +96,8 @@ span.previous_page.disabled, span.next_page.disabled {
 }
 
 
+
+.dataGrid .non-breakable-collumn {
+  width: 100%;
+  white-space: nowrap;
+}

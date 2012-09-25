@@ -111,7 +111,7 @@ class TableBuilder
     for col in TableBuilder.obj.columns
       do (col) ->
         TableBuilder.html += '<td class="' + col.class + '">'
-
+        TableBuilder.html += '<div class="non-breakable-collumn">' if col.non_breakable? && col.non_breakable
         if (is_hash(row[col.table + '_' + col.name]))
           # hash span or href (styled as button)
           button_settings = row[col.table + '_' + col.name]
@@ -147,7 +147,7 @@ class TableBuilder
           # console.log[text]
 
           TableBuilder.html += '<span title="' + text + '">' + text + '</span>'
-
+        TableBuilder.html += '</div>' if col.non_breakable? && col.non_breakable
         TableBuilder.html += '</td>'
 
 
@@ -173,7 +173,11 @@ class TableBuilder
       TableBuilder.html += '<span'
 
     TableBuilder.html += ' class="' + settings.class + '"' if settings.class?
-    TableBuilder.html += ' title="' + settings.name + '"'
+    if settings.title?
+      TableBuilder.html += ' title="' + settings.title + '"'
+    else
+      TableBuilder.html += ' title="' + settings.name + '"'
+
     TableBuilder.html += ' data-tr_class="' + settings.tr_class + '"' if  settings.tr_class?
     TableBuilder.html += ' data-td_class="' + settings.td_class + '"' if  settings.td_class? && settings.td_class.length > 0
 

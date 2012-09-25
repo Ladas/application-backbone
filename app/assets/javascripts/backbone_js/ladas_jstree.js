@@ -299,8 +299,8 @@
                                break;
                            case "text":
                                break;
-                           case "edit_tree_node":
-                               edit_tree_node($('#intranet_left_menu').jstree('get_selected').data('settings'));
+                           case "edit_tree_node":                               
+                               edit_tree_node(object.jstree('get_selected').data('settings'));
                                break;
                            default:
                                object.jstree(this.id);

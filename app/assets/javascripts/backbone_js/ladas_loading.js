@@ -65,7 +65,8 @@ function load_page(settings, caller_object) {
                     data['status'] ? Alert.set_status(data['status']) : Alert.set_status("");
                     //alert(data['message']);
 
-
+                    // loading hide must be here if is there is another load_page, loading will begin again
+                    ladas_loading_hide();
                     if (data['settings']) {
                         load_page(data['settings']);
                     }
@@ -75,6 +76,8 @@ function load_page(settings, caller_object) {
                     }
                 }
                 else {
+                    // loading hide must be here if is there is another load_page in the html received, loading will begin again
+                    ladas_loading_hide();
                     $(content_id).html(data);
                     $(content_id).find("textarea.tinymce").LadasTinyMce();
                     //console.log($(content_id).find("textarea.datafile_tinymce"));
@@ -87,7 +90,7 @@ function load_page(settings, caller_object) {
                     $(document).trigger('page_loader.loaded',[settings]);
                 }
 
-                ladas_loading_hide();
+
             },
             error:function (jqXHR, textStatus, errorThrown) {
                 ladas_loading_hide();

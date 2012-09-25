@@ -167,5 +167,10 @@ class TableSettings
       @hash[:tr_class] = name
     end
 
+    # Help Title (for mouseover) of buttons, no title means usage of button name
+    def title(string)
+      @hash[:title] = string
+    end
+
   end
 end

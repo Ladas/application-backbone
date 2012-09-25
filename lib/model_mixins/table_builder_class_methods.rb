@@ -361,12 +361,12 @@ module ModelMixins
                     having_cond_str += " AND " unless having_cond_str.blank?
                     cond_id = "find_#{i.gsub(/\./, '_')}"
                     having_cond_str += "#{i} = :#{cond_id}" #OR guest_email LIKE :find"
-                    having_cond_hash.merge!({cond_id.to_sym => "%#{v}%"})
+                    having_cond_hash.merge!({cond_id.to_sym => "#{v}"})
                   else
                     cond_str += " AND " unless cond_str.blank?
                     cond_id = "find_#{i.gsub(/\./, '_')}"
                     cond_str += "#{i} = :#{cond_id}" #OR guest_email LIKE :find"
-                    cond_hash.merge!({cond_id.to_sym => "%#{v}%"})
+                    cond_hash.merge!({cond_id.to_sym => "#{v}"})
                   end
                 end
               end

@@ -111,13 +111,56 @@ li.active > a {
 }
 
 .dataGrid table thead th {
-  //width: auto;
+  width: auto;
 }
 
+.dataGrid table th,
 .dataGrid table td {
   padding: 5px 5px;
 }
 
+.dataGrid .selects {
+  padding: 0px 15px;
+  border-bottom: 1px solid #CCC;
+}
+
+.dataGrid table th.adviser_id {
+  width: 5px;
+}
+
+.dataGrid table th.adviser_type {
+  width: 5px;
+}
+
+
+.dataGrid table th.time {
+  width: 100px;
+}
+//
+// Calendar
+//
+div.selects table#calendar_header {
+  width: 100%;
+}
+
+div.selects table#calendar_header td.dayHeader {
+  font-size: 120%;
+  font-weight: bold;
+}
+
+div.selects table#calendar_header td.nextDay {
+  text-align: right;
+}
+
+
+
+div.cmf-skinned-select {
+  max-width: 200px !important;
+}
+
+.buttons .btn {
+    float: none;
+}
 
 
 

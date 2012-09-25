@@ -90,6 +90,14 @@ class TableSettings
       self
     end
 
+    # Defines column with non-breakable content (for example column with more buttons)
+    #
+    # @param [Boolean] bool
+    #
+    def non_breakable(bool = true)
+      @column_hash[:non_breakable] = bool
+      self
+    end
 
   end
 

@@ -349,7 +349,7 @@ module ModelMixins
           end
 
           if !params.blank? && params['find_exact']
-            params['find'].each_pair do |i, v|
+            params['find_exact'].each_pair do |i, v|
               i = i.gsub(/___unknown___\./, "") #some cleaning job
               unless v.blank?
                 if i.match(/^.*?non_existing_column___.*$/i)

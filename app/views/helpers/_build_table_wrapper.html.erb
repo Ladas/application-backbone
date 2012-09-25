@@ -34,7 +34,7 @@
                                    :class => "multiselect_class") %>
                   </div>
               <% when :number %>
-                  <div class="inputs range clearfix">
+                  <div class="inputs range clearfix small_padding">
                     <% saved_param = (!settings[:params].blank? && !settings[:params]['date_from'].blank? && !settings[:params]['date_from']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['date_from']["#{col[:table]}.#{col[:name]}"] : "" %>
 
                     <%= text_field_tag "number_from[#{col[:table]}.#{col[:name]}]", saved_param, {:class => "text first #{settings[:form_id] + '_column_find'}",
@@ -49,7 +49,7 @@
                                                                                                 :title => "Hodnota musí být menší nebo rovna zadané hodnotě"} %>
                   </div>
               <% when :date %>
-                  <div class="inputs range clearfix">
+                  <div class="inputs range clearfix small_padding">
                     <% saved_param = (!settings[:params].blank? && !settings[:params]['date_from'].blank? && !settings[:params]['date_from']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['date_from']["#{col[:table]}.#{col[:name]}"] : "" %>
                     <%#= label_tag "date_from[#{col[:table]}.#{col[:name]}]", "Od", :class => "datetime_class_label" %>
                     <%= text_field_tag "date_from[#{col[:table]}.#{col[:name]}]", saved_param, {:class => "text datetime_class first",

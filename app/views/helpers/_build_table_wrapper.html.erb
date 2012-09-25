@@ -23,7 +23,7 @@
                   <div class="inputs clearfix small_padding">
                     <% saved_param = (!settings[:params].blank? && !settings[:params]['find_exact'].blank? && !settings[:params]['find_exact']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['find_exact']["#{col[:table]}.#{col[:name]}"] : "" %>
                     <%= text_field_tag "find_exact[#{col[:table]}.#{col[:name]}]", saved_param,
-                                       {:class => "text first #{settings[:form_id] + '_column_find_exact'}"} %>
+                                       {:class => "text first #{settings[:form_id] + '_column_find'}"} %>
                   </div>
               <% when :multichoice %>
                   <div class="inputs clearfix">

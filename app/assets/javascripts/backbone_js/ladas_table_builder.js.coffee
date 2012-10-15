@@ -38,7 +38,7 @@ class TableBuilder
         col_count += 1
         # the sumarize label has 2 colspan, so it has to be without 1 first column if there is no function column
         unless col_count == 1 && !functions_present
-          summarize_page += '<td class="summarize">'
+          summarize_page += '<td class="summarize ' + col.class + '">'
           if col.summarize_page? || col.summarize_page_value?
             summarize_page_present = true
             summarize_page += '<div class="summarize_page">'
@@ -69,7 +69,7 @@ class TableBuilder
         col_count += 1
         # the sumarize label has 2 colspan, so it has to without 1 first column if there is no function column
         unless col_count == 1 && !functions_present
-          summarize_all += '<td class="summarize">'
+          summarize_all += '<td class="summarize ' + col.class + '">'
           if col.summarize_all? || col.summarize_all_value?
             summarize_all_present = true
             summarize_all += '<div class="summarize_all">'

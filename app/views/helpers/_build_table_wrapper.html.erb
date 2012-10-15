@@ -10,7 +10,7 @@
     <% end %>
     <% order_by_arr = settings[:params][:order_by].downcase.split(",") unless  settings[:params][:order_by].blank? %>
     <% settings[:columns].each do |col| %>
-        <th class="filtering_th">
+        <th class="filtering_th <%= col[:class] unless col[:class].blank? %>">
           <% if settings[:display_method].blank? %>
               <% case col[:filter] %>
           <% when :find %>
@@ -105,7 +105,7 @@
 
         %>
 
-        <th class="<%= order_asc_id %> <%= order_desc_id %> <%= col[:class] %> <%= sorted_class %>"
+        <th class="<%= order_asc_id %> <%= order_desc_id %> <%= col[:class] unless col[:class].blank? %> <%= sorted_class %>"
             onmouseover="<%= sorting_mouseover %>"
             onmouseout="<%= sorting_mouseout %>"
             onclick="<%= sorting_onclick %>">

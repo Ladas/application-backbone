@@ -81,7 +81,7 @@ li.active > a {
 
 .dataGrid table th.filtering_th {
   border: 1px solid #CCC;
-  padding: 4px 12px;
+  padding: 4px 4px 4px 4px;
 }
 
 .dataGrid table thead th .inputs.small_padding input.text {
@@ -95,7 +95,7 @@ li.active > a {
 
 .dataGrid table thead th .inputs .text {
   min-width: 22px;
-  width: 100% !important;
+  width: 99% !important;
 }
 
 .dataGrid table thead th .inputs.range input.text {
@@ -106,7 +106,7 @@ li.active > a {
 .dataGrid table thead th .inputs.range {
   margin: auto;
   min-width: 59px;
-  width: 100%;
+  width: 99%;
   text-align: center;
 }
 

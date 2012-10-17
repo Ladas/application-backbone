@@ -108,7 +108,9 @@
         <th class="<%= order_asc_id %> <%= order_desc_id %> <%= col[:class] unless col[:class].blank? %> <%= sorted_class %>"
             onmouseover="<%= sorting_mouseover %>"
             onmouseout="<%= sorting_mouseout %>"
-            onclick="<%= sorting_onclick %>">
+            onclick="<%= sorting_onclick %>"
+            title="<%= col[:title].html_safe unless col[:title].blank? %>"
+        >
           <div class="th_label">
             <strong>
               <span><%= col[:label].html_safe %></span>

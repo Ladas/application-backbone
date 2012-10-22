@@ -78,8 +78,12 @@ function load_page(settings, caller_object) {
                 else {
                     // loading hide must be here if is there is another load_page in the html received, loading will begin again
                     ladas_loading_hide();
+                    //tinymce clear dropdowns
+                    $(".mceDropDown").remove();
+
                     $(content_id).html(data);
                     $(content_id).find("textarea.tinymce").LadasTinyMce();
+
                     //console.log($(content_id).find("textarea.datafile_tinymce"));
                     // Todo nefunguje korektne kdyz nactu tinymce datafali i v sablone i tady, tedy zatim muzuz zobrazovat pouze spolu
                     //$(content_id).find("textarea.datafile_tinymce").LadasTinyMce(settings);

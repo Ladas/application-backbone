@@ -78,7 +78,7 @@
 
 
           <div class="<%= settings[:form_id] + '_ajax_pager' %>">
-            <%= render :partial => 'helpers/build_table_pager', :locals => {:settings => settings} %>
+            <%= render :partial => 'helpers/build_table_pager', :locals => {:settings => settings, :placement => "placement-up"} %>
           </div>
       <% end %>
 
@@ -86,7 +86,7 @@
 
       <% if settings[:display_method].blank? %>
           <div class="<%= settings[:form_id] + '_ajax_pager' %>">
-            <%= render :partial => 'helpers/build_table_pager', :locals => {:settings => settings} %>
+            <%= render :partial => 'helpers/build_table_pager', :locals => {:settings => settings, :placement => "placement-down"} %>
           </div>
       <% end %>
     </fieldset>

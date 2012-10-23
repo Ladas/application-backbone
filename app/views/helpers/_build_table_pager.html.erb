@@ -1,4 +1,4 @@
-<div class="filter-paging clearfix">
+<div class="filter-paging clearfix <%= placement if defined? placement %>">
   <div class="reset">
     <%= ajax_post_link_to "Smazat filtr", settings[:filter_path],
                           "data-content_id" => settings[:content_id].blank? ? "" : settings[:content_id],

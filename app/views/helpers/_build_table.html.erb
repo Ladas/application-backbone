@@ -1,63 +1,75 @@
 <div class="page">
   <%= render :partial => "/helpers/build_table_text_description", :locals => {:settings => settings} %>
 </div>
-<div class="tabs">
-  <%= yield :table_form_tabs %>
+<% if settings[:display_method]=="print_by_checkboxes" %>
+    <div class="print-window-buttons" style="float:right">
+      <a class="print_page_functionality print-window-print-dialog-button" href="" onclick="window.print()">
+        <i class="icon-print"></i>Tisknout</a>
+      <a class="print_page_functionality print-window-close-button" href="" onclick="window.close();">
+        <i class="icon-remove"></i>Zavřít</a>
+    </div>
+    <div style="clear:both"></div>
 
-  <div class="info">
+<% end %>
+
+<% if settings[:display_method].blank? %>
+    <div class="tabs">
+      <%= yield :table_form_tabs %>
+
+      <div class="info">
 
 
-    <% if settings[:checkboxes] %>
+        <% if settings[:checkboxes] %>
     <span>Vybraných řádků: <strong>
       <span title="Počet označených řádků na všech stránkách" id="<%= settings[:form_id]+ "_active_checkboxes_count" %>">
                                          <%= !settings[:params]["checkbox_pool"].blank? ? settings[:params]["checkbox_pool"].split(",").count : 0 %>
                                        </span>
     </strong>
     </span>
-    <% end %>
-
-    <% if settings[:display_method].blank? %>
-        <% if settings[:checkboxes] %>
-            <script type="text/javascript">
-                function submit_in_new_window(form_id) {
-                    var form_original = $("#" + form_id);
-
-                    // create new form by cloning without events
-                    var form = form_original.clone(false)
-
-                    // disabling ajax
-                    form.removeAttr("data-remote");
-
-                    form.attr("target", "_blank");
-                    form.attr("action", form_original.attr("action"));
-                    form.attr("style", "display: none;");
-
-                    // need to append it to browser html, otherwise it wont send in many browsers (with clone it works only with chrome)
-                    form_original.after(form);
-
-                    //Create an input type dynamically.
-                    var element = document.createElement("input");
-
-                    //Assign different attributes to the element.
-                    element.setAttribute("type", "hidden");
-                    element.setAttribute("value", "print_by_checkboxes");
-                    element.setAttribute("name", "___display_method___");
-
-                    //Append the element in form
-                    form.append(element);
-
-                    form.submit();
-                    form.remove();
-                }
-
-            </script>
-            <a href="#" class="btn" onclick="submit_in_new_window('<%= settings[:form_id] %>'); return false;"><i class="icon-print"></i>&nbsp;
-              Tisknout výběr</a>
         <% end %>
-    <% end %>
-  </div>
-</div>
 
+        <% if settings[:display_method].blank? %>
+            <% if settings[:checkboxes] %>
+                <script type="text/javascript">
+                    function submit_in_new_window(form_id) {
+                        var form_original = $("#" + form_id);
+
+                        // create new form by cloning without events
+                        var form = form_original.clone(false)
+
+                        // disabling ajax
+                        form.removeAttr("data-remote");
+
+                        form.attr("target", "_blank");
+                        form.attr("action", form_original.attr("action"));
+                        form.attr("style", "display: none;");
+
+                        // need to append it to browser html, otherwise it wont send in many browsers (with clone it works only with chrome)
+                        form_original.after(form);
+
+                        //Create an input type dynamically.
+                        var element = document.createElement("input");
+
+                        //Assign different attributes to the element.
+                        element.setAttribute("type", "hidden");
+                        element.setAttribute("value", "print_by_checkboxes");
+                        element.setAttribute("name", "___display_method___");
+
+                        //Append the element in form
+                        form.append(element);
+
+                        form.submit();
+                        form.remove();
+                    }
+
+                </script>
+                <a href="#" class="btn" onclick="submit_in_new_window('<%= settings[:form_id] %>'); return false;"><i class="icon-print"></i>&nbsp;
+                  Tisknout výběr</a>
+            <% end %>
+        <% end %>
+      </div>
+    </div>
+<% end %>
 <%= form_tag settings[:filter_path], :html => {:'data-type' => 'html'}, :method => 'POST', :class => 'well dataGrid', :remote => true, :id => settings[:form_id] do |f| %>
     <% if settings[:display_method].blank? %>
         <% if content_for?(:table_form) %>

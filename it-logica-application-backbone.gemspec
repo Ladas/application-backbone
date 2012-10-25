@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = "it-logica-application-backbone"
-  s.version = "1.1.6"
+  s.version = "1.1.7"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ladas"]
@@ -161,6 +161,7 @@ Gem::Specification.new do |s|
     "app/assets/javascripts/backbone_js/ladas_saving.js",
     "app/assets/javascripts/backbone_js/ladas_table_builder.js.coffee",
     "app/assets/javascripts/backbone_js/ladas_table_checkbox_pool.js.coffee",
+    "app/assets/javascripts/backbone_js/ladas_table_filter_change_marker.js.coffee",
     "app/assets/javascripts/backbone_js/ladas_table_for.js",
     "app/assets/javascripts/backbone_js/ladas_table_sorting.js.coffee",
     "app/assets/javascripts/backbone_js/ladas_table_summaries.js.coffee",

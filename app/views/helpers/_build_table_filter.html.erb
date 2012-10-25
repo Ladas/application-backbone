@@ -29,6 +29,7 @@
         ladas_loading_hide();
         <% end %>
         formatLinkForPaginationURL('<%= settings[:form_id] %>');
+        FilterChangeMarker.mark_active_filters('<%= settings[:form_id] %>');
 
         $("#<%= settings[:form_id] %>")
                 .live("ajax:beforeSend", function (evt, xhr, settings) {

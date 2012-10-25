@@ -140,6 +140,7 @@
 <script type="text/javascript">
     $('.<%= settings[:form_id] + "_column_find" %>').livesearch({
         searchCallback:function (searchTerm) {
+            FilterChangeMarker.mark_active_filters('<%= settings[:form_id] %>');
             $('#<%= settings[:form_id] %>').submit();
         },
         queryDelay:1000,

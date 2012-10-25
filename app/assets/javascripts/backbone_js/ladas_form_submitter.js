@@ -14,6 +14,9 @@
 //        console.log(watched_form_id);
 //        console.log(submit_timestamp)
         //ladas_loading_show();
+        //console.log("uaaa")
+        FilterChangeMarker.mark_active_filters(watched_form_id);
+
         clearTimeout(submit_timestamp[watched_form_id]);
         submit_timestamp[watched_form_id] = setTimeout(function() { form_submit(watched_form_id) }, 1000);
 

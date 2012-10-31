@@ -1,0 +1,14 @@
+<% settings[:data].each do |row| %>
+    <tr class="<%= cycle('list-line-odd', 'list-line-even') %>">
+      <td class="sortdiv_td">
+        <%#= link_to t('edit'), {:controller => :users_rights, :action => :edit, :id => item.id}, :class => "icon modify" %>
+        <%#= link_to(t('delete'), {:controller => :users_rights, :action => :delete, :id => item.id}, :confirm => 'Are you sure you want to delete this user?', :title => 'Delete', :method => :delete) -%>
+      </td>
+      <% settings[:columns].each do |col| %>
+          <td class="sortdiv_td">
+            <%= row.send(col[:name]) %>
+          </td>
+      <% end %>
+    </tr>
+<% end %>
+

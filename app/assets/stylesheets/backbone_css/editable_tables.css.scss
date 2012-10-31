@@ -1,0 +1,37 @@
+.centerContainer .detachedTableContainer{
+  width: 1016px;
+}
+
+.centerContainer .scrollTargetContainter {
+  width: 1000px;
+  overflow: hidden;
+}
+
+.centerContainer .detachedTableContainer, {
+  overflow: auto;
+  height: 216px;
+}
+
+.fixedLeftColumn .detachedTableContainer,  .fixed_left_column .scrollTargetContainter {
+  overflow: hidden;
+  height: 200px;
+}
+
+
+/* table cells must have same properties */
+
+.detachedTableContainer th, .detachedTableContainer td, .scrollTargetContainter th, .scrollTargetContainter td {
+  padding: 4px !important;
+  border: 1px solid #CCC !important;
+  margin: 0px;;
+}
+
+//.scrollTargetContainter .headcol, .detachedTableContainer .headcol {
+//  position: absolute;
+//  //width: 5em;
+//  left: 0;
+//  top: auto;
+//  border-right: 0px none black;
+//  border-top-width: 3px;
+//  margin-top: -3px;
+//}

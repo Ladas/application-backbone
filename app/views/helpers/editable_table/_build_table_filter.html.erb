@@ -1,0 +1,67 @@
+<%#= form_tag settings[:filter_path], :html => {:'data-type' => 'html'}, :method => 'POST', :class => 'forms', :remote => true,:id => settings[:form_id] do |f| %>
+<fieldset>
+  <%#= label_tag :find, "Hledat" %>
+  <%#= text_field_tag :find, settings[:default][:find], {:class => 'text', :id => settings[:form_id] + "_live_search"} %>
+  <%#= submit_tag "Filter",{:class => 'button'} %>
+</fieldset>
+
+<%= hidden_field_tag :checkbox_pool, (settings[:params].blank? || settings[:params][:checkbox_pool].blank?)? "" : settings[:params][:checkbox_pool], :id => settings[:form_id] + '_checkbox_pool' %>
+
+<%= hidden_field_tag :default_order_by, settings[:default][:order].blank? ? settings[:default][:order_by] + " " + settings[:default][:order_by_direction] : settings[:default][:order], :id => settings[:form_id] + '_default_order_by' %>
+<%= hidden_field_tag :order_by, settings[:params][:order_by], :id => settings[:form_id] + '_order_by' %>
+<%#= hidden_field_tag :order_by_direction, settings[:default][:order_by_direction], :id => settings[:form_id] + '_order_by_direction' %>
+<%= hidden_field_tag :page, settings[:default][:page], :id => settings[:form_id] + '_page' %>
+
+<%# end %>
+
+<%#= javascript_include_tag '/assets/backbone_js/tmpl.min.js' %>
+<script type="text/javascript">
+    $(document).ready(function () {
+        <% if settings[:template].blank? %>
+        ladas_loading_show();
+        var initial_parsed_data = jQuery.parseJSON('<%= j settings.to_json.html_safe %>');
+        var html_from_json = EditableTableBuilder.render_tbody(initial_parsed_data);
+        TableSummaries.refresh(initial_parsed_data);
+
+        $("#<%= settings[:form_id] %>_ajax_content").html(html_from_json);
+        apply_modifiers_of_the_table($("#<%= settings[:form_id] %>_ajax_content"));
+        EditableTableAligner.align_table(initial_parsed_data, false);
+        ladas_loading_hide();
+        <% end %>
+        formatLinkForPaginationURL('<%= settings[:form_id] %>');
+        FilterChangeMarker.mark_active_filters('<%= settings[:form_id] %>');
+
+
+        $("#<%= settings[:form_id] %>")
+                .live("ajax:beforeSend", function (evt, xhr, settings) {
+                    ladas_loading_show();
+                })
+                .live("ajax:complete", function (evt, xhr, status) {
+                    var parsed_response = jQuery.parseJSON(xhr.responseText);
+
+                    //console.log(xhr.responseText)
+                    //console.log(parsed_response);
+                    //console.log(parsed_response['settings']);
+                    $(".<%= settings[:form_id] %>_ajax_pager").html(parsed_response['paginate']);
+
+                    //console.log(ladas_build_table('template-ajax-table', parsed_response));
+                    <% if settings[:template].blank? %>
+                    var parsed_settings = jQuery.parseJSON(parsed_response['settings'])
+                    var html_from_json = EditableTableBuilder.render_tbody(parsed_settings);
+                    TableSummaries.refresh(parsed_settings);
+                    
+                    $("#<%= settings[:form_id] %>_ajax_content").html(html_from_json);
+                    apply_modifiers_of_the_table($("#<%= settings[:form_id] %>_ajax_content"));
+                    EditableTableAligner.align_table(parsed_settings, true);
+
+                    <% else %>
+                    var raw_html = parsed_response['settings']
+                    $("#<%= settings[:form_id] %>_ajax_content").html(raw_html);
+                    <% end %>
+
+                    ladas_loading_hide();
+                    formatLinkForPaginationURL('<%= settings[:form_id] %>');
+                })
+    });
+</script>
+

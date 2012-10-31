@@ -1,5 +1,10 @@
 module ViewMixins
   module Table
+    def editable_table_for(settings)
+      #settings
+      render :partial => '/helpers/editable_table/build_table', :layout => false, :locals => {:settings => settings}
+    end
+
     def table_for(settings)
       #settings
       render :partial => '/helpers/build_table', :layout => false, :locals => {:settings => settings}

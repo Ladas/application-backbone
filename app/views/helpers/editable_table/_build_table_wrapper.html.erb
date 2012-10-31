@@ -1,0 +1,106 @@
+<div class="tableContainer" id="table_container_id">
+
+  <% unless settings[:static_columns_left_side].blank? %>
+      <div class="fixedLeftColumn" style="float:left">
+        <div class="scrollTargetContainter">
+          <table class="table table-bordered table-condensed table_special table_head">
+            <thead>
+            </thead>
+          </table>
+        </div>
+        <div class="detachedTableContainer">
+          <div class="detachedTable">
+            <table class="table table-bordered table-condensed table_special table_body">
+              <tbody>
+              </tbody>
+              <tfoot>
+              <!--<tr>-->
+              <!--<th colspan="100" class="<%#= settings[:form_id] + '_ajax_pager' %>">-->
+              <!--<%#= render :partial => 'helpers/build_table_pager', :locals => {:settings => settings} %>-->
+              <!--</th>-->
+              <!--</tr>-->
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+  <% end %>
+  <div class="centerContainer" style="float:left">
+    <div class="scrollTargetContainter">
+      <%= render :partial => "/helpers/editable_table/build_table_header", :locals => {:settings => settings, :static_columns_left_side => nil} %>
+    </div>
+
+    <div class="detachedTableContainer">
+      <div class="detachedTable">
+        <table class="table table-bordered table-condensed table_special">
+          <tbody id="<%= settings[:form_id] %>_ajax_content">
+          <% unless settings[:template].blank? %>
+              <%= render :partial => settings[:template], :locals => {:settings => settings} %>
+          <% end %>
+          </tbody>
+          <tfoot>
+          <!--<tr>-->
+          <!--<th colspan="100" class="<%#= settings[:form_id] + '_ajax_pager' %>">-->
+          <!--<%#= render :partial => 'helpers/build_table_pager', :locals => {:settings => settings} %>-->
+          <!--</th>-->
+          <!--</tr>-->
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div style="clear:both"></div>
+</div>
+
+
+<script type="text/javascript">
+    $('.<%= settings[:form_id] + "_column_find" %>').livesearch({
+        searchCallback:function (searchTerm) {
+            FilterChangeMarker.mark_active_filters('<%= settings[:form_id] %>');
+            $('#<%= settings[:form_id] %>').submit();
+        },
+        queryDelay:1000,
+        innerText:"",
+        minimumSearchLength:1
+    });
+</script>
+
+
+<script type="text/javascript">
+    $.datepicker.setDefaults($.datepicker.regional[ "cs" ]);
+    $('.datetime_class').datetimepicker({
+        dateFormat:"yy-mm-dd",
+        timeFormat:'hh:mm',
+        separator:' ',
+        changeYear:true,
+        yearRange:'<%= Date.today.year - 100 %>:<%= Date.today.year + 30 %>',
+        changeMonth:true
+    });
+</script>
+
+
+<script type="text/javascript">
+    $('.multiselect_class').multiselect({
+        selectedText:'<span class="active_multiselect">***</span>',
+        noneSelectedText:"",
+        checkAllText:"Označit vše",
+        uncheckAllText:"Zrušit vše",
+        minWidth:100
+    },function () {
+        form_submit_watcher('<%=settings[:form_id] %>');
+    }).multiselectfilter();
+    //$('#filled_value_' + fid + '_' + rid).multiselect("open");
+    $(".ui-multiselect-menu").css("width", "240px");
+    //    $("button.ui-multiselect").css("width", "55px");
+    $("button.ui-multiselect").css("width", "100%");
+    $("button.ui-multiselect").css("min-width", "22px");
+    $("button.ui-multiselect").css("max-width", "55px");
+    $("button.ui-multiselect").css("height", "22px");
+
+    $('.multiselect_class').bind("multiselectcheckall", function (event, ui) {
+        form_submit_watcher('<%=settings[:form_id] %>');
+    });
+    $('.multiselect_class').bind("multiselectuncheckall", function (event, ui) {
+        form_submit_watcher('<%=settings[:form_id] %>');
+    });
+</script>

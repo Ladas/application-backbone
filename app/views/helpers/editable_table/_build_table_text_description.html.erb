@@ -1,0 +1,66 @@
+<%
+   #load_text
+   text = settings[:description] unless settings[:description].blank?
+   text_obj = nil
+   edit_right = false
+   edit_description_path = {}
+
+   if text.blank? &&
+           defined?(ModelMixins::TableBuilderClassMethods::DESCRIPTION_CLASS) &&
+           defined?(ModelMixins::TableBuilderClassMethods::DESCRIPTION_METHOD) &&
+           defined?(ModelMixins::TableBuilderClassMethods::DESCRIPTION_IDENTIFIER)
+     desc_class = ModelMixins::TableBuilderClassMethods::DESCRIPTION_CLASS
+     desc_method = ModelMixins::TableBuilderClassMethods::DESCRIPTION_METHOD
+     desc_id = ModelMixins::TableBuilderClassMethods::DESCRIPTION_IDENTIFIER
+     text_obj = desc_class.where(desc_id => settings[:form_id]).first
+
+     text = text_obj.send(desc_method) unless text_obj.blank?
+
+
+     # find out if there is edit right for current request
+
+     edit_right = true if settings[:can_edit_description]
+
+     if defined?(ModelMixins::TableBuilderClassMethods.can_edit_description)
+       ModelMixins::TableBuilderClassMethods.can_edit_description &&
+               edit_right = true
+     end
+
+     # load edit description path
+
+     edit_description_path = settings[:edit_description_path].blank? if settings[:edit_description_path].blank?
+
+     if defined?(ModelMixins::TableBuilderClassMethods::EDIT_DESCRIPTION_PATH)
+       edit_description_path = ModelMixins::TableBuilderClassMethods::EDIT_DESCRIPTION_PATH.dup
+     end
+
+     # adding id fot edit path
+     unless edit_description_path.blank?
+       unless text_obj.blank?
+         edit_description_path[:symlink_id] = text_obj.send(desc_class.primary_key)
+         edit_description_path[:symlink_action] = :edit
+       else
+         edit_description_path[:symlink_action] = :new
+         edit_description_path[:symlink_params] = "?form_id="+settings[:form_id]
+         edit_description_path[:no_tracking] = true
+       end
+       edit_description_path[:symlink_remote] = true       
+     end
+   end
+
+%>
+
+<% if settings[:display_method].blank? %>
+    <% if !edit_description_path.blank? && !edit_right.blank? && edit_right %>
+        <div class="table_text_description_edit_button">
+          <a href="#" onclick="load_page(<%= edit_description_path.to_json %>); return false;" class="btn primary">Editovat
+            popisek</a>
+        </div>
+    <% end %>
+<% end %>
+
+<% unless text.blank? %>
+    <div class="table_text_description">
+      <%= text.html_safe %>
+    </div>
+<% end %>

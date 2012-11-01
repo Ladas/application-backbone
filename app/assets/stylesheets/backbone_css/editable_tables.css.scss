@@ -1,4 +1,10 @@
-.centerContainer .detachedTableContainer{
+.detachedTableContainer th, .detachedTableContainer td, .scrollTargetContainter th, .scrollTargetContainter td {
+  padding: 4px !important;
+  border: 1px solid #CCC !important;
+  margin: 0px;;
+}
+
+.centerContainer .detachedTableContainer {
   width: 1016px;
 }
 
@@ -9,22 +15,22 @@
 
 .centerContainer .detachedTableContainer, {
   overflow: auto;
-  height: 216px;
+  height: 616px;
 }
 
-.fixedLeftColumn .detachedTableContainer,  .fixed_left_column .scrollTargetContainter {
+.detachedTableContainer, .fixed_left_column .scrollTargetContainter {
   overflow: hidden;
-  height: 200px;
+  overflow-y: hidden;
+  height: 600px;
+
 }
 
+.fixedLeftColumn table {
+  border-right: 5px solid #CCC !important;
+  width: 100px;
+}
 
 /* table cells must have same properties */
-
-.detachedTableContainer th, .detachedTableContainer td, .scrollTargetContainter th, .scrollTargetContainter td {
-  padding: 4px !important;
-  border: 1px solid #CCC !important;
-  margin: 0px;;
-}
 
 //.scrollTargetContainter .headcol, .detachedTableContainer .headcol {
 //  position: absolute;
@@ -35,3 +41,65 @@
 //  border-top-width: 3px;
 //  margin-top: -3px;
 //}
+
+.editable_cell {
+  cursor: pointer;
+}
+
+.no_hover .table tbody tr:hover td,
+.no_hover .table tbody tr:hover th {
+  //background-color: transparent !important;
+  background-color: inherit !important;
+}
+
+label.mini_color_box {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  cursor: pointer;
+}
+
+span.mini_color_box {
+  //width: 25px;
+  //height: 25px;
+  display: inline-block;
+  margin: 3px;
+}
+
+label.mini_color_box_blank {
+  width: 100px;
+  border: 2px solid #CCC;
+  vertical-align: center;
+  text-align: center;
+  padding-top: 5px;
+}
+
+label.mini_color_box.active {
+  border: 6px solid #05e876;
+  width: 25px;
+  height: 25px;
+}
+label.mini_color_box_blank.active {
+  width: 100px;
+  height: 20px;
+}
+
+span.mini_color_cell {
+   display: inline-block;
+   width: 20px;
+   height: 20px;
+}
+
+
+
+/* tabbulka bude mit fixni vysku radku, prepocinani s 500 polozkama trva moc doulho */
+/* !!!!! proste se do ni nesmi rvat nic vetsiho */
+.editable_table tbody tr {
+  height: 28px;
+}
+
+.editable_table table .btn {
+  padding: 0px;
+  margin: 0px;
+  margin-right: 2px;
+}

@@ -53,6 +53,11 @@ class TableSettings
       self
     end
 
+    def confirm(text)
+      @action_hash[:confirm] = text
+      self
+    end
+
     def css_class_type(type)
       css=case type
             when :show then "btn btn-success"

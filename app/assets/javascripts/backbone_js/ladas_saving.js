@@ -28,6 +28,10 @@ function connect_callback_to_form(caller_id) {
                     process_error_data(form, data);
                     Alert.show("#" + caller_id);
                 }
+                else if (data['status'] == "modal-ok") {
+                    EditableTableModalDialog.hide();
+                    EditableTableBuilder.update_rows(data['updated_settings'])
+                }
                 else {
                     if (data['settings']) {
                         load_page(data['settings']);

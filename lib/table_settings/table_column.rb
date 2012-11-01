@@ -99,6 +99,12 @@ class TableSettings
       self
     end
 
+    # For editable table, defines wchich column should be editable
+    def editable(bool = false)
+      @column_hash[:editable] = bool
+      self
+    end
+
   end
 
   class CustomColumn < Column

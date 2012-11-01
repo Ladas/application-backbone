@@ -1,133 +1,136 @@
 <div class="scrollTarget">
-      <table class="table table-bordered table-condensed table_special">
-        <thead>
-        <tr class="filtering_tr" data-row-count-number="row_with_filters">
-          <% if !settings[:checkboxes].blank? && settings[:checkboxes] %>
-              <th class="chbox filtering_th  <%= "headcol" if !settings[:static_columns_left_side].blank? %>" data-width-align-id="special_checbox_filtering">
-              </th>
-          <% end %>
-          <% if !settings[:row].blank? && !settings[:row][:functions].blank? %>
-              <th class="filtering_th <%= "headcol" if !settings[:static_columns_left_side].blank? %>" data-width-align-id="special_functions"></th>
-          <% end %>
-          <% order_by_arr = settings[:params][:order_by].downcase.split(",") unless  settings[:params][:order_by].blank? %>
-          <% settings[:columns].each do |col| %>
-              <% width_align_id = col[:table].blank? ? "" : col[:table]
-                 width_align_id += col[:name].blank? ? "" : ("___" + col[:name])
-              %>
+  <table class="table table-bordered table-condensed table_special">
+    <thead>
+    <tr class="filtering_tr" data-row-count-number="row_with_filters">
+      <% if !settings[:checkboxes].blank? && settings[:checkboxes] %>
+          <th class="chbox filtering_th  <%= "headcol" if !settings[:static_columns_left_side].blank? %>" data-width-align-id="special_checbox_filtering">
+          </th>
+      <% end %>
+      <% if !settings[:row].blank? && !settings[:row][:functions].blank? %>
+          <th class="filtering_th <%= "headcol" if !settings[:static_columns_left_side].blank? %>" data-width-align-id="special_functions"></th>
+      <% end %>
+      <% order_by_arr = settings[:params][:order_by].downcase.split(",") unless  settings[:params][:order_by].blank? %>
+      <% settings[:columns].each do |col| %>
+          <% width_align_id = col[:table].blank? ? "" : col[:table]
+             width_align_id += col[:name].blank? ? "" : ("___" + col[:name])
+          %>
 
 
-              <th class="filtering_th <%= col[:class] unless col[:class].blank? %>" data-width-align-id="<%= width_align_id %>">
-                <% if settings[:display_method].blank? %>
-                    <% case col[:filter] %>
-                <% when :find %>
-                        <div class="inputs clearfix small_padding">
-                          <% saved_param = (!settings[:params].blank? && !settings[:params]['find'].blank? && !settings[:params]['find']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['find']["#{col[:table]}.#{col[:name]}"] : "" %>
-                          <%= text_field_tag "find[#{col[:table]}.#{col[:name]}]", saved_param,
-                                             {:class => "text first #{settings[:form_id] + '_column_find'}"} %>
-                        </div>
-                    <% when :find_exact %>
-                        <div class="inputs clearfix small_padding">
-                          <% saved_param = (!settings[:params].blank? && !settings[:params]['find_exact'].blank? && !settings[:params]['find_exact']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['find_exact']["#{col[:table]}.#{col[:name]}"] : "" %>
-                          <%= text_field_tag "find_exact[#{col[:table]}.#{col[:name]}]", saved_param,
-                                             {:class => "text first #{settings[:form_id] + '_column_find'}"} %>
-                        </div>
-                    <% when :multichoice %>
-                        <div class="inputs clearfix">
-                          <% saved_param = (!settings[:params].blank? && !settings[:params]['multichoice'].blank? && !settings[:params]['multichoice']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['multichoice']["#{col[:table]}.#{col[:name]}"] : [] %>
-                          <%= select_tag("multichoice[#{col[:table]}.#{col[:name]}]", options_for_select(col[:filter_data], saved_param),
-                                         :onchange => "form_submit_watcher('#{settings[:form_id]}')",
-                                         :multiple => true,
-                                         :class => "multiselect_class") %>
-                        </div>
-                    <% when :number %>
-                        <div class="inputs range clearfix small_padding">
-                          <% saved_param = (!settings[:params].blank? && !settings[:params]['date_from'].blank? && !settings[:params]['date_from']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['date_from']["#{col[:table]}.#{col[:name]}"] : "" %>
+          <th class="filtering_th <%= col[:class] unless col[:class].blank? %>
+               <%= "headcol" if !settings[:static_columns_left_side].blank? && settings[:static_columns_left_side].include?(col[:name]) %>"
+              data-width-align-id="<%= width_align_id %>">
+            <% if settings[:display_method].blank? %>
+                <% case col[:filter] %>
+            <% when :find %>
+                    <div class="inputs clearfix small_padding">
+                      <% saved_param = (!settings[:params].blank? && !settings[:params]['find'].blank? && !settings[:params]['find']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['find']["#{col[:table]}.#{col[:name]}"] : "" %>
+                      <%= text_field_tag "find[#{col[:table]}.#{col[:name]}]", saved_param,
+                                         {:class => "text first #{settings[:form_id] + '_column_find'}"} %>
+                    </div>
+                <% when :find_exact %>
+                    <div class="inputs clearfix small_padding">
+                      <% saved_param = (!settings[:params].blank? && !settings[:params]['find_exact'].blank? && !settings[:params]['find_exact']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['find_exact']["#{col[:table]}.#{col[:name]}"] : "" %>
+                      <%= text_field_tag "find_exact[#{col[:table]}.#{col[:name]}]", saved_param,
+                                         {:class => "text first #{settings[:form_id] + '_column_find'}"} %>
+                    </div>
+                <% when :multichoice %>
+                    <div class="inputs clearfix">
+                      <% saved_param = (!settings[:params].blank? && !settings[:params]['multichoice'].blank? && !settings[:params]['multichoice']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['multichoice']["#{col[:table]}.#{col[:name]}"] : [] %>
+                      <%= select_tag("multichoice[#{col[:table]}.#{col[:name]}]", options_for_select(col[:filter_data], saved_param),
+                                     :onchange => "form_submit_watcher('#{settings[:form_id]}')",
+                                     :multiple => true,
+                                     :class => "multiselect_class") %>
+                    </div>
+                <% when :number %>
+                    <div class="inputs range clearfix small_padding">
+                      <% saved_param = (!settings[:params].blank? && !settings[:params]['date_from'].blank? && !settings[:params]['date_from']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['date_from']["#{col[:table]}.#{col[:name]}"] : "" %>
 
-                          <%= text_field_tag "number_from[#{col[:table]}.#{col[:name]}]", saved_param, {:class => "text first #{settings[:form_id] + '_column_find'}",
-                                                                                                        :onchange => "form_submit_watcher('#{settings[:form_id]}')",
-                                                                                                        :placeholder => "min.",
-                                                                                                        :title => "Hodnota musí být vetší nebo rovna zadané hodnotě"} %>
-                          <% saved_param = (!settings[:params].blank? && !settings[:params]['date_to'].blank? && !settings[:params]['date_to']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['date_to']["#{col[:table]}.#{col[:name]}"] : "" %>
-                          <%#= label_tag "date_to[#{col[:table]}.#{col[:name]}]", "Do", :class => "datetime_class_label" %>
-                          <%= text_field_tag "number_to[#{col[:table]}.#{col[:name]}]", saved_param, {:class => "text #{settings[:form_id] + '_column_find'}",
-                                                                                                      :onchange => "form_submit_watcher('#{settings[:form_id]}')",
-                                                                                                      :placeholder => "max.",
-                                                                                                      :title => "Hodnota musí být menší nebo rovna zadané hodnotě"} %>
-                        </div>
-                    <% when :date %>
-                        <div class="inputs range clearfix small_padding">
-                          <% saved_param = (!settings[:params].blank? && !settings[:params]['date_from'].blank? && !settings[:params]['date_from']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['date_from']["#{col[:table]}.#{col[:name]}"] : "" %>
-                          <%#= label_tag "date_from[#{col[:table]}.#{col[:name]}]", "Od", :class => "datetime_class_label" %>
-                          <%= text_field_tag "date_from[#{col[:table]}.#{col[:name]}]", saved_param, {:class => "text datetime_class first",
-                                                                                                      :onchange => "form_submit_watcher('#{settings[:form_id]}')",
-                                                                                                      :placeholder => "od",
-                                                                                                      :title => "Datum od"} %>
-                          <% saved_param = (!settings[:params].blank? && !settings[:params]['date_to'].blank? && !settings[:params]['date_to']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['date_to']["#{col[:table]}.#{col[:name]}"] : "" %>
-                          <%#= label_tag "date_to[#{col[:table]}.#{col[:name]}]", "Do", :class => "datetime_class_label" %>
-                          <%= text_field_tag "date_to[#{col[:table]}.#{col[:name]}]", saved_param, {:class => "text datetime_class",
+                      <%= text_field_tag "number_from[#{col[:table]}.#{col[:name]}]", saved_param, {:class => "text first #{settings[:form_id] + '_column_find'}",
                                                                                                     :onchange => "form_submit_watcher('#{settings[:form_id]}')",
-                                                                                                    :placeholder => "do",
-                                                                                                    :title => "Datum do"} %>
-                        </div>
-                    <% else %>
-                    <% end %>
-
+                                                                                                    :placeholder => "min.",
+                                                                                                    :title => "Hodnota musí být vetší nebo rovna zadané hodnotě"} %>
+                      <% saved_param = (!settings[:params].blank? && !settings[:params]['date_to'].blank? && !settings[:params]['date_to']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['date_to']["#{col[:table]}.#{col[:name]}"] : "" %>
+                      <%#= label_tag "date_to[#{col[:table]}.#{col[:name]}]", "Do", :class => "datetime_class_label" %>
+                      <%= text_field_tag "number_to[#{col[:table]}.#{col[:name]}]", saved_param, {:class => "text #{settings[:form_id] + '_column_find'}",
+                                                                                                  :onchange => "form_submit_watcher('#{settings[:form_id]}')",
+                                                                                                  :placeholder => "max.",
+                                                                                                  :title => "Hodnota musí být menší nebo rovna zadané hodnotě"} %>
+                    </div>
+                <% when :date %>
+                    <div class="inputs range clearfix small_padding">
+                      <% saved_param = (!settings[:params].blank? && !settings[:params]['date_from'].blank? && !settings[:params]['date_from']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['date_from']["#{col[:table]}.#{col[:name]}"] : "" %>
+                      <%#= label_tag "date_from[#{col[:table]}.#{col[:name]}]", "Od", :class => "datetime_class_label" %>
+                      <%= text_field_tag "date_from[#{col[:table]}.#{col[:name]}]", saved_param, {:class => "text datetime_class first",
+                                                                                                  :onchange => "form_submit_watcher('#{settings[:form_id]}')",
+                                                                                                  :placeholder => "od",
+                                                                                                  :title => "Datum od"} %>
+                      <% saved_param = (!settings[:params].blank? && !settings[:params]['date_to'].blank? && !settings[:params]['date_to']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['date_to']["#{col[:table]}.#{col[:name]}"] : "" %>
+                      <%#= label_tag "date_to[#{col[:table]}.#{col[:name]}]", "Do", :class => "datetime_class_label" %>
+                      <%= text_field_tag "date_to[#{col[:table]}.#{col[:name]}]", saved_param, {:class => "text datetime_class",
+                                                                                                :onchange => "form_submit_watcher('#{settings[:form_id]}')",
+                                                                                                :placeholder => "do",
+                                                                                                :title => "Datum do"} %>
+                    </div>
+                <% else %>
                 <% end %>
-              </th>
 
-          <% end %>
-        </tr>
+            <% end %>
+          </th>
 
-        <tr class="sorting_tr" data-row-count-number="row_with_sorting">
-          <% if !settings[:checkboxes].blank? && settings[:checkboxes] %>
-              <th class="chbox <%= "headcol" if !settings[:static_columns_left_side].blank? %>">
-                <input type="checkbox" title="Označit/odznačit vše na stránce" onclick="CheckboxPool.check_or_uncheck_page(this, '<%= settings[:form_id] %>')" id=""/>
-              </th>
-          <% end %>
-          <% if !settings[:row].blank? && !settings[:row][:functions].blank? %>
-              <th class="<%= "headcol" if !settings[:static_columns_left_side].blank? %>"></th>
-          <% end %>
-          <% order_by_arr = settings[:params][:order_by].downcase.split(",") unless  settings[:params][:order_by].blank? %>
-          <% settings[:columns].each do |col| %>
-              <% order_id = (col[:table].blank? || col[:name].blank?) ? "" : (col[:table] + "___" + col[:name] + "") %>
-              <% order_asc_id = (col[:table].blank? || col[:name].blank?) ? "" : (col[:table] + "___" + col[:name] + "___asc") %>
-              <% order_desc_id = (col[:table].blank? || col[:name].blank?) ? "" : (col[:table] + "___" + col[:name] + "___desc") %>
+      <% end %>
+    </tr>
 
-              <%
-                 sorted_class = ""
-                 if col[:column_method].blank? && col[:row_method].blank? && !col[:name].blank?
-                   sorted_class += "sorting_th "
+    <tr class="sorting_tr" data-row-count-number="row_with_sorting">
+      <% if !settings[:checkboxes].blank? && settings[:checkboxes] %>
+          <th class="chbox <%= "headcol" if !settings[:static_columns_left_side].blank? %>">
+            <input type="checkbox" title="Označit/odznačit vše na stránce" onclick="CheckboxPool.check_or_uncheck_page(this, '<%= settings[:form_id] %>')" id=""/>
+          </th>
+      <% end %>
+      <% if !settings[:row].blank? && !settings[:row][:functions].blank? %>
+          <th class="<%= "headcol" if !settings[:static_columns_left_side].blank? %>"></th>
+      <% end %>
+      <% order_by_arr = settings[:params][:order_by].downcase.split(",") unless  settings[:params][:order_by].blank? %>
+      <% settings[:columns].each do |col| %>
+          <% order_id = (col[:table].blank? || col[:name].blank?) ? "" : (col[:table] + "___" + col[:name] + "") %>
+          <% order_asc_id = (col[:table].blank? || col[:name].blank?) ? "" : (col[:table] + "___" + col[:name] + "___asc") %>
+          <% order_desc_id = (col[:table].blank? || col[:name].blank?) ? "" : (col[:table] + "___" + col[:name] + "___desc") %>
 
-                   sorting_onclick = "TableSorting.force_toggled_change_sorting('#{settings[:form_id]}','#{col[:table] + "." +col[:name]}', this); return false;"
-                   sorting_mouseover = "TableSorting.mouse_over_hover_sorting('#{settings[:form_id]}','#{col[:table] + "." +col[:name]}', this); return false;"
-                   sorting_mouseout = "TableSorting.mouse_out_hover_sorting('#{settings[:form_id]}','#{col[:table] + "." +col[:name]}', this); return false;"
+          <%
+             sorted_class = ""
+             if col[:column_method].blank? && col[:row_method].blank? && !col[:name].blank?
+               sorted_class += "sorting_th "
 
-                   if (order_by_arr.include?(col[:table] + "." + col[:name] + " desc"))
-                     sorted_class +="sorted sorted_desc"
-                   elsif (order_by_arr.include?(col[:table] + "." + col[:name] + " asc"))
-                     sorted_class +="sorted sorted_asc"
-                   end
-                 end
+               sorting_onclick = "TableSorting.force_toggled_change_sorting('#{settings[:form_id]}','#{col[:table] + "." +col[:name]}', this); return false;"
+               sorting_mouseover = "TableSorting.mouse_over_hover_sorting('#{settings[:form_id]}','#{col[:table] + "." +col[:name]}', this); return false;"
+               sorting_mouseout = "TableSorting.mouse_out_hover_sorting('#{settings[:form_id]}','#{col[:table] + "." +col[:name]}', this); return false;"
 
-              %>
+               if (order_by_arr.include?(col[:table] + "." + col[:name] + " desc"))
+                 sorted_class +="sorted sorted_desc"
+               elsif (order_by_arr.include?(col[:table] + "." + col[:name] + " asc"))
+                 sorted_class +="sorted sorted_asc"
+               end
+             end
 
-              <th class="<%= order_asc_id %> <%= order_desc_id %> <%= col[:class] unless col[:class].blank? %> <%= sorted_class %>"
-                  onmouseover="<%= sorting_mouseover %>"
-                  onmouseout="<%= sorting_mouseout %>"
-                  onclick="<%= sorting_onclick %>"
-                  title="<%= col[:title].html_safe unless col[:title].blank? %>"
-              >
-                <div class="th_label">
-                  <strong>
-                    <span><%= col[:label].html_safe %></span>
-                  </strong>
-                </div>
-              </th>
+          %>
 
-          <% end %>
-        </tr>
+          <th class="<%= order_asc_id %> <%= order_desc_id %> <%= col[:class] unless col[:class].blank? %> <%= sorted_class %>
+              <%= "headcol" if !settings[:static_columns_left_side].blank? && settings[:static_columns_left_side].include?(col[:name]) %>"
+              onmouseover="<%= sorting_mouseover %>"
+              onmouseout="<%= sorting_mouseout %>"
+              onclick="<%= sorting_onclick %>"
+              title="<%= col[:title].html_safe unless col[:title].blank? %>"
+          >
+            <div class="th_label">
+              <strong>
+                <span><%= col[:label].html_safe %></span>
+              </strong>
+            </div>
+          </th>
+
+      <% end %>
+    </tr>
 
 
-        </thead>
-      </table>
-    </div>
+    </thead>
+  </table>
+</div>

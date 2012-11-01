@@ -11,3 +11,11 @@ function is_array(object) {
 function is_string(object) {
     return object && (Object.prototype.toString.call(object) == '[object String]');
 }
+
+
+function mark_active_color_box(obj)
+{
+   $(obj).parents(".colors_block").find("label").removeClass("active")
+   $(obj).addClass("active")
+
+}

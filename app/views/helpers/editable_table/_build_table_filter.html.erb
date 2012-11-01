@@ -48,11 +48,14 @@
                     <% if settings[:template].blank? %>
                     var parsed_settings = jQuery.parseJSON(parsed_response['settings'])
                     var html_from_json = EditableTableBuilder.render_tbody(parsed_settings);
+                    console.log("created")
                     TableSummaries.refresh(parsed_settings);
-                    
+                    console.log("summaries")
+
                     $("#<%= settings[:form_id] %>_ajax_content").html(html_from_json);
                     apply_modifiers_of_the_table($("#<%= settings[:form_id] %>_ajax_content"));
                     EditableTableAligner.align_table(parsed_settings, true);
+                    console.log("aligned")
 
                     <% else %>
                     var raw_html = parsed_response['settings']

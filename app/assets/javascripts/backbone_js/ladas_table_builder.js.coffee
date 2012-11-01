@@ -45,7 +45,7 @@ class TableBuilder
             summarize_page += if col.summarize_page_label? then col.summarize_page_label else ''
             summarize_page += '<span class="value">'
             summarize_page += if col.summarize_page_value? then col.summarize_page_value else 0
-            summarize_pagel += '</span>'
+            summarize_page += '</span>'
             summarize_page += '</div>'
 
           summarize_page += '</td>'

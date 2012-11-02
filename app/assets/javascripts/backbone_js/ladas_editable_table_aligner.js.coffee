@@ -210,13 +210,17 @@ class EditableTableAligner
     orig_body =  $("#" + obj.form_id).find('.centerContainer .detachedTableContainer')
 
     # going trough all tr, and then filtering nlz by those who has head col, that means they were updated
-    orig_body.find("tr").each (index, element) =>
-      # finding destination row from orig row
-      destination_row_id  = $(element).data("row-count-number")
-      destination_row  = $("#" + obj.form_id).find('.fixedLeftColumn tr[data-row-count-number="' + destination_row_id + '"]')
+    #orig_body.find("tr").each (index, element) =>
+    # noooo going through only updated tr
+    for row in EditableTableBuilder.obj.data
+      do (row) ->
+        element = $("#" + obj.form_id).find('.centerContainer tr[data-row-id="' + row.row_id + '"]')
+        # finding destination row from orig row
+        destination_row_id  = $(element).data("row-count-number")
+        destination_row  = $("#" + obj.form_id).find('.fixedLeftColumn tr[data-row-count-number="' + destination_row_id + '"]')
 
 
-      EditableTableAligner.move_cells_to_static_rows(element, destination_row)
+        EditableTableAligner.move_cells_to_static_rows(element, destination_row)
 
   @move_cells_to_static_rows: (element, destination_row) ->
     if $(element).find('.headcol').length > 0
@@ -228,6 +232,8 @@ class EditableTableAligner
 
         destination_row.append(orig_element)
 
+      # have copy colors of the center table to left column
+      $(destination_row).attr("style", $(element).attr("style"))
 
 window.EditableTableAligner = EditableTableAligner
 

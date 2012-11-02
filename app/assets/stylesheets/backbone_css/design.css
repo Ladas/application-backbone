@@ -35,7 +35,7 @@
 .dataGrid table tr td:first-child, .dataGrid table tr th:first-child {border-left: 0;}
 .dataGrid table tr td:last-child, .dataGrid table tr th:last-child {border-right: 0;}
 .dataGrid table thead th, .dataGrid table tfoot td {background: #f5f3ef;}
-.dataGrid table tbody tr:hover td {background: #f1fadf !important;}
+/*.dataGrid table tbody tr:hover td {background: #f1fadf !important;}*/
 .dataGrid table tbody tr.checked td {background: #faf9f8;}
 .dataGrid table tbody tr td .btn {margin: 0 !important;}
 .dataGrid table thead th {text-align: left;width: 115px;}

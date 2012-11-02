@@ -26,11 +26,7 @@
                                        </span>
     </strong>
     </span>
-            <% unless settings[:per_page].blank? %>
-                      <span class="select_for_per_page" style="float: right">Zobrazit na stránku: <%= select_tag("per_page_chosen", options_for_select(settings[:per_page], settings[:params]['per_page'].to_i),
-                                                                                                                 :onchange => "form_submit_watcher('#{settings[:form_id]}')",
-                                                                                                                 :class => "") %></span>
-            <% end %>
+
 
         <% end %>
 
@@ -87,11 +83,16 @@
       <%= render :partial => "/helpers/editable_table/build_table_filter", :locals => {:settings => settings} %>
 
       <% if settings[:display_method].blank? %>
-
+          <% unless settings[:per_page].blank? %>
+                                <span class="select_for_per_page" style="float: right">Zobrazit na stránku: <%= select_tag("per_page_chosen", options_for_select(settings[:per_page], settings[:params]['per_page'].to_i),
+                                                                                                                           :onchange => "form_submit_watcher('#{settings[:form_id]}')",
+                                                                                                                           :class => "") %></span>
+          <% end %>
 
           <div class="<%= settings[:form_id] + '_ajax_pager' %>">
             <%= render :partial => 'helpers/editable_table/build_table_pager', :locals => {:settings => settings, :placement => "placement-up"} %>
           </div>
+
       <% end %>
 
       <%= render :partial => "/helpers/editable_table/build_table_wrapper", :locals => {:settings => settings} %>

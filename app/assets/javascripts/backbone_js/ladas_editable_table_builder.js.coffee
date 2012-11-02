@@ -47,6 +47,7 @@ class EditableTableBuilder
       do (row) ->
         row_count += 1
         EditableTableBuilder.html += '<tr data-row-count-number="' + row_count + '"'
+        console.log(EditableTableBuilder.obj.row_colors)
         if EditableTableBuilder.obj.row_colors?
           if EditableTableBuilder.obj.row_colors[row.row_id]?
             style = 'color:' + EditableTableBuilder.obj.row_colors[row.row_id]["color"]
@@ -255,7 +256,7 @@ class EditableTableBuilder
           else
             # i will be always slicing
             max = 30
-            sliced_text = sliced_text.slice(0, col.max_text_length) + "..." if ( max > 0 && sliced_text.length > max)
+            sliced_text = sliced_text.slice(0, max + 3) + "..." if ( max > 0 && sliced_text.length > max)
 
           EditableTableBuilder.html += '<span title="' + text + '">' + sliced_text + '</span>'
 

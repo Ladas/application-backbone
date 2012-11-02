@@ -20,6 +20,11 @@ class TableSettings
 
       self
     end
+    def css_header_class(class_name)
+      @column_hash[:header_class] = class_name
+
+      self
+    end
 
     def filter_type(filter_type)
       if filter_type == :none
@@ -100,7 +105,7 @@ class TableSettings
     end
 
     # For editable table, defines wchich column should be editable
-    def editable(bool = false)
+    def editable(bool = true)
       @column_hash[:editable] = bool
       self
     end

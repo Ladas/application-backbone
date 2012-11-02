@@ -29,6 +29,8 @@ function connect_callback_to_form(caller_id) {
                     Alert.show("#" + caller_id);
                 }
                 else if (data['status'] == "modal-ok") {
+                    Alert.show("#" + caller_id);
+                    // todo bud sem dat zpoydeni nebo tu message yobrayit jinak, takhle se hned schova dialog a s nim i message 
                     EditableTableModalDialog.hide();
                     EditableTableBuilder.update_rows(data['updated_settings'])
                 }

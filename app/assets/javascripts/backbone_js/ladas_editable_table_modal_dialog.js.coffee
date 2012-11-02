@@ -1,7 +1,6 @@
 class EditableTableModalDialog
   @init: (modal_id) ->
     # init will be called only once
-
     EditableTableModalDialog.modal_id = modal_id
     modal_id_jquery = '#' + modal_id
 
@@ -12,15 +11,33 @@ class EditableTableModalDialog
 
     # on enter I want to submit form inside
     $(modal_id_jquery).on('keyup', (e) ->
+      event_obj = e
+
+      unless event_obj?
+        if window.event
+          event_obj = window.event
+        else
+          #FF uses this
+          event_obj =event.which;
+
+
+
       # We don't want this to act as a link so cancel the link action
-      e.preventDefault()
-      console.log(e.keyCode)
+      event_obj .stopPropagation()
+      event_obj .preventDefault()
+
 
       # if enter pressed
-      if e.keyCode == 13
-        #Find form and submit it
-        $(modal_id_jquery).find('form').submit();
+      if event_obj.keyCode == 13
+        if (!event_obj.shiftKey && !event_obj.ctrlKey)
+          #Find form and submit it
+          $(modal_id_jquery).find('form').submit();
+          # todo zjistit jak oddelat onkey down asi ze submitu, ted se form pri stiknuti enteru posila dvakrat, jenom kdzy jsem v testarei, tak ne
+          # todo zatim jsem to osral tim ze jsem dal do fromu prazdny button ktery ty eventy odchytava a pak to funguje hezky, musim to ale udelat jinak
+          #console.log($(modal_id_jquery).find('input[type="submit"]'))  # nekde ten button je, musim ho najit a deaktivovat
     )
+
+
 
 
   @show: (cell_element, edit_cell_path) ->
@@ -64,9 +81,9 @@ class EditableTableModalDialog
 
 
   @focus: ->
-    if ($('#modal_cell_editing').find("#this_will_be_focused_input_id").length > 0)
-      $('#modal_cell_editing').find("#this_will_be_focused_input_id").focus()
-      $('#modal_cell_editing').find("#this_will_be_focused_input_id").focus()
+    if ($('#modal_cell_editing').find('[data-focus-id="this_will_be_focused_input_id"]').length > 0)
+      $('#modal_cell_editing').find('[data-focus-id="this_will_be_focused_input_id"]').focus()
+      $('#modal_cell_editing').find('[data-focus-id="this_will_be_focused_input_id"]').focus()
 
 window.EditableTableModalDialog = EditableTableModalDialog
 

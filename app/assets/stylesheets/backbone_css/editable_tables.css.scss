@@ -1,5 +1,6 @@
+
 .detachedTableContainer th, .detachedTableContainer td, .scrollTargetContainter th, .scrollTargetContainter td {
-  padding: 4px !important;
+  padding: 2px !important;
   border: 1px solid #CCC !important;
   margin: 0px;;
 }
@@ -49,12 +50,12 @@
 .no_hover .table tbody tr:hover td,
 .no_hover .table tbody tr:hover th {
   //background-color: transparent !important;
-  background-color: inherit !important;
+  background-color: inherit;
 }
 
 label.mini_color_box {
-  width: 20px;
-  height: 20px;
+  width: 15px;
+  height: 15px;
   display: inline-block;
   cursor: pointer;
 }
@@ -63,7 +64,7 @@ span.mini_color_box {
   //width: 25px;
   //height: 25px;
   display: inline-block;
-  margin: 3px;
+  margin: 1px;
 }
 
 label.mini_color_box_blank {
@@ -76,8 +77,8 @@ label.mini_color_box_blank {
 
 label.mini_color_box.active {
   border: 6px solid #05e876;
-  width: 25px;
-  height: 25px;
+  width: 13px;
+  height: 13px;
 }
 label.mini_color_box_blank.active {
   width: 100px;
@@ -95,7 +96,9 @@ span.mini_color_cell {
 /* tabbulka bude mit fixni vysku radku, prepocinani s 500 polozkama trva moc doulho */
 /* !!!!! proste se do ni nesmi rvat nic vetsiho */
 .editable_table tbody tr {
-  height: 28px;
+  height: 25px;
+  max-height: 25px;
+  min-height: 25px;
 }
 
 .editable_table table .btn {

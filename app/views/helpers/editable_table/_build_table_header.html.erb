@@ -16,7 +16,7 @@
           %>
 
 
-          <th class="filtering_th <%= col[:class] unless col[:class].blank? %>
+          <th class="filtering_th <%= col[:class] unless col[:class].blank? %> <%= col[:header_class] unless col[:header_class].blank? %>
                <%= "headcol" if !settings[:static_columns_left_side].blank? && settings[:static_columns_left_side].include?(col[:name]) %>"
               data-width-align-id="<%= width_align_id %>">
             <% if settings[:display_method].blank? %>
@@ -113,7 +113,7 @@
 
           %>
 
-          <th class="<%= order_asc_id %> <%= order_desc_id %> <%= col[:class] unless col[:class].blank? %> <%= sorted_class %>
+          <th class="<%= order_asc_id %> <%= order_desc_id %> <%= col[:class] unless col[:class].blank? %> <%= sorted_class %> <%= col[:header_class] unless col[:header_class].blank? %>
               <%= "headcol" if !settings[:static_columns_left_side].blank? && settings[:static_columns_left_side].include?(col[:name]) %>"
               onmouseover="<%= sorting_mouseover %>"
               onmouseout="<%= sorting_mouseout %>"

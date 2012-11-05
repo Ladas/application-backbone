@@ -22,7 +22,7 @@ class Breadcrumbs
     title_suffix = Breadcrumbs.load_title_suffix(title_suffix)
 
 
-    $('a[data-breadcrumb-id],li[data-breadcrumb-id]').each (index, element) =>
+    $('a[data-breadcrumb-id],li[data-breadcrumb-id],a[data-tree-breadcrumb-id],li[data-tree-breadcrumb-id]').each (index, element) =>
       $(element).removeClass('active')
 
     array_of_breadcrubm_texts = Array()
@@ -67,9 +67,22 @@ class Breadcrumbs
       else
         found.addClass('active')
 
-  @make_finding_string: (val) ->
+    # and for one level menus
+    finding_string = Breadcrumbs.make_finding_string_for_one_lvl_menu(val)
+    #console.log $(finding_string)
+    found = $(finding_string)
+    if found
+      found.addClass('active')
+
+
+  @make_finding_string_for_one_lvl_menu: (val) ->
     finding_string = "li[data-breadcrumb-id='" + val + "']"
     finding_string += ",a[data-breadcrumb-id='" + val + "']"
+    return finding_string
+
+  @make_finding_string: (val) ->
+    finding_string = "li[data-tree-breadcrumb-id='" + val + "']"
+    finding_string += ",a[data-tree-breadcrumb-id='" + val + "']"
     return finding_string
 
   @change_document_title: (title_prefix,suffix, val) ->

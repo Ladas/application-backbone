@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "it-logica-application-backbone"
-  s.version = "1.1.8"
+  s.version = "1.2.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ladas"]
-  s.date = "2012-10-26"
+  s.date = "2012-11-05"
   s.description = "longer description of your gem"
   s.email = "ladislav.smola@it-logica.cz"
   s.extra_rdoc_files = [
@@ -134,6 +134,7 @@ Gem::Specification.new do |s|
     "app/assets/images/backbone_images/temp-userphoto-large.jpg",
     "app/assets/images/backbone_images/temp-userphoto.jpg",
     "app/assets/images/backbone_images/vrchovina-logo.png",
+    "app/assets/javascripts/backbone_js/bootstrap_modal.js",
     "app/assets/javascripts/backbone_js/index.js",
     "app/assets/javascripts/backbone_js/jquery-ui-timepicker-addon.js",
     "app/assets/javascripts/backbone_js/jquery-ui-timepicker-cs.js",
@@ -150,6 +151,9 @@ Gem::Specification.new do |s|
     "app/assets/javascripts/backbone_js/jquery.ui.widget.js",
     "app/assets/javascripts/backbone_js/ladas_alert.js.coffee",
     "app/assets/javascripts/backbone_js/ladas_breadcrumb.js.coffee",
+    "app/assets/javascripts/backbone_js/ladas_editable_table_aligner.js.coffee",
+    "app/assets/javascripts/backbone_js/ladas_editable_table_builder.js.coffee",
+    "app/assets/javascripts/backbone_js/ladas_editable_table_modal_dialog.js.coffee",
     "app/assets/javascripts/backbone_js/ladas_form_submitter.js",
     "app/assets/javascripts/backbone_js/ladas_functions.js",
     "app/assets/javascripts/backbone_js/ladas_initialize_history.js",
@@ -462,7 +466,9 @@ Gem::Specification.new do |s|
     "app/assets/javascripts/backbone_js/tinymce/jscripts/tiny_mce/utils/validate.js",
     "app/assets/javascripts/backbone_js/tmpl.min.js",
     "app/assets/stylesheets/backbone_css/bootstrap_and_overrides.css.scss",
+    "app/assets/stylesheets/backbone_css/bootstrap_modal.css",
     "app/assets/stylesheets/backbone_css/design.css",
+    "app/assets/stylesheets/backbone_css/editable_tables.css.scss",
     "app/assets/stylesheets/backbone_css/index.css.scss",
     "app/assets/stylesheets/backbone_css/jquery.fileupload-ui.css",
     "app/assets/stylesheets/backbone_css/jquery_datetime_picker.css.scss",
@@ -490,6 +496,14 @@ Gem::Specification.new do |s|
     "app/views/helpers/_build_table_pager.html.erb",
     "app/views/helpers/_build_table_text_description.html.erb",
     "app/views/helpers/_build_table_wrapper.html.erb",
+    "app/views/helpers/editable_table/_build_ajax_callback_code.html.erb",
+    "app/views/helpers/editable_table/_build_table.html.erb",
+    "app/views/helpers/editable_table/_build_table_data.html.erb",
+    "app/views/helpers/editable_table/_build_table_filter.html.erb",
+    "app/views/helpers/editable_table/_build_table_header.html.erb",
+    "app/views/helpers/editable_table/_build_table_pager.html.erb",
+    "app/views/helpers/editable_table/_build_table_text_description.html.erb",
+    "app/views/helpers/editable_table/_build_table_wrapper.html.erb",
     "it-logica-application-backbone.gemspec",
     "lib/backbone_css/engine.rb",
     "lib/backbone_images/engine.rb",

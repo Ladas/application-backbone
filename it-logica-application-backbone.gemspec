@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = "it-logica-application-backbone"
-  s.version = "1.2.1"
+  s.version = "1.2.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ladas"]
@@ -499,6 +499,8 @@ Gem::Specification.new do |s|
     "app/views/helpers/_build_table_wrapper.html.erb",
     "app/views/helpers/editable_table/_build_ajax_callback_code.html.erb",
     "app/views/helpers/editable_table/_build_table.html.erb",
+    "app/views/helpers/editable_table/_build_table_ajax_callback_code.html.erb",
+    "app/views/helpers/editable_table/_build_table_checkbox_functions.html.erb",
     "app/views/helpers/editable_table/_build_table_data.html.erb",
     "app/views/helpers/editable_table/_build_table_filter.html.erb",
     "app/views/helpers/editable_table/_build_table_header.html.erb",

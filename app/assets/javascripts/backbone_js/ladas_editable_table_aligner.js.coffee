@@ -22,6 +22,10 @@ class EditableTableAligner
     EditableTableAligner.align_heights(obj)
     console.log("align heights")
 
+    if (obj.editable_table_automatic_size? && obj.editable_table_automatic_size)
+      if !xhr
+        EditableTableAligner.register_align_table_size()
+
   @align_after_rows_update: (obj) ->
     # move colhead class to left column
     EditableTableAligner.align_static_left_columns_after_row_update(obj)
@@ -40,9 +44,12 @@ class EditableTableAligner
   ##############################
 
   @align_widths: (obj) ->
-    # going trough headers th
-#    console.log($("#" + obj.form_id).find('td[data-width-align-id]'))
+    # HAVE TO UNSET TABLE WIDTH IF AUTOSET
+    #todo it then moves with the table when cell editing, i will only make it bigger
+    #EditableTableAligner.unset_table_size()
 
+    # going trough headers th
+    #    console.log($("#" + obj.form_id).find('td[data-width-align-id]'))
     $("#" + obj.form_id).find('th[data-width-align-id]').each (index, element) =>
 
       # loading paired td and th
@@ -87,7 +94,9 @@ class EditableTableAligner
       'min-width': max_width,
       'max-width': max_width
       })
-
+    # automatic width of the table, if required
+    if (obj.editable_table_automatic_size? && obj.editable_table_automatic_size)
+      EditableTableAligner.align_table_size()
 
     return
 
@@ -132,8 +141,8 @@ class EditableTableAligner
       orig_head.find("thead tr").each (index, element) =>
         EditableTableAligner.move_cell_to_static_column(element, head)
 
-      # can delete orid headcols when I duplicated them, otherwise the height info is wrong
-      #$(orig_head).find(".headcol").remove()
+    # can delete orid headcols when I duplicated them, otherwise the height info is wrong
+    #$(orig_head).find(".headcol").remove()
 
 
     orig_body =  $("#" + obj.form_id).find('.centerContainer .detachedTableContainer')
@@ -151,7 +160,6 @@ class EditableTableAligner
     ##################### !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11
     ###################### omezim je na thead, tbody bude mit fixni vysku sloupcu, prepocinani s 500 radky, trva strasne dlouho
     #$("#" + obj.form_id).find('.fixedLeftColumn tr').each (index, element) =>
-
     $("#" + obj.form_id).find('.fixedLeftColumn thead tr').each (index, element) =>
 
       # loading paired tr of left column and right
@@ -234,6 +242,42 @@ class EditableTableAligner
 
       # have copy colors of the center table to left column
       $(destination_row).attr("style", $(element).attr("style"))
+
+  @register_align_table_size: ->
+    $(window).resize ->
+      EditableTableAligner.unset_table_size()
+      EditableTableAligner.align_table_size()
+
+  @unset_table_size: ->
+    $(".tableContainer, .centerContainer .detachedTableContainer, .centerContainer .scrollTargetContainter, .fixedLeftColumn .detachedTableContainer,.fixedLeftColumn table").css({'width': "", 'height': ""})
+
+  @align_table_size: ->
+
+    #    console.log $(window).width()
+    #    console.log $(window).height()
+    #    console.log $(document).width()
+    #    console.log $(document).height()
+    scroller_size = 16
+    upper_panel_size = 300
+    width_border = 80
+
+
+    left_column_width = $(".fixedLeftColumn table").width()
+    center_width = $(window).width() - left_column_width - scroller_size - width_border
+    table_height  = $(window).height() - upper_panel_size
+
+    console.log left_column_width
+    #    console.log center_width
+
+
+    $(".tableContainer").css({'width': (left_column_width + center_width + scroller_size + width_border)})
+
+    $(".centerContainer .detachedTableContainer").css({'width': (center_width + scroller_size), 'height': (table_height + scroller_size)})
+    $(".centerContainer .scrollTargetContainter").css({'width': center_width })
+
+    $(".fixedLeftColumn .detachedTableContainer").css({'height': table_height})
+    $(".fixedLeftColumn table").css({'width': left_column_width})
+
 
 window.EditableTableAligner = EditableTableAligner
 

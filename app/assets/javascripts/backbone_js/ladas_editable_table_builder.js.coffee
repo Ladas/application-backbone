@@ -307,14 +307,14 @@ class EditableTableBuilder
       # a javascrip code can be passed, it will be put as onclick javascript of the button
       EditableTableBuilder.html += ' onclick="' + settings.js_code
       EditableTableBuilder.html += '"'
-    
+
     else if it_is_link
       if (settings.confirm)
         EditableTableBuilder.html += ' onclick="if (confirm(\'' + settings.confirm + '\')){ load_page(' + stringified_settings + ',this); }; return false;"'
       else
         EditableTableBuilder.html += ' onclick="load_page(' + stringified_settings + ',this); return false;"'
 
-    
+
 
     EditableTableBuilder.html += '>' + sliced_text
 

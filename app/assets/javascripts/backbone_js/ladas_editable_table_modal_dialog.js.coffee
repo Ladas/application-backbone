@@ -38,8 +38,24 @@ class EditableTableModalDialog
     )
 
 
+  @show_in_dialog: (cell_element) ->
+    cell_id = $(cell_element).data("cell-identifier")
+    
+    url = $(cell_element).attr("href")
+    
+    # load the content of modal
+    load_page({
+    "content_id": "modal_cell_editing",
+    'symlink_remote': true,
+    'url': url,
+    "no_tracking": true
 
+    })
+    
 
+    # asynchronosly put content of modal when it is prepared and show it
+    $(document).bind('page_loader.loaded', EditableTableModalDialog.display)
+    
   @show: (cell_element, edit_cell_path) ->
     cell_id = $(cell_element).data("cell-identifier")
 

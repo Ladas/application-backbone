@@ -58,6 +58,11 @@ class TableSettings
       self
     end
 
+    def onclick(text)
+      @action_hash[:js_code] = text
+      self
+    end
+
     def css_class_type(type)
       css=case type
             when :show then "btn btn-success"

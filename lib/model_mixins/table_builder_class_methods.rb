@@ -574,35 +574,32 @@ module ModelMixins
       end
 
       # if model has cell colors
+      
       if (object_class.new.respond_to?(:editable_table_cell_colors))
-        if defined? EditableTableCellColor
-          cell_colors = EditableTableCellColor.where(:owner_type => object_class.to_s, :owner_id => all_items_row_ids).all
-          cell_colors_for_settings = {}
-          cell_colors.each do |c|
-            cell_colors_for_settings[c.owner_id] ||= {}
-            cell_colors_for_settings[c.owner_id][c.cell_name] ||= {}
-            cell_colors_for_settings[c.owner_id][c.cell_name]["color"] = c.color
-            cell_colors_for_settings[c.owner_id][c.cell_name]["background_color"] = c.background_color
-          end
-          unless cell_colors_for_settings.blank?
-            settings.merge!({:cell_colors => cell_colors_for_settings})
-          end
+        cell_colors = EditableTableCellColor.where(:owner_type => object_class.to_s, :owner_id => all_items_row_ids).all
+        cell_colors_for_settings = {}
+        cell_colors.each do |c|
+          cell_colors_for_settings[c.owner_id] ||= {}
+          cell_colors_for_settings[c.owner_id][c.cell_name] ||= {}
+          cell_colors_for_settings[c.owner_id][c.cell_name]["color"] = c.color
+          cell_colors_for_settings[c.owner_id][c.cell_name]["background_color"] = c.background_color
+        end
+        unless cell_colors_for_settings.blank?
+          settings.merge!({:cell_colors => cell_colors_for_settings})
         end
       end
 
       # if model has row colors
       if (object_class.new.respond_to?(:editable_table_row_colors))
-        if defined? EditableTableRowColor
-          row_colors = EditableTableRowColor.where(:owner_type => object_class.to_s, :owner_id => all_items_row_ids)
-          row_colors_for_settings = {}
-          row_colors.each do |c|
-            row_colors_for_settings[c.owner_id] ||= {}
-            row_colors_for_settings[c.owner_id]["color"] = c.color
-            row_colors_for_settings[c.owner_id]["background_color"] = c.background_color
-          end
-          unless row_colors_for_settings.blank?
-            settings.merge!({:row_colors => row_colors_for_settings})
-          end
+        row_colors = EditableTableRowColor.where(:owner_type => object_class.to_s, :owner_id => all_items_row_ids)
+        row_colors_for_settings = {}
+        row_colors.each do |c|
+          row_colors_for_settings[c.owner_id] ||= {}
+          row_colors_for_settings[c.owner_id]["color"] = c.color
+          row_colors_for_settings[c.owner_id]["background_color"] = c.background_color
+        end
+        unless row_colors_for_settings.blank?
+          settings.merge!({:row_colors => row_colors_for_settings})
         end
       end
     end

@@ -302,16 +302,19 @@ class EditableTableBuilder
     EditableTableBuilder.html += ' data-tr_class="' + settings.tr_class + '"' if  settings.tr_class?
     EditableTableBuilder.html += ' data-td_class="' + settings.td_class + '"' if  settings.td_class? && settings.td_class.length > 0
 
-    if it_is_link
+    # todo ladas asi prohodit i v table builder, pokud se zada js_code onclick, mel bz mit prioritu
+    if settings.js_code?
+      # a javascrip code can be passed, it will be put as onclick javascript of the button
+      EditableTableBuilder.html += ' onclick="' + settings.js_code
+      EditableTableBuilder.html += '"'
+    
+    else if it_is_link
       if (settings.confirm)
         EditableTableBuilder.html += ' onclick="if (confirm(\'' + settings.confirm + '\')){ load_page(' + stringified_settings + ',this); }; return false;"'
       else
         EditableTableBuilder.html += ' onclick="load_page(' + stringified_settings + ',this); return false;"'
 
-    else if settings.js_code?
-      # a javascrip code can be passed, it will be put as onclick javascript of the button
-      EditableTableBuilder.html += ' onclick="' + settings.js_code
-      EditableTableBuilder.html += '"'
+    
 
     EditableTableBuilder.html += '>' + sliced_text
 

@@ -1,0 +1,13 @@
+<script type="text/javascript">
+    $.datepicker.setDefaults($.datepicker.regional[ "cs" ]);
+    $('<%= selector %>').datetimepicker({
+        dateFormat:"yy-mm-dd",
+        timeFormat:'hh:mm z',
+        //showTimezone: true,
+        timezone: "+0100",
+        separator:' ',
+        changeYear:true,
+        yearRange:'<%= Date.today.year - 100 %>:<%= Date.today.year + 30 %>',
+        changeMonth:true
+    });
+</script>

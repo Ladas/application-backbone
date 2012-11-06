@@ -45,5 +45,9 @@ module ViewMixins
       render :partial => '/helpers/build_ajax_callback_code', :layout => false, :locals => {:caller_id => caller_id}
     end
 
+    #todo ladas connect regional to locale and timezone to browser timezone
+    def build_datetime_picker_js_code(selector, regional=nil,timezone=nil)
+      render :partial => '/helpers/build_datetime_picker_js_code', :layout => false, :locals => {:selector => selector, :regional => regional, :timezone => timezone }
+    end
   end
 end

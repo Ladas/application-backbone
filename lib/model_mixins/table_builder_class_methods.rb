@@ -59,7 +59,7 @@ module ModelMixins
           if !col[:summarize_page].blank? && col[:summarize_page]
             # mysql SUM of the collumn on the page
             # passing all_items.total_entries because I don't want it to count again
-            if all_items.class.kind_of?(WillPaginate::Collection)
+            if all_items.kind_of?(WillPaginate::Collection)
               # if this is not will paginate collection, it means there is no pagination, so there wont be summary of page
               col[:summarize_page_value] = sumarize(object, col, object.filter(object, settings, params, per_page, all_items.total_entries).selection(settings))
             end

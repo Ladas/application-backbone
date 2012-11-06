@@ -1,0 +1,48 @@
+<% if settings[:display_method].blank? %>
+    <% if settings[:checkboxes] %>
+        <script type="text/javascript">
+            function submit_form_in_new_window(form_id, spec_attr_name, spec_attr_value) {
+                var form_original = $("#" + form_id);
+
+                // create new form by cloning without events
+                var form = form_original.clone(false)
+
+                // disabling ajax
+                form.removeAttr("data-remote");
+
+                form.attr("target", "_blank");
+                form.attr("action", form_original.attr("action"));
+                form.attr("style", "display: none;");
+                form.attr("id", "");
+
+                // need to append it to browser html, otherwise it wont send in many browsers (with clone it works only with chrome)
+                form_original.after(form);
+
+                //Create an input type dynamically.
+                var element = document.createElement("input");
+
+                //Assign different attributes to the element.
+                element.setAttribute("type", "hidden");
+                element.setAttribute("value", spec_attr_value);
+                element.setAttribute("name", spec_attr_name);
+
+                //Append the element in form
+                form.append(element);
+
+                form.submit();
+                form.remove();
+            }
+
+        </script>
+        <a href="#" class="btn" onclick="submit_form_in_new_window('<%= settings[:form_id] %>', '___display_method___', 'print_by_checkboxes'); return false;"><i class="icon-print"></i>&nbsp;
+          Tisknout výběr</a>
+
+        <a href="#" class="btn" onclick="submit_form_in_new_window('<%= settings[:form_id] %>', '___export_method___', 'csv_by_checkboxes'); return false;"><i class="icon-download-alt"></i>&nbsp;
+          Exportovat výběr do CSV</a>
+
+        <a href="#" class="btn" onclick="if (confirm('Tato operace může trvat několik minut v této době prosím neobnovujte stránku. Maximální počet řádků pro tisk je 10000. Chcete pokračovat?')){submit_form_in_new_window('<%= settings[:form_id] %>', '___display_method___', 'print');} return false;"><i class="icon-print"></i>&nbsp;
+                  Tisknout vše dle filtrace</a>
+        <a href="#" class="btn" onclick="if (confirm('Tato operace může trvat několik minut v této době prosím neobnovujte stránku. Maximální počet řádků pro export je 50000. Chcete pokračovat?')){submit_form_in_new_window('<%= settings[:form_id] %>', '___export_method___', 'csv');} return false;"><i class="icon-download-alt"></i>&nbsp;
+           Exportovat vše do CSV dle filtrace</a>
+    <% end %>
+<% end %>

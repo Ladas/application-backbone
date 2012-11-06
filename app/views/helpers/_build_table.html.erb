@@ -31,7 +31,7 @@
         <% if settings[:display_method].blank? %>
             <% if settings[:checkboxes] %>
                 <script type="text/javascript">
-                    function submit_in_new_window(form_id) {
+                    function submit_in_new_window(form_id, spec_attr_name, spec_attr_value) {
                         var form_original = $("#" + form_id);
 
                         // create new form by cloning without events
@@ -43,6 +43,7 @@
                         form.attr("target", "_blank");
                         form.attr("action", form_original.attr("action"));
                         form.attr("style", "display: none;");
+                        form.attr("id", "");
 
                         // need to append it to browser html, otherwise it wont send in many browsers (with clone it works only with chrome)
                         form_original.after(form);
@@ -52,8 +53,8 @@
 
                         //Assign different attributes to the element.
                         element.setAttribute("type", "hidden");
-                        element.setAttribute("value", "print_by_checkboxes");
-                        element.setAttribute("name", "___display_method___");
+                        element.setAttribute("value", spec_attr_value);
+                        element.setAttribute("name", spec_attr_name);
 
                         //Append the element in form
                         form.append(element);
@@ -63,8 +64,11 @@
                     }
 
                 </script>
-                <a href="#" class="btn" onclick="submit_in_new_window('<%= settings[:form_id] %>'); return false;"><i class="icon-print"></i>&nbsp;
+                <a href="#" class="btn" onclick="submit_in_new_window('<%= settings[:form_id] %>', '___display_method___', 'print_by_checkboxes'); return false;"><i class="icon-print"></i>&nbsp;
                   Tisknout výběr</a>
+
+                <a href="#" class="btn" onclick="if (confirm('Tato operace může trvat několik minut v této době prosím neobnovujte stránku. Maximální počet řádků pro tisk je 10000. Chcete pokračovat?')){submit_in_new_window('<%= settings[:form_id] %>', '___display_method___', 'print');} return false;"><i class="icon-print"></i>&nbsp;
+                  Tisknout vše dle filtrace</a>
             <% end %>
         <% end %>
       </div>

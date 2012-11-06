@@ -13,30 +13,35 @@ module ControllerMixins
 
             render :layout => "print", :action => :index
           else
-            # default print of table
-            default_params = params
-            if !params.blank? && params["clear"]
-              default_params = @settings[:default].dup
-              default_params[:order_by] = @settings[:default][:order_by] + " " + @settings[:default][:order_by_direction] if !@settings[:default][:order_by].blank? && !@settings[:default][:order_by_direction].blank?
-              default_params[:order_by] = @settings[:default][:order] if !@settings[:default][:order].blank?
-            end
-
-            @settings = class_obj.prepare_settings(logged_user, data, @settings, default_params)
-            if !params.blank? && params["clear"]
-              session["#{@settings[:form_id]}_params"] = ""
-              render :layout => false, :action => :index
-            else
-              @paginate = render_to_string(:partial => "/helpers/build_table_pager", :locals => {:settings => @settings})
-              session["#{@settings[:form_id]}_params"] = params
-              if @settings[:template].blank?
-                # if there is no template a will return json and tbody renders in javascript template
-                returned_t_body = @settings.to_json
+            case params["___export_method___"]
+              when "csv"
+                @settings = class_obj.prepare_settings(logged_user, data, @settings, default_params)
               else
-                # or there is template so i will return template rendered here in ruby
-                returned_t_body = render_to_string(:partial => @settings[:template], :locals => {:settings => @settings})
-              end
+                # default print of table
+                default_params = params
+                if !params.blank? && params["clear"]
+                  default_params = @settings[:default].dup
+                  default_params[:order_by] = @settings[:default][:order_by] + " " + @settings[:default][:order_by_direction] if !@settings[:default][:order_by].blank? && !@settings[:default][:order_by_direction].blank?
+                  default_params[:order_by] = @settings[:default][:order] if !@settings[:default][:order].blank?
+                end
 
-              render :layout => false, :json => {:settings => returned_t_body, :paginate => @paginate}.to_json
+                @settings = class_obj.prepare_settings(logged_user, data, @settings, default_params)
+                if !params.blank? && params["clear"]
+                  session["#{@settings[:form_id]}_params"] = ""
+                  render :layout => false, :action => :index
+                else
+                  @paginate = render_to_string(:partial => "/helpers/build_table_pager", :locals => {:settings => @settings})
+                  session["#{@settings[:form_id]}_params"] = params
+                  if @settings[:template].blank?
+                    # if there is no template a will return json and tbody renders in javascript template
+                    returned_t_body = @settings.to_json
+                  else
+                    # or there is template so i will return template rendered here in ruby
+                    returned_t_body = render_to_string(:partial => @settings[:template], :locals => {:settings => @settings})
+                  end
+
+                  render :layout => false, :json => {:settings => returned_t_body, :paginate => @paginate}.to_json
+                end
             end
         end
 
@@ -69,6 +74,13 @@ module ControllerMixins
       default_params = set_default_params(filter_method, show_table_method, settings)
 
       case display_method
+        when "print"
+          # vyjímka pro tisk tabulek
+          # printing page, it should be opened in new window
+          settings[:display_method] = display_method
+          settings = class_obj.prepare_settings(logged_user, data, settings, default_params, nil, 10000)
+
+          render_table_for_printing(settings, show_table_method)
         when "print_by_checkboxes"
           # vyjímka pro tisk tabulek
           # printing page, it should be opened in new window
@@ -78,17 +90,28 @@ module ControllerMixins
 
           render_table_for_printing(settings, show_table_method)
         else
-          settings = class_obj.prepare_settings(logged_user, data, settings, default_params)
+          case export_method
+            when "csv"
+              @settings = class_obj.prepare_settings(logged_user, data, @settings, default_params ,nil, 50000)
+              generate_and_return_csv(get_data_for_csv_from_settings(@settings))
+            when "csv_by_checkboxes"
+              settings[:filter_method] = "only_by_checkboxes"
+              @settings = class_obj.prepare_settings(logged_user, data, @settings, default_params)
+              generate_and_return_csv(get_data_for_csv_from_settings(@settings))
+            else
 
-          # Filtrovani se renderuje zde
-          if is_filtering?(filter_method)
+              settings = class_obj.prepare_settings(logged_user, data, settings, default_params)
 
-            if clear_filter? # Tlacitko Smazat filtr
-              render_table_on_clear_filter(settings, show_table_method)
-            else # Ostatni filtry
-              render_tbody_on_filter(settings)
-            end
+              # Filtrovani se renderuje zde
+              if is_filtering?(filter_method)
 
+                if clear_filter? # Tlacitko Smazat filtr
+                  render_table_on_clear_filter(settings, show_table_method)
+                else # Ostatni filtry
+                  render_tbody_on_filter(settings)
+                end
+
+              end
           end
       end
 
@@ -131,6 +154,10 @@ module ControllerMixins
 
     def display_method
       params["___display_method___"]
+    end
+
+    def export_method
+      params["___export_method___"]
     end
 
     def default_params_for_clear_filter(settings)

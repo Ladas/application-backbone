@@ -6,7 +6,7 @@ module ModelMixins
     end
 
 
-    def prepare_settings(logged_user, object, settings, params, per_page = 10)
+    def prepare_settings(logged_user, object, settings, params, per_page = 10, forced_per_page = nil)
       params[:page] = 1 if params[:page].blank?
       params[:order_by] = settings[:default][:order_by] + " " + settings[:default][:order_by_direction] if params[:order_by].blank? && !settings[:default][:order_by].blank? && !settings[:default][:order_by_direction].blank?
 
@@ -27,6 +27,8 @@ module ModelMixins
         params[:per_page] = settings[:default][:per_page] if params[:per_page].blank? && !settings[:default][:per_page].blank?
       end
       params[:per_page] = per_page if params[:per_page].blank?
+      # forcing per page for print, export of all, etc., there will be maximum, later I can add ___unlimited___
+      params[:per_page] = forced_per_page unless forced_per_page.blank?
       per_page = params[:per_page]
 
 
@@ -57,7 +59,10 @@ module ModelMixins
           if !col[:summarize_page].blank? && col[:summarize_page]
             # mysql SUM of the collumn on the page
             # passing all_items.total_entries because I don't want it to count again
-            col[:summarize_page_value] = sumarize(object, col, object.filter(object, settings, params, per_page, all_items.total_entries).selection(settings))
+            if all_items.class.kind_of?(WillPaginate::Collection)
+              # if this is not will paginate collection, it means there is no pagination, so there wont be summary of page
+              col[:summarize_page_value] = sumarize(object, col, object.filter(object, settings, params, per_page, all_items.total_entries).selection(settings))
+            end
           end
 
           if !col[:summarize_all].blank? && col[:summarize_all]
@@ -574,7 +579,7 @@ module ModelMixins
       end
 
       # if model has cell colors
-      
+
       if (object_class.new.respond_to?(:editable_table_cell_colors))
         cell_colors = EditableTableCellColor.where(:owner_type => object_class.to_s, :owner_id => all_items_row_ids).all
         cell_colors_for_settings = {}

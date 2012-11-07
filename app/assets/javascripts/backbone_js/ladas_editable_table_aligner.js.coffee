@@ -253,8 +253,8 @@ class EditableTableAligner
 
   @align_table_size: ->
 
-    #    console.log $(window).width()
-    #    console.log $(window).height()
+    #console.log $(window).width()
+    #console.log $(window).height()
     #    console.log $(document).width()
     #    console.log $(document).height()
     scroller_size = 16
@@ -266,14 +266,14 @@ class EditableTableAligner
     center_width = $(window).width() - left_column_width - scroller_size - width_border
     table_height  = $(window).height() - upper_panel_size
 
-    console.log left_column_width
+    #console.log left_column_width
     #    console.log center_width
 
 
-    $(".tableContainer").css({'width': (left_column_width + center_width + scroller_size + width_border)})
+    $(".tableContainer").css({'width': (left_column_width + center_width + scroller_size + width_border/2)})
 
-    $(".centerContainer .detachedTableContainer").css({'width': (center_width + scroller_size), 'height': (table_height + scroller_size)})
-    $(".centerContainer .scrollTargetContainter").css({'width': center_width })
+    $(".centerContainer .detachedTableContainer").css({'width': (center_width + scroller_size + width_border/4), 'height': (table_height + scroller_size)})
+    $(".centerContainer .scrollTargetContainter").css({'width': (center_width + width_border/4) })
 
     $(".fixedLeftColumn .detachedTableContainer").css({'height': table_height})
     $(".fixedLeftColumn table").css({'width': left_column_width})

@@ -14,6 +14,11 @@ class TableSettings
       self
     end
 
+    def title(title)
+      @action_hash[:title] = title
+      self
+    end
+
     def add_defaults
       @action_hash[:symlink_remote] = true
       self

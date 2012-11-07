@@ -49,6 +49,9 @@ module ModelMixins
       all_items = items.all # maybe can be done more optimal
       all_items_row_ids = all_items.collect { |x| x.row_id }.uniq
 
+      # summarization will be in one query, otherwise it takes a lot of time to do it in many
+      summarized_paged_cols = []
+      summarized_all_cols = []
 
       if settings[:template].blank?
         # initialize another_global_formats,another_formats and column_methods
@@ -61,13 +64,15 @@ module ModelMixins
             # passing all_items.total_entries because I don't want it to count again
             if all_items.kind_of?(WillPaginate::Collection)
               # if this is not will paginate collection, it means there is no pagination, so there wont be summary of page
-              col[:summarize_page_value] = sumarize(object, col, object.filter(object, settings, params, per_page, all_items.total_entries).selection(settings))
+              #col[:summarize_page_value] = sumarize(object, col, object.filter(object, settings, params, per_page, all_items.total_entries).selection(settings))
+              summarized_paged_cols << col
             end
           end
 
           if !col[:summarize_all].blank? && col[:summarize_all]
             # mysql SUM of the collumn off all data
-            col[:summarize_all_value] = sumarize(object, col, object.filter(object, settings, params, false).selection(settings))
+            #col[:summarize_all_value] = sumarize(object, col, object.filter(object, settings, params, false).selection(settings))
+            summarized_all_cols << col
           end
 
 
@@ -95,6 +100,14 @@ module ModelMixins
             }
           end
         end
+
+        # making all summarizations in 2 queries
+        summarized_paged_cols_arel = nil
+        summarized_all_cols_arel = nil
+
+        summarized_paged_cols_arel = object.filter(object, settings, params, per_page, all_items.total_entries).selection(settings) unless summarized_paged_cols.blank?
+        summarized_all_cols_arel = object.filter(object, settings, params, false).selection(settings) unless summarized_all_cols.blank?
+        make_sumarizations!(object, summarized_paged_cols, summarized_paged_cols_arel, summarized_all_cols, summarized_all_cols_arel)
 
 
         # same as template_items below, loads objects so column method are better to use
@@ -221,6 +234,68 @@ module ModelMixins
       settings.merge!({:data_paginate => items})
       settings.merge!({:params => params})
       settings
+    end
+
+    def make_sumarizations!(object, summarized_paged_cols, paged_cols_arel, summarized_all_cols, all_cols_arel)
+      # make summarizations, will set it in the given cols
+      unless summarized_paged_cols.blank?
+        sumarize_collection!(object, summarized_paged_cols, paged_cols_arel, :page)
+      end
+      unless summarized_all_cols.blank?
+        sumarize_collection!(object, summarized_all_cols, all_cols_arel, :all)
+      end
+    end
+
+    def sumarize_collection!(object, cols, items_arel, type)
+      # make the col_name aliases and the query
+      col_names = {}
+      sum_query = ""
+      cols.each do |col|
+        col_name = col[:name]
+        col_name_alias = col_name + "_sum"
+
+        sum_query += ", " unless sum_query.blank?
+        sum_query += "SUM(#{col_name}) AS #{col_name_alias}"
+      end
+
+      #make the query
+      if object.respond_to?(:klass)
+        mysql_sums = object.klass.find_by_sql("SELECT #{sum_query} FROM (" + items_arel.to_sql + ") counts")
+      else
+        mysql_sums = object.find_by_sql("SELECT #{sum_query} FROM (" + items_arel.to_sql + ") counts")
+      end
+      sums = mysql_sums.first
+
+      # set the summarization results back to cols
+      cols.each do |col|
+        col_name = col[:name]
+        col_name_alias = col_name + "_sum"
+
+        # getting summarization value
+        sum_value = sums[col_name_alias]
+
+        # formating sum_value, if there is formating method
+        format_method = nil
+        format_method = col[:format_method] unless col[:format_method].blank?
+        format_method = col[:global_format_method] unless col[:global_format_method].blank?
+
+        unless format_method.blank?
+          if object.respond_to?(:klass)
+            sum_value = object.klass.new.send(format_method.to_sym, sum_value)
+          else
+            sum_value = object.new.send(format_method.to_sym, sum_value)
+          end
+        end
+
+
+        # assigning back to col by type
+        case type
+          when :all
+            col[:summarize_all_value] = sum_value
+          when :page
+            col[:summarize_page_value] = sum_value
+        end
+      end
     end
 
     def sumarize(object, col, items)

@@ -12,6 +12,8 @@ class EditableTableBuilder
 
   @update_rows: (obj) ->
     EditableTableBuilder.obj = obj
+    EditableTableBuilder.invalidate_sumarizatios(obj)
+
     row_count = 0
     for row in EditableTableBuilder.obj.data
       do (row) ->
@@ -334,6 +336,11 @@ class EditableTableBuilder
   @make_column_from_hash: (button_settings, row, col) ->
     button_settings['origin'] = 'table'
     EditableTableBuilder.make_href_button(button_settings, row, col)
+
+  @invalidate_sumarizatios: (obj) ->
+    # if row gets updated, summarizations must be invalidated
+    $("#" + obj.form_id).find('td.summarize span').each (index, element) =>
+      $(element).html('<a href="#" class="btn btn-success" onclick="$(this).parents(\'form\').submit();return false;" title="Data byla změněna, prosím klikněte zde pro obnovení.">Obnovit</a>')
 
 
 window.EditableTableBuilder = EditableTableBuilder

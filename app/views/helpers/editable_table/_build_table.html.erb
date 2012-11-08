@@ -34,6 +34,8 @@
       </div>
     </div>
 <% end %>
+
+<%= yield :table_form_tabs_above_form %>
 <%= form_tag settings[:filter_path], :html => {:'data-type' => 'html'}, :method => 'POST', :class => 'well dataGrid no_hover editable_table', :remote => true, :id => settings[:form_id] do |f| %>
     <% if settings[:display_method].blank? %>
         <% if content_for?(:table_form) %>

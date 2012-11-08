@@ -461,11 +461,20 @@ module ModelMixins
             params['multichoice'].each_pair do |i, v|
               i = i.gsub(/___unknown___\./, "") #some cleaning job
               unless v.blank?
-                cond_str += " AND " unless cond_str.blank?
-                cond_id = "multichoice_#{i.gsub(/\./, '_')}"
+                if i.match(/^.*?___sql_expression___.*$/i)
+                  i = i.gsub(/___sql_expression___\./, "") #some cleaning job
+                  having_cond_str += " AND " unless having_cond_str.blank?
+                  cond_id = "multichoice_#{i.gsub(/\./, '_')}"
 
-                cond_str += "#{i} IN (:#{cond_id})" #OR guest_email LIKE :find"
-                cond_hash.merge!({cond_id.to_sym => v})
+                  having_cond_str += "#{i} IN (:#{cond_id})" #OR guest_email LIKE :find"
+                  having_cond_hash.merge!({cond_id.to_sym => v})
+                else
+                  cond_str += " AND " unless cond_str.blank?
+                  cond_id = "multichoice_#{i.gsub(/\./, '_')}"
+
+                  cond_str += "#{i} IN (:#{cond_id})" #OR guest_email LIKE :find"
+                  cond_hash.merge!({cond_id.to_sym => v})
+                end
               end
             end
           end

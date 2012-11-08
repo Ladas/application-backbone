@@ -64,10 +64,10 @@
                     }
 
                 </script>
-                <a href="#" class="btn" onclick="submit_in_new_window('<%= settings[:form_id] %>', '___display_method___', 'print_by_checkboxes'); return false;"><i class="icon-print"></i>&nbsp;
+                <a href="#" class="btn print print_by_checkboxes" onclick="submit_in_new_window('<%= settings[:form_id] %>', '___display_method___', 'print_by_checkboxes'); return false;"><i class="icon-print"></i>&nbsp;
                   Tisknout výběr</a>
 
-                <a href="#" class="btn" onclick="if (confirm('Tato operace může trvat několik minut v této době prosím neobnovujte stránku. Maximální počet řádků pro tisk je 10000. Chcete pokračovat?')){submit_in_new_window('<%= settings[:form_id] %>', '___display_method___', 'print');} return false;"><i class="icon-print"></i>&nbsp;
+                <a href="#" class="btn print print_by_filter" onclick="if (confirm('Tato operace může trvat několik minut v této době prosím neobnovujte stránku. Maximální počet řádků pro tisk je 10000. Chcete pokračovat?')){submit_in_new_window('<%= settings[:form_id] %>', '___display_method___', 'print');} return false;"><i class="icon-print"></i>&nbsp;
                   Tisknout vše dle filtrace</a>
             <% end %>
         <% end %>

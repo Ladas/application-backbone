@@ -61,7 +61,10 @@ class EditableTableModalDialog
 
     url = "fill_the_url_in_controller"
     url = edit_cell_path if edit_cell_path?
-    url += "?cell_id=" + cell_id
+    if (edit_cell_path.indexOf("?") > -1)
+      url += "&cell_id=" + cell_id
+    else
+      url += "?cell_id=" + cell_id
 
     # load the content of modal
     load_page({

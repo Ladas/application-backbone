@@ -251,7 +251,12 @@ module ModelMixins
       col_names = {}
       sum_query = ""
       cols.each do |col|
-        col_name = col[:name]
+        if col[:sql_expression].blank?
+          col_name = "#{col[:table]}_#{col[:name]}"
+        else
+          col_name = col[:name]
+        end
+
         col_name_alias = col_name + "_sum"
 
         sum_query += ", " unless sum_query.blank?
@@ -268,7 +273,12 @@ module ModelMixins
 
       # set the summarization results back to cols
       cols.each do |col|
-        col_name = col[:name]
+        if col[:sql_expression].blank?
+          col_name = "#{col[:table]}_#{col[:name]}"
+        else
+          col_name = col[:name]
+        end
+
         col_name_alias = col_name + "_sum"
 
         # getting summarization value

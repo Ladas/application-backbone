@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = "it-logica-application-backbone"
-  s.version = "1.2.17"
+  s.version = "1.2.18"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ladas"]
@@ -516,6 +516,7 @@ Gem::Specification.new do |s|
     "lib/controller_mixins/table_settings_interface.rb",
     "lib/initializers/initialize.rb",
     "lib/it-logica-application-backbone.rb",
+    "lib/model_mixins/import_csv_class_methods.rb",
     "lib/model_mixins/ladas_html_entities.rb",
     "lib/model_mixins/ladas_string_extensions.rb",
     "lib/model_mixins/table_builder_class_methods.rb",

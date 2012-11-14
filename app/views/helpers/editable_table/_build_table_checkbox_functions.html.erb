@@ -41,8 +41,13 @@
           Exportovat výběr do CSV</a>
 
         <a href="#" class="btn" onclick="if (confirm('Tato operace může trvat několik minut v této době prosím neobnovujte stránku. Maximální počet řádků pro tisk je 10000. Chcete pokračovat?')){submit_form_in_new_window('<%= settings[:form_id] %>', '___display_method___', 'print');} return false;"><i class="icon-print"></i>&nbsp;
-                  Tisknout vše dle filtrace</a>
+          Tisknout vše dle filtrace</a>
         <a href="#" class="btn" onclick="if (confirm('Tato operace může trvat několik minut v této době prosím neobnovujte stránku. Maximální počet řádků pro export je 50000. Chcete pokračovat?')){submit_form_in_new_window('<%= settings[:form_id] %>', '___export_method___', 'csv');} return false;"><i class="icon-download-alt"></i>&nbsp;
-           Exportovat vše do CSV dle filtrace</a>
+          Exportovat vše do CSV dle filtrace</a>
+
+        <% unless @settings[:import_csv_path].blank? %>
+            <a target="_blank" style="float:right" href="<%= @settings[:import_csv_path] %>" class="btn"><i class="icon-circle-arrow-up"></i>&nbsp;
+                     Import</a>
+        <% end %>
     <% end %>
 <% end %>

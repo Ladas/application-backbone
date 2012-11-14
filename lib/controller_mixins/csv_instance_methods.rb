@@ -1,3 +1,4 @@
+#encoding: utf-8
 module ControllerMixins
   module CsvInstanceMethods
     require 'csv'
@@ -50,5 +51,68 @@ module ControllerMixins
       end
       data_for_csv
     end
+
+
+    def make_import_csv(model_class, import_settings = nil)
+      if request.post? && params[:file].present?
+        infile = params[:file].read
+        @successful_creates = 0
+        @errors = []
+        @label_header = []
+        header = []
+
+        white_list = model_class.get_white_list(import_settings)
+
+        row_number = 0
+        CSV.parse(infile, :encoding => "UTF-8", :col_sep => "\t") do |row|
+          row_number += 1
+
+          # SKIP: header
+          if row_number == 1
+            header = model_class.build_header_from_csv(row, white_list)
+            next
+          end
+
+          if row_number == 2
+            @label_header = model_class.build_header_from_csv(row, white_list)
+            next
+          end
+
+          row_data = model_class.build_record_from_csv(row, header, white_list)
+
+
+          row_obj = model_class.new(row_data)
+
+          if row_obj.save
+            @successful_creates += 1
+          else
+            error_message = ""
+            row_obj.errors.full_messages.each do |msg|
+              error_message += ". " unless error_message.blank?
+              error_message += msg
+            end
+
+            @errors << {:row_number => row_number, :row => row, :error_message => error_message}
+          end
+          # build_from_csv method will map customer attributes &
+          # build new customer record
+          #customer = Customer.build_from_csv(row)
+          ## Save upon valid
+          ## otherwise collect error records to export
+          #if customer.valid?
+          #  customer.save
+          #else
+          #  errs << row
+          #end
+        end
+
+        render :action => :import_csv
+      else
+        flash[:error] = "Musíte vybrat soubor pro import "
+        redirect_to :action => :import_csv
+      end
+    end
+
+
   end
 end

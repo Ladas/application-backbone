@@ -14,6 +14,8 @@ require 'model_mixins/table_settings_interface'
 require "model_mixins/ladas_string_extensions"
 require "model_mixins/ladas_html_entities"
 
+require "model_mixins/import_csv_class_methods"
+
 
 require 'controller_mixins/renderer_instance_methods'
 require 'controller_mixins/csv_instance_methods'
@@ -34,6 +36,8 @@ module Initializers
 
       ActiveRecord::Base.send :extend, ModelMixins::TableBuilderClassMethods
       ActiveRecord::Base.send :extend, ModelMixins::TableSettingsInterface
+      
+      ActiveRecord::Base.send :extend, ModelMixins::ImportCsvClassMethods
 
 
       String.send :include, ModelMixins::LadasStringExtensions

@@ -44,6 +44,7 @@ class EditableTableBuilder
 
 
   @make_table: ->
+    CheckboxPool.checkboxes_initialize()
     row_count = 0
     for row in EditableTableBuilder.obj.data
       do (row) ->
@@ -65,6 +66,7 @@ class EditableTableBuilder
 
         EditableTableBuilder.html += '</tr>'
 
+    CheckboxPool.checkboxes_finalize()
     EditableTableBuilder.add_summary_row()
 
   @add_summary_row: ->
@@ -164,7 +166,11 @@ class EditableTableBuilder
       EditableTableBuilder.html += ' onclick="CheckboxPool.change($(this))"'
       #console.log CheckboxPool.get_pool_by_form_id(TableBuilder.obj.form_id, row.row_id)
       #console.log CheckboxPool.include_value(TableBuilder.obj.form_id, row.row_id)
-      EditableTableBuilder.html += ' checked="checked"' if CheckboxPool.include_value(EditableTableBuilder.obj.form_id, row.row_id)
+      if CheckboxPool.include_value(EditableTableBuilder.obj.form_id, row.row_id)
+        EditableTableBuilder.html += ' checked="checked"'
+      else
+        # if not all checkboxes are checkde, the main checkboxes will not be checked
+        CheckboxPool.checkboxes_not_all_checked()
       EditableTableBuilder.html += ' value="' + row.row_id + '">'
 
 

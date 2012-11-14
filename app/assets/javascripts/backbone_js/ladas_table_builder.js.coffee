@@ -9,6 +9,7 @@ class TableBuilder
     return TableBuilder.html
 
   @make_table: ->
+    CheckboxPool.checkboxes_initialize()
     for row in TableBuilder.obj.data
       do (row) ->
         TableBuilder.html += '<tr>'
@@ -20,6 +21,7 @@ class TableBuilder
 
         TableBuilder.html += '</tr>'
 
+    CheckboxPool.checkboxes_finalize()
     TableBuilder.add_summary_row()
 
   @add_summary_row: ->
@@ -83,6 +85,8 @@ class TableBuilder
 
     TableBuilder.html += summarize_all if summarize_all_present
 
+
+
   @add_row_checkboxes: (row) ->
     if TableBuilder.obj.checkboxes?
       TableBuilder.html += '<td class="chbox">'
@@ -90,7 +94,12 @@ class TableBuilder
       TableBuilder.html += ' onclick="CheckboxPool.change($(this))"'
       #console.log CheckboxPool.get_pool_by_form_id(TableBuilder.obj.form_id, row.row_id)
       #console.log CheckboxPool.include_value(TableBuilder.obj.form_id, row.row_id)
-      TableBuilder.html += ' checked="checked"' if CheckboxPool.include_value(TableBuilder.obj.form_id, row.row_id)
+      if CheckboxPool.include_value(TableBuilder.obj.form_id, row.row_id)
+        TableBuilder.html += ' checked="checked"'
+      else
+        # if not all checkboxes are checkde, the main checkboxes will not be checked
+        CheckboxPool.checkboxes_not_all_checked()
+
       TableBuilder.html += ' value="' + row.row_id + '">'
 
 

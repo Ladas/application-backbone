@@ -42,6 +42,20 @@ class CheckboxPool
       CheckboxPool.uncheck_page(form_id)
 
 
+  @checkboxes_initialize: ->
+      # some beahviour before initialize checkboxes
+      # I am tracking if all checkboxes are checked, setting as true, will set as false if some is not set
+    CheckboxPool.all_checkboxes_on_page_checked = true
+
+  @checkboxes_not_all_checked: ->
+    CheckboxPool.all_checkboxes_on_page_checked = false
+
+  @checkboxes_finalize: ->
+    if CheckboxPool.all_checkboxes_on_page_checked
+      $('#checkbox_all_checked_unchecked').attr('checked', 'checked')
+    else
+      $('#checkbox_all_checked_unchecked').removeAttr('checked')
+
 
   #######################################################
   #private

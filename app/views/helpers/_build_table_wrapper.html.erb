@@ -75,7 +75,7 @@
   <tr class="sorting_tr">
     <% if !settings[:checkboxes].blank? && settings[:checkboxes] %>
         <th class="chbox">
-          <input type="checkbox" title="Označit/odznačit vše na stránce" onclick="CheckboxPool.check_or_uncheck_page(this, '<%= settings[:form_id] %>')" id=""/>
+          <input type="checkbox" title="Označit/odznačit vše na stránce" onclick="CheckboxPool.check_or_uncheck_page(this, '<%= settings[:form_id] %>')" id="checkbox_all_checked_unchecked"/>
         </th>
     <% end %>
     <% if !settings[:row].blank? && !settings[:row][:functions].blank? %>

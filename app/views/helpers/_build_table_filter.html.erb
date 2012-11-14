@@ -32,10 +32,10 @@
         FilterChangeMarker.mark_active_filters('<%= settings[:form_id] %>');
 
         $("#<%= settings[:form_id] %>")
-                .live("ajax:beforeSend", function (evt, xhr, settings) {
+                .bind("ajax:beforeSend", function (evt, xhr, settings) {
                     ladas_loading_show();
                 })
-                .live("ajax:complete", function (evt, xhr, status) {
+                .bind("ajax:complete", function (evt, xhr, status) {
                     var parsed_response = jQuery.parseJSON(xhr.responseText);
 
                     //console.log(xhr.responseText)

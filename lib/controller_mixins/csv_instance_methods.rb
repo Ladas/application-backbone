@@ -56,6 +56,15 @@ module ControllerMixins
     def make_import_csv(model_class, import_settings = nil)
       if request.post? && params[:file].present?
         infile = params[:file].read
+
+        # whether it should be updated is decided by user by checkbox
+        update_existing = params[:update_existing]
+        unique_attribute_for_update = import_settings[:unique_attribute_for_update]
+
+        # additional row data will be added to each row
+        additional_row_data = import_settings[:additional_row_data]
+
+        @successful_updates = 0
         @successful_creates = 0
         @errors = []
         @label_header = []
@@ -79,12 +88,31 @@ module ControllerMixins
           end
 
           row_data = model_class.build_record_from_csv(row, header, white_list)
+          # merging with additional data if there are some
+          row_data.merge!(additional_row_data) unless additional_row_data.blank?
 
 
-          row_obj = model_class.new(row_data)
+          import_operation = :create
+          if update_existing
+            # updating is allowed
+            if (row_obj = model_class.where(unique_attribute_for_update => row_data[unique_attribute_for_update]).first)
+              import_operation = :update
+              row_obj.assign_attributes(row_data)
+            else
+              row_obj = model_class.new(row_data)
+            end
+          else
+            row_obj = model_class.new(row_data)
+          end
 
           if row_obj.save
-            @successful_creates += 1
+            case import_operation
+              when :create
+                @successful_creates += 1
+              when :update
+                @successful_updates += 1
+            end
+
           else
             error_message = ""
             row_obj.errors.full_messages.each do |msg|

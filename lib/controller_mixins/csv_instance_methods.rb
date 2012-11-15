@@ -55,6 +55,11 @@ module ControllerMixins
 
     def make_import_csv(model_class, import_settings = nil)
       if request.post? && params[:file].present?
+        
+        col_sep = params[:col_sep]
+        col_sep = ";" if col_sep.blank?
+        
+        
         infile = params[:file].read
 
         # whether it should be updated is decided by user by checkbox
@@ -73,7 +78,7 @@ module ControllerMixins
         white_list = model_class.get_white_list(import_settings)
 
         row_number = 0
-        CSV.parse(infile, :encoding => "UTF-8", :col_sep => "\t") do |row|
+        CSV.parse(infile, :encoding => "UTF-8", :col_sep => col_sep) do |row|
           row_number += 1
 
           # SKIP: header

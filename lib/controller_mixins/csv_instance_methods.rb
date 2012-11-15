@@ -61,6 +61,11 @@ module ControllerMixins
         
         
         infile = params[:file].read
+        # crapy crapper DELETE all spaces from beginning and the end
+        infile = infile.force_encoding("UTF-8")
+        bom = "\xEF\xBB\xBF".force_encoding("UTF-8")
+        infile.gsub!(/^#{bom}/, "")
+        infile.gsub!(/#{bom}$/, "")
 
         # whether it should be updated is decided by user by checkbox
         update_existing = params[:update_existing]
@@ -79,6 +84,7 @@ module ControllerMixins
 
         row_number = 0
         CSV.parse(infile, :encoding => "UTF-8", :col_sep => col_sep) do |row|
+
           row_number += 1
 
           # SKIP: header

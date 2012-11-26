@@ -50,7 +50,7 @@ class EditableTableBuilder
       do (row) ->
         row_count += 1
         EditableTableBuilder.html += '<tr data-row-count-number="' + row_count + '"'
-        console.log(EditableTableBuilder.obj.row_colors)
+
         if EditableTableBuilder.obj.row_colors?
           if EditableTableBuilder.obj.row_colors[row.row_id]?
             style = 'color:' + EditableTableBuilder.obj.row_colors[row.row_id]["color"]
@@ -102,7 +102,18 @@ class EditableTableBuilder
             summarize_page += '<div class="summarize_page non-breakable-collumn">'
             summarize_page += if col.summarize_page_label? then col.summarize_page_label else ''
             summarize_page += '<span class="value">'
-            summarize_page += if col.summarize_page_value? then col.summarize_page_value else 0
+            # todo ladas toto je treba uzavrit do formatovani jedne bunky
+            if col.summarize_page_value?
+              if (is_hash(col.summarize_page_value ))
+                if col.summarize_page_value.name?
+                  summarize_page += col.summarize_page_value.name
+                else
+                  summarize_page += 0
+              else
+                summarize_page += col.summarize_page_value
+            else
+              summarize_page += 0
+
             summarize_page += '</span>'
             summarize_page += '</div>'
 
@@ -141,7 +152,17 @@ class EditableTableBuilder
             summarize_all += '<div class="summarize_all non-breakable-collumn">'
             summarize_all += if col.summarize_all_label? then col.summarize_all_label else ''
             summarize_all += '<span class="value">'
-            summarize_all += if col.summarize_all_value? then col.summarize_all_value else 0
+            # todo ladas toto je treba uzavrit do formatovani jedne bunky
+            if col.summarize_all_value?
+              if (is_hash(col.summarize_all_value ))
+                if col.summarize_all_value.name?
+                  summarize_all += col.summarize_all_value.name
+                else
+                  summarize_all += 0
+              else
+                summarize_all += col.summarize_all_value
+            else
+              summarize_all += 0
             summarize_all += '</span>'
             summarize_all += '</div>'
           summarize_all += '</td>'
@@ -237,21 +258,29 @@ class EditableTableBuilder
         EditableTableBuilder.html += '<div class="non-breakable-collumn">' if true
         #col.non_breakable? && col.non_breakable
 
-        if (is_hash(row[col.table + '_' + col.name]))
+        active_cell
+        if EditableTableBuilder.valid_table(col.table)
+          active_cell = row[col.table + '_' + col.name]
+        else
+          active_cell = row[col.name]
+
+
+
+        if (is_hash(active_cell))
           # hash span or href (styled as button)
-          button_settings = row[col.table + '_' + col.name]
+          button_settings = active_cell
           button_settings = {} if !button_settings?
           EditableTableBuilder.make_column_from_hash(button_settings, row, col)
 
-        else if (is_array(row[col.table + '_' + col.name]))
+        else if (is_array(active_cell))
           # array of hashes (probably buttons)
-          one_cell_buttons = row[col.table + '_' + col.name]
+          one_cell_buttons = active_cell
           for one_cell_button in one_cell_buttons
             do (one_cell_button) ->
               one_cell_button = {} if !one_cell_buttons?
               EditableTableBuilder.make_column_from_hash(one_cell_button, row, col)
 
-        else if (is_string(row[col.table + '_' + col.name]))
+        else if (is_string(active_cell))
           # its just string
           text = ""
           text = row[col.table + '_' + col.name] if row[col.table + '_' + col.name]?
@@ -331,7 +360,11 @@ class EditableTableBuilder
     else
       EditableTableBuilder.html += '</span>'
 
-
+  @valid_table: (table_name) ->
+    if (table_name == "___sql_expression___")
+      false
+    else
+      true
 
 
   @make_row_function_button: (button_settings, row, col) ->

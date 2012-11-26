@@ -2,42 +2,37 @@ class EditableTableAligner
   @align_table: (obj, xhr) ->
     # move colhead class to left column
     EditableTableAligner.align_static_left_columns(obj, xhr)
-    console.log("left columns moved")
-
 
     # allowing of paired scrolling
     EditableTableAligner.paired_left_right_scrolling(obj)
-    console.log("left right scrolling paired")
     EditableTableAligner.paired_up_down_scrolling(obj)
-    console.log("up down scrolling paired")
-
 
     # align widths and heights at last after moving all columns
     # align withs of header and body of table
     EditableTableAligner.align_widths(obj)
-    console.log("align widths")
-
 
     # aligning heights of static left or right columns and center content of table
     EditableTableAligner.align_heights(obj)
-    console.log("align heights")
+
 
     if (obj.editable_table_automatic_size? && obj.editable_table_automatic_size)
       if !xhr
         EditableTableAligner.register_align_table_size()
 
   @align_after_rows_update: (obj) ->
+    # tr_class td_class, etc
+    apply_modifiers_of_the_table($("#" + obj.form_id));
+
     # move colhead class to left column
     EditableTableAligner.align_static_left_columns_after_row_update(obj)
-    console.log("left columns moved")
 
     # align widths and heights at last after moving all columns
     # align withs of header and body of table
     EditableTableAligner.align_widths(obj)
-    console.log("roew align widths")
+
     # aligning heights of static left or right columns and center content of table
     EditableTableAligner.align_heights(obj)
-    console.log("roew align heights")
+
 
   #########################
   ### private methods #########
@@ -50,6 +45,7 @@ class EditableTableAligner
 
     # going trough headers th
     #    console.log($("#" + obj.form_id).find('td[data-width-align-id]'))
+    # todo ladas !!!!!!!1 kdyz upravuju prvni radek tak se tabulka hybe, jako prvni radek bych mozna mel dat prazdny radek s vyskou 0
     $("#" + obj.form_id).find('th[data-width-align-id]').each (index, element) =>
 
       # loading paired td and th
@@ -134,7 +130,7 @@ class EditableTableAligner
     head  = $("#" + obj.form_id).find(".fixedLeftColumn .table_head thead")
     # first clear the head, but only if not by XHR, head is not sent by ajax
 
-    console.log(xhr)
+    
     if xhr? && !xhr
       head.html("")
       # then fill it with actual data

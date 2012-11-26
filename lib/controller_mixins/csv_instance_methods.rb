@@ -45,7 +45,13 @@ module ControllerMixins
       settings[:data].each do |c|
         row = []
         c.each_pair do |name, value|
-          row << value.to_s.encode(encoding, "UTF-8")
+          if value.kind_of?(Hash)
+            val = value[:title].blank? ? "" : value[:title]
+            row << val.to_s.encode(encoding, "UTF-8")
+          else
+            row << value.to_s.encode(encoding, "UTF-8")
+          end
+
         end
         data_for_csv << row
       end
@@ -59,7 +65,7 @@ module ControllerMixins
         col_sep = params[:col_sep]
         col_sep = ";" if col_sep.blank?
         
-        "name;acquisition_subject_status;name_ks;contract_number;janosik;kat_area;seller;middle_man;area;price;price_final;code;another_desc;date_of_signature;maturity_by_ks;end_buyer;end_date_by_ks;end_price_on_square_m;end_price_final;payed_in_deposit;difference;note;urgent_note;created_at;updated_at; Subjekt;Stav;N�zev KS;��slo zak�zky;J�no��k;Kat. �zem�;Prod�vaj�c�;Prost�edn�k;V�m�ra m2;Cena za m2;Cena celkem;M�na;Dal�� poplatky (�schova, real. provize);Datum podpisu KS;Splatnost dle KS;Kupuj�c� koncov�;Datum koncov� KS;Cena koncov� za m2;Cena koncov� celkem;Zaplaceno na z�loh�ch;Doplatit;Pozn�mka;Urgentn� je t�eba;Vytvo�en;Upraven; Apatit;V�hled;1ssssssssaaaa;asdasd;asdasd;asdasf;;;20.0;100.0 K�;2 000.0 K�;CZK;;;;;;30.0 K�;600.0 K�;550.0 K�;50.0 K�;;;�tvrtek 15. Listopad 2012 12:22;�tvrtek 15. Listopad 2012 12:22;11 Apatit;Koupeno;Apatit 3015;G123456;Jano;Praha;Kostka a spol;?;50000.0;;;CZK;14.11.2012 25000 �schova JUDr. Chc�pl�;13.11.2012;30.11.2012;Baseland;;8.5 K�;425 000.0 K�;25 000.0 K�;400 000.0 K�;;;�tvrtek 15. Listopad 2012 10:15;�tvrtek 15. Listopad 2012 10:15;10 NORPESK;Koupeno;45555555;915;;Janovice v Podje�t�d�;;;10000.0;;;CZK;;;;;;7.8 K�;78 100.0 K�;;;;;�tvrtek 15. Listopad 2012 10:12;�tvrtek 15. Listopad 2012 11:03;9 "
+
         infile = params[:file].read
         # crapy crapper DELETE all spaces from beginning and the end
 

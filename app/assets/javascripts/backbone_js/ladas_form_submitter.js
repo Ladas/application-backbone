@@ -71,8 +71,7 @@ function on_clear_table_fill_attrs(link, form_id) {
     var checkbox_pool = $("#" + form_id + "_checkbox_pool").val();    
 
     // attrs I want to send when clearing form
-    var data = link.data("post");   
-
+    var data = link.data("post");
     data["clear"] = true;
     data["checkbox_pool"] = checkbox_pool;
 

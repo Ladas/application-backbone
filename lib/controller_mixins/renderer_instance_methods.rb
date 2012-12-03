@@ -92,7 +92,7 @@ module ControllerMixins
         else
           case export_method
             when "csv"
-              @settings = class_obj.prepare_settings(logged_user, data, @settings, default_params ,nil, 50000)
+              @settings = class_obj.prepare_settings(logged_user, data, @settings, default_params, nil, 50000)
               generate_and_return_csv(get_data_for_csv_from_settings(@settings))
             when "csv_by_checkboxes"
               settings[:filter_method] = "only_by_checkboxes"
@@ -131,6 +131,7 @@ module ControllerMixins
 
     def render_table_on_clear_filter(settings, show_table_method)
       session["#{settings[:form_id]}_params"] = ""
+
       render :layout => false, :action => (show_table_method.blank? ? :index : show_table_method)
     end
 
@@ -164,6 +165,11 @@ module ControllerMixins
       default_params = settings[:default].dup
       default_params[:order_by] = settings[:default][:order_by] + " " + settings[:default][:order_by_direction] if !settings[:default][:order_by].blank? && !settings[:default][:order_by_direction].blank?
       default_params[:order_by] = settings[:default][:order] if !settings[:default][:order].blank?
+
+      if defined?(ModelMixins::TableBuilderClassMethods::ON_CLEAR_FILTER_CLEAR_CHECKBOXES) && !ModelMixins::TableBuilderClassMethods::ON_CLEAR_FILTER_CLEAR_CHECKBOXES
+        default_params[:checkbox_pool] = params["checkbox_pool"]
+      end
+
       default_params
     end
 

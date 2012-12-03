@@ -1,16 +1,9 @@
 <div class="filter-paging clearfix <%= placement if defined? placement %>">
   <div class="reset">
-    <%= link_to "Smazat filtr", settings[:filter_path],
-                "data-content_id" => settings[:content_id].blank? ? "" : settings[:content_id],
-                :class => "btn",
-                "data-post" => {:clear => true}.to_json,
-                "onclick" => "on_clear_table_fill_attrs($(this), '#{settings[:form_id]}'); parse_link_and_post($(this)); return false;"
-    %>
-    <%#= link_to "Smazat filtr", "#",
-                              "data-content_id" => settings[:content_id].blank? ? "" : settings[:content_id],
-                              :remote => true,
-                              :class => "btn",
-                              :onclick => "submit_spec('#{settings[:form_id]}', 'clear', 'true'); return false;" %>
+    <%= ajax_post_link_to "Smazat filtr", settings[:filter_path],
+                          "data-content_id" => settings[:content_id].blank? ? "" : settings[:content_id],
+                          :class => "btn",
+                          "data-post" => {:clear => true}.to_json %>
   </div>
 
   <% if settings[:data_paginate].total_pages > 1 %>

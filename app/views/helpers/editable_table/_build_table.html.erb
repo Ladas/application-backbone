@@ -1,5 +1,5 @@
 <div class="page">
-  <%= render :partial => "/helpers/build_table_text_description", :locals => {:settings => settings} %>
+  <%= render :partial => "/helpers/editable_table/build_table_text_description", :locals => {:settings => settings} %>
 </div>
 <% if settings[:display_method]=="print_by_checkboxes" %>
     <div class="print-window-buttons" style="float:right">
@@ -22,59 +22,21 @@
         <% if settings[:checkboxes] %>
     <span>Vybráno: <strong>
       <span title="Počet označených řádků na všech stránkách" id="<%= settings[:form_id]+ "_active_checkboxes_count" %>">
-                                         <%= !settings[:params][:checkbox_pool].blank? ? settings[:params][:checkbox_pool].split(",").count : 0 %>
+                                         <%= !settings[:params]["checkbox_pool"].blank? ? settings[:params]["checkbox_pool"].split(",").count : 0 %>
                                        </span>
     </strong>
     </span>
+
+
         <% end %>
+        <%= render :partial => "/helpers/editable_table/build_table_checkbox_functions", :locals => {:settings => settings} %>
 
-        <% if settings[:display_method].blank? %>
-            <% if settings[:checkboxes] %>
-                <script type="text/javascript">
-                    function submit_in_new_window(form_id, spec_attr_name, spec_attr_value) {
-                        var form_original = $("#" + form_id);
-
-                        // create new form by cloning without events
-                        var form = form_original.clone(false)
-
-                        // disabling ajax
-                        form.removeAttr("data-remote");
-
-                        form.attr("target", "_blank");
-                        form.attr("action", form_original.attr("action"));
-                        form.attr("style", "display: none;");
-                        form.attr("id", "");
-
-                        // need to append it to browser html, otherwise it wont send in many browsers (with clone it works only with chrome)
-                        form_original.after(form);
-
-                        //Create an input type dynamically.
-                        var element = document.createElement("input");
-
-                        //Assign different attributes to the element.
-                        element.setAttribute("type", "hidden");
-                        element.setAttribute("value", spec_attr_value);
-                        element.setAttribute("name", spec_attr_name);
-
-                        //Append the element in form
-                        form.append(element);
-
-                        form.submit();
-                        form.remove();
-                    }
-
-                </script>
-                <a href="#" class="btn print print_by_checkboxes" onclick="submit_in_new_window('<%= settings[:form_id] %>', '___display_method___', 'print_by_checkboxes'); return false;"><i class="icon-print"></i>&nbsp;
-                  Tisknout výběr</a>
-
-                <a href="#" class="btn print print_by_filter" onclick="if (confirm('Tato operace může trvat několik minut v této době prosím neobnovujte stránku. Maximální počet řádků pro tisk je 10000. Chcete pokračovat?')){submit_in_new_window('<%= settings[:form_id] %>', '___display_method___', 'print');} return false;"><i class="icon-print"></i>&nbsp;
-                  Tisknout vše dle filtrace</a>
-            <% end %>
-        <% end %>
       </div>
     </div>
 <% end %>
-<%= form_tag settings[:filter_path], :html => {:'data-type' => 'html'}, :method => 'POST', :class => 'well dataGrid', :remote => true, :id => settings[:form_id] do |f| %>
+
+<%= yield :table_form_tabs_above_form %>
+<%= form_tag settings[:filter_path], :html => {:'data-type' => 'html'}, :method => 'POST', :class => 'well dataGrid no_hover editable_table', :remote => true, :id => settings[:form_id] do |f| %>
     <% if settings[:display_method].blank? %>
         <% if content_for?(:table_form) %>
             <%= yield :table_form %>
@@ -82,28 +44,52 @@
     <% end %>
 
     <fieldset>
-      <%= render :partial => "/helpers/build_table_filter", :locals => {:settings => settings} %>
+      <%= render :partial => "/helpers/editable_table/build_table_filter", :locals => {:settings => settings} %>
 
       <% if settings[:display_method].blank? %>
           <% unless settings[:per_page].blank? %>
-          <span class="select_for_per_page" style="float: right">Zobrazit na stránku: <%= select_tag("per_page_chosen", options_for_select(settings[:per_page], settings[:params]['per_page'].to_i),
-                                                                                                     :onchange => "form_submit_watcher('#{settings[:form_id]}')",
-                                                                                                     :class => "") %></span>
+                                <span class="select_for_per_page" style="float: right">Zobrazit na stránku: <%= select_tag("per_page_chosen", options_for_select(settings[:per_page], settings[:params]['per_page'].to_i),
+                                                                                                                           :onchange => "form_submit_watcher('#{settings[:form_id]}')",
+                                                                                                                           :class => "") %></span>
           <% end %>
 
-
-
           <div class="<%= settings[:form_id] + '_ajax_pager' %>">
-            <%= render :partial => 'helpers/build_table_pager', :locals => {:settings => settings, :placement => "placement-up"} %>
+            <%= render :partial => 'helpers/editable_table/build_table_pager', :locals => {:settings => settings, :placement => "placement-up"} %>
           </div>
+
       <% end %>
 
-      <%= render :partial => "/helpers/build_table_wrapper", :locals => {:settings => settings} %>
+      <%= render :partial => "/helpers/editable_table/build_table_wrapper", :locals => {:settings => settings} %>
 
       <% if settings[:display_method].blank? %>
-          <div class="<%= settings[:form_id] + '_ajax_pager' %> parent-filter-paging placement-down">
-            <%= render :partial => 'helpers/build_table_pager', :locals => {:settings => settings, :placement => "placement-down"} %>
+          <div class="<%= settings[:form_id] + '_ajax_pager' %>">
+            <%= render :partial => 'helpers/editable_table/build_table_pager', :locals => {:settings => settings, :placement => "placement-down"} %>
           </div>
       <% end %>
     </fieldset>
 <% end %>
+
+
+
+<div id="modal_cell_editing" class="modal hide" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <!--<div class="modal-header">-->
+  <!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>-->
+  <!--<h3 id="myModalLabel">Modal header</h3>-->
+  <!--</div>-->
+  <!--<div class="modal-body">-->
+  <!--<p>One fine body…</p>-->
+  <!--</div>-->
+  <!--<div class="modal-footer">-->
+  <!--<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>-->
+  <!--<button class="btn btn-primary">Save changes</button>-->
+  <!--</div>-->
+</div>
+<script type="text/javascript">
+    EditableTableModalDialog.init('modal_cell_editing')
+</script>
+
+ <%# moved here, document ready removed, it has been called when printed etc, ready is called event when form is send to target _blank  %>
+<%= render :partial => "/helpers/editable_table/build_table_ajax_callback_code", :locals => {:settings => settings} %>
+
+
+

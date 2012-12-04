@@ -164,27 +164,29 @@
 
 
 <script type="text/javascript">
-    $('.multiselect_class').multiselect({
-        selectedText:'<span class="active_multiselect">***</span>',
-        noneSelectedText:"",
-        checkAllText:"Označit vše",
-        uncheckAllText:"Zrušit vše",
-        minWidth:100
-    },function () {
-        form_submit_watcher('<%=settings[:form_id] %>');
-    }).multiselectfilter();
-    //$('#filled_value_' + fid + '_' + rid).multiselect("open");
-    $(".ui-multiselect-menu").css("width", "240px");
+    if ($('.multiselect_class').length > 0) {
+        $('.multiselect_class').multiselect({
+            selectedText:'<span class="active_multiselect">***</span>',
+            noneSelectedText:"",
+            checkAllText:"Označit vše",
+            uncheckAllText:"Zrušit vše",
+            minWidth:100
+        },function () {
+            form_submit_watcher('<%=settings[:form_id] %>');
+        }).multiselectfilter();
+        //$('#filled_value_' + fid + '_' + rid).multiselect("open");
+        $(".ui-multiselect-menu").css("width", "240px");
 //    $("button.ui-multiselect").css("width", "55px");
-    $("button.ui-multiselect").css("width", "100%");
-    $("button.ui-multiselect").css("min-width", "22px");
-    $("button.ui-multiselect").css("max-width", "55px");
-    $("button.ui-multiselect").css("height", "22px");
+        $("button.ui-multiselect").css("width", "100%");
+        $("button.ui-multiselect").css("min-width", "22px");
+        $("button.ui-multiselect").css("max-width", "55px");
+        $("button.ui-multiselect").css("height", "22px");
 
-    $('.multiselect_class').bind("multiselectcheckall", function (event, ui) {
-        form_submit_watcher('<%=settings[:form_id] %>');
-    });
-    $('.multiselect_class').bind("multiselectuncheckall", function (event, ui) {
-        form_submit_watcher('<%=settings[:form_id] %>');
-    });
+        $('.multiselect_class').bind("multiselectcheckall", function (event, ui) {
+            form_submit_watcher('<%=settings[:form_id] %>');
+        });
+        $('.multiselect_class').bind("multiselectuncheckall", function (event, ui) {
+            form_submit_watcher('<%=settings[:form_id] %>');
+        });
+    }
 </script>

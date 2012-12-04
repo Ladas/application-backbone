@@ -14,3 +14,5 @@ group :development do
 end
 
 gem 'htmlentities'
+
+gem 'jquery-rails', '2.1.3'

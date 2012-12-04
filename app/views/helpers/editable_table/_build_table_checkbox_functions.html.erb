@@ -4,6 +4,15 @@
             function submit_form_in_new_window(form_id, spec_attr_name, spec_attr_value) {
                 var form_original = $("#" + form_id);
 
+                // setting selected options right to the code, otherwise it wont be cloned
+                form_original.find("select option:not(:selected)").each(function () {
+                    $(this).removeAttr("selected");
+                });
+
+                form_original.find("select option:selected").each(function () {
+                    $(this).attr("selected", "selected");
+                });
+
                 // create new form by cloning without events
                 var form = form_original.clone(false)
 
@@ -47,7 +56,7 @@
 
         <% unless @settings[:import_csv_path].blank? %>
             <a target="_blank" style="float:right" href="<%= @settings[:import_csv_path] %>" class="btn"><i class="icon-circle-arrow-up"></i>&nbsp;
-                     Import</a>
+              Import</a>
         <% end %>
     <% end %>
 <% end %>

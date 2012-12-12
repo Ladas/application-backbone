@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "it-logica-application-backbone"
-  s.version = "1.2.32"
+  s.version = "1.3.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ladas"]
-  s.date = "2012-12-04"
+  s.date = "2012-12-12"
   s.description = "longer description of your gem"
   s.email = "ladislav.smola@it-logica.cz"
   s.extra_rdoc_files = [
@@ -507,6 +507,7 @@ Gem::Specification.new do |s|
     "app/views/helpers/editable_table/_build_table_pager.html.erb",
     "app/views/helpers/editable_table/_build_table_text_description.html.erb",
     "app/views/helpers/editable_table/_build_table_wrapper.html.erb",
+    "config/locales/gem_translations.cs.yml",
     "it-logica-application-backbone.gemspec",
     "lib/backbone_css/engine.rb",
     "lib/backbone_images/engine.rb",

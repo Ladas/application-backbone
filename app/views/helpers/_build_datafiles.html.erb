@@ -28,12 +28,12 @@
 
 <script>
     var fileUploadErrors = {
-        maxFileSize:'Soubor je příliš velký',
-        minFileSize:'Soubor je příliš malý',
-        acceptFileTypes:'Nepovolený typ souboru',
-        maxNumberOfFiles:'Překročen maximální počet souborů, které lze nahrát zaráz.',
-        uploadedBytes:'Nahrané data překročili velikost souboru.',
-        emptyResult:'Nelze nahrát prázdný soubor'
+        maxFileSize:'<%= t('itl-gem.multi_upload.maxFileSize') %>',
+        minFileSize:'<%= t('itl-gem.multi_upload.minFileSize') %>',
+        acceptFileTypes:'<%= t('itl-gem.multi_upload.acceptFileTypes') %>',
+        maxNumberOfFiles:'<%= t('itl-gem.multi_upload.maxNumberOfFiles') %>',
+        uploadedBytes:'<%= t('itl-gem.multi_upload.uploadedBytes') %>',
+        emptyResult:'<%= t('itl-gem.multi_upload.emptyResult') %>'
     };
     //  var fileUploadErrors = {
     //      maxFileSize: 'File is too big',
@@ -46,17 +46,17 @@
     window.locale = {
         "fileupload": {
             "errors": {
-                "maxFileSize": "File is too big",
-                "minFileSize": "File is too small",
-                "acceptFileTypes": "Filetype not allowed",
-                "maxNumberOfFiles": "Max number of files exceeded",
-                "uploadedBytes": "Uploaded bytes exceed file size",
-                "emptyResult": "Empty file upload result"
+                "maxFileSize": '<%= t('itl-gem.multi_upload.errors.maxFileSize') %>',
+                "minFileSize": '<%= t('itl-gem.multi_upload.errors.minFileSize') %>',
+                "acceptFileTypes": '<%= t('itl-gem.multi_upload.errors.acceptFileTypes') %>',
+                "maxNumberOfFiles": '<%= t('itl-gem.multi_upload.errors.maxNumberOfFiles') %>',
+                "uploadedBytes": '<%= t('itl-gem.multi_upload.errors.uploadedBytes') %>',
+                "emptyResult": '<%= t('itl-gem.multi_upload.errors.emptyResult') %>'
             },
-            "error": "Error",
-            "start": "Start",
-            "cancel": "Cancel",
-            "destroy": "Smazat"
+            "error": '<%= t('itl-gem.multi_upload.error') %>',
+            "start": '<%= t('itl-gem.multi_upload.start') %>',
+            "cancel": '<%= t('itl-gem.multi_upload.cancel') %>',
+            "destroy": '<%= t('itl-gem.multi_upload.destroy') %>'
         }
     };
 
@@ -76,7 +76,7 @@
 
                     <span class="btn btn-success fileinput-button">
                         <i class="icon-plus icon-white"></i>
-                        <span>Přidat soubory...</span>
+                        <span><%= t('itl-gem.multi_upload.add_files') %></span>
 
                       <%= text_field_tag "datafile[owner_type]", "#{object.class.name.to_s}" %>
                       <%= text_field_tag "datafile[owner_id]", "#{object.id.to_s}" %>
@@ -86,11 +86,11 @@
                     </span>
             <button type="submit" class="btn btn-primary start">
               <i class="icon-upload icon-white"></i>
-              <span>Začít upload</span>
+              <span><%= t('itl-gem.multi_upload.start_upload') %></span>
             </button>
             <button type="reset" class="btn btn-warning cancel">
               <i class="icon-ban-circle icon-white"></i>
-              <span>Zrušit upload</span>
+              <span><%= t('itl-gem.multi_upload.cancel_upload') %></span>
             </button>
             <!--<button type="button" class="btn btn-danger delete" onclick="if (!confirm('Chcete opravdu smazat označené soubory?')){event.stopPropagation();return false;}">-->
               <!--<i class="icon-trash icon-white"></i>-->
@@ -112,10 +112,10 @@
     <!-- The table listing the files available for upload/download -->
     <table class="table table-striped">
       <thead>
-      <th>Náhled</th>
-      <th>Název</th>
-      <th>Vytvořen</th>
-      <th>Velikost</th>
+      <th><%= t('itl-gem.multi_upload.preview') %></th>
+      <th><%= t('itl-gem.multi_upload.file_name') %></th>
+      <th><%= t('itl-gem.multi_upload.created_at') %></th>
+      <th><%= t('itl-gem.multi_upload.size') %></th>
       <th></th>
 
       </thead>
@@ -194,7 +194,7 @@
     {% } %}
     {% if (file.delete_url) { %}
     <td class="delete">
-      <button class="btn btn-danger" data-type="{%=file.delete_type%}" data-url="{%=file.delete_url%}" onclick="if (!confirm('Chcete opravdu smazat tento soubor?')){event.stopPropagation();return false;}">
+      <button class="btn btn-danger" data-type="{%=file.delete_type%}" data-url="{%=file.delete_url%}" onclick="if (!confirm('<%= t('itl-gem.multi_upload.do_you_really_want_to_delete_this_file') %>')){event.stopPropagation();return false;}">
         <i class="icon-trash icon-white"></i>
         <span>{%=locale.fileupload.destroy%}</span>
       </button>

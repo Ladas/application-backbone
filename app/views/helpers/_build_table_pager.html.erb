@@ -1,6 +1,6 @@
 <div class="filter-paging clearfix <%= placement if defined? placement %>">
   <div class="reset">
-    <%= link_to "Smazat filtr", settings[:filter_path],
+    <%= link_to t('itl-gem.clear_filter'), settings[:filter_path],
                 "data-content_id" => settings[:content_id].blank? ? "" : settings[:content_id],
                 :class => "btn",
                 "data-post" => {:clear => true}.to_json,
@@ -19,7 +19,7 @@
           <input type="text" class="own_page" value="<%= settings[:params].blank? ? 1 : settings[:params]["page"] %>"
                  placeholder="Strana"
                  onkeypress="paginate_by_enter('<%= settings[:form_id] %>', this, event);">
-          <button class="btn" onclick='$("#" + "<%= settings[:form_id] %>" + "_page").val($(this).prev("input").val()); $("#" + "<%= settings[:form_id] %>").submit(); return false;'>Přejít</button>
+          <button class="btn" onclick='$("#" + "<%= settings[:form_id] %>" + "_page").val($(this).prev("input").val()); $("#" + "<%= settings[:form_id] %>").submit(); return false;'><%= t('itl-gem.go_to') %></button>
         </div>
         <div class="pages">
           <%= will_paginate settings[:data_paginate], {:container => false, :inner_window => 1, :outer_window => 1} %>

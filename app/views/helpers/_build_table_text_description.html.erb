@@ -53,8 +53,7 @@
 <% if settings[:display_method].blank? %>
     <% if !edit_description_path.blank? && !edit_right.blank? && edit_right %>
         <div class="table_text_description_edit_button">
-          <a href="#" onclick="load_page(<%= edit_description_path.to_json %>); return false;" class="btn primary">Editovat
-            popisek</a>
+          <a href="#" onclick="load_page(<%= edit_description_path.to_json %>); return false;" class="btn primary"><%= t('itl-gem.edit_description') %></a>
         </div>
     <% end %>
 <% end %>

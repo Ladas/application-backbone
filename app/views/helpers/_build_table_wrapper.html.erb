@@ -40,13 +40,13 @@
                     <%= text_field_tag "number_from[#{col[:table]}.#{col[:name]}]", saved_param, {:class => "text first #{settings[:form_id] + '_column_find'}",
                                                                                                   :onchange => "form_submit_watcher('#{settings[:form_id]}')",
                                                                                                   :placeholder => "min.",
-                                                                                                  :title => "Hodnota musí být vetší nebo rovna zadané hodnotě"} %>
+                                                                                                  :title => t('itl-gem.value_has_to_be_bigger_or_equal')} %>
                     <% saved_param = (!settings[:params].blank? && !settings[:params]['number_to'].blank? && !settings[:params]['number_to']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['number_to']["#{col[:table]}.#{col[:name]}"] : "" %>
                     <%#= label_tag "date_to[#{col[:table]}.#{col[:name]}]", "Do", :class => "datetime_class_label" %>
                     <%= text_field_tag "number_to[#{col[:table]}.#{col[:name]}]", saved_param, {:class => "text #{settings[:form_id] + '_column_find'}",
                                                                                                 :onchange => "form_submit_watcher('#{settings[:form_id]}')",
                                                                                                 :placeholder => "max.",
-                                                                                                :title => "Hodnota musí být menší nebo rovna zadané hodnotě"} %>
+                                                                                                :title => t('itl-gem.value_has_to_be_bigger_or_equal')} %>
                   </div>
               <% when :date %>
                   <div class="inputs range clearfix small_padding">
@@ -55,13 +55,13 @@
                     <%= text_field_tag "date_from[#{col[:table]}.#{col[:name]}]", saved_param, {:class => "text datetime_class first",
                                                                                                 :onchange => "form_submit_watcher('#{settings[:form_id]}')",
                                                                                                 :placeholder => "od",
-                                                                                                :title => "Datum od"} %>
+                                                                                                :title => t('itl-gem.date_from')} %>
                     <% saved_param = (!settings[:params].blank? && !settings[:params]['date_to'].blank? && !settings[:params]['date_to']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['date_to']["#{col[:table]}.#{col[:name]}"] : "" %>
                     <%#= label_tag "date_to[#{col[:table]}.#{col[:name]}]", "Do", :class => "datetime_class_label" %>
                     <%= text_field_tag "date_to[#{col[:table]}.#{col[:name]}]", saved_param, {:class => "text datetime_class",
                                                                                               :onchange => "form_submit_watcher('#{settings[:form_id]}')",
                                                                                               :placeholder => "do",
-                                                                                              :title => "Datum do"} %>
+                                                                                              :title => t('itl-gem.date_to')} %>
                   </div>
               <% else %>
               <% end %>
@@ -75,7 +75,7 @@
   <tr class="sorting_tr">
     <% if !settings[:checkboxes].blank? && settings[:checkboxes] %>
         <th class="chbox">
-          <input type="checkbox" title="Označit/odznačit vše na stránce" onclick="CheckboxPool.check_or_uncheck_page(this, '<%= settings[:form_id] %>')" id="checkbox_all_checked_unchecked"/>
+          <input type="checkbox" title="<%= t('itl-gem.mark_unmark_all_checkboxes') %>" onclick="CheckboxPool.check_or_uncheck_page(this, '<%= settings[:form_id] %>')" id="checkbox_all_checked_unchecked"/>
         </th>
     <% end %>
     <% if !settings[:row].blank? && !settings[:row][:functions].blank? %>
@@ -168,8 +168,8 @@
         $('.multiselect_class').multiselect({
             selectedText:'<span class="active_multiselect">***</span>',
             noneSelectedText:"",
-            checkAllText:"Označit vše",
-            uncheckAllText:"Zrušit vše",
+            checkAllText:'<%= t('itl-gem.mark_all') %>',
+            uncheckAllText:'<%= t('itl-gem.unmark_all') %>',
             minWidth:100
         },function () {
             form_submit_watcher('<%=settings[:form_id] %>');

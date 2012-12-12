@@ -4,9 +4,9 @@
 <% if settings[:display_method]=="print_by_checkboxes" %>
     <div class="print-window-buttons" style="float:right">
       <a class="print_page_functionality print-window-print-dialog-button" href="" onclick="window.print()">
-        <i class="icon-print"></i>Tisknout</a>
+        <i class="icon-print"></i><%= t('itl-gem.print') %></a>
       <a class="print_page_functionality print-window-close-button" href="" onclick="window.close();">
-        <i class="icon-remove"></i>Zavřít</a>
+        <i class="icon-remove"></i><%= t('itl-gem.close') %></a>
     </div>
     <div style="clear:both"></div>
 
@@ -20,8 +20,8 @@
 
 
         <% if settings[:checkboxes] %>
-    <span>Vybráno: <strong>
-      <span title="Počet označených řádků na všech stránkách" id="<%= settings[:form_id]+ "_active_checkboxes_count" %>">
+    <span><%= t('itl-gem.picked') %><strong>
+      <span title="<%= t('itl-gem.number_checked_rows_on_all_pages') %>" id="<%= settings[:form_id]+ "_active_checkboxes_count" %>">
                                          <%= !settings[:params][:checkbox_pool].blank? ? settings[:params][:checkbox_pool].split(",").count : 0 %>
                                        </span>
     </strong>
@@ -74,10 +74,10 @@
 
                 </script>
                 <a href="#" class="btn print print_by_checkboxes" onclick="submit_in_new_window('<%= settings[:form_id] %>', '___display_method___', 'print_by_checkboxes'); return false;"><i class="icon-print"></i>&nbsp;
-                  Tisknout výběr</a>
+                  <%= t('itl-gem.print_picked') %></a>
 
-                <a href="#" class="btn print print_by_filter" onclick="if (confirm('Tato operace může trvat několik minut v této době prosím neobnovujte stránku. Maximální počet řádků pro tisk je 10000. Chcete pokračovat?')){submit_in_new_window('<%= settings[:form_id] %>', '___display_method___', 'print');} return false;"><i class="icon-print"></i>&nbsp;
-                  Tisknout vše dle filtrace</a>
+                <a href="#" class="btn print print_by_filter" onclick="if (confirm('<%= t('itl-gem.print_filtered_this_operation_could_take_a_while') %>')){submit_in_new_window('<%= settings[:form_id] %>', '___display_method___', 'print');} return false;"><i class="icon-print"></i>&nbsp;
+                  <%= t('itl-gem.print_filtered') %></a>
             <% end %>
         <% end %>
       </div>
@@ -95,7 +95,7 @@
 
       <% if settings[:display_method].blank? %>
           <% unless settings[:per_page].blank? %>
-          <span class="select_for_per_page" style="float: right">Zobrazit na stránku: <%= select_tag("per_page_chosen", options_for_select(settings[:per_page], settings[:params]['per_page'].to_i),
+          <span class="select_for_per_page" style="float: right"><%= t('itl-gem.show_on_page_num') %><%= select_tag("per_page_chosen", options_for_select(settings[:per_page], settings[:params]['per_page'].to_i),
                                                                                                      :onchange => "form_submit_watcher('#{settings[:form_id]}')",
                                                                                                      :class => "") %></span>
           <% end %>

@@ -15,6 +15,10 @@
 
 //= require ./ladas_table_checkbox_pool.js.coffee
 
+//= require ./ladas_translations.js
+//= require ./ladas_translations.cs.js
+//= require ./ladas_translations.sk.js
+
 //= require_directory .
 
 

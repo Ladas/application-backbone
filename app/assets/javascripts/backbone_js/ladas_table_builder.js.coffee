@@ -32,7 +32,7 @@ class TableBuilder
     summarize_page = ""
     summarize_page += '<tr class="summarize_page">'
     # todo make sure functions collumn got skipped when placement is different, eg. on the end
-    summarize_page += '<td class="summarize" colspan="2"><span class="label">Celkem na stránce: </span></td>' if TableBuilder.obj.checkboxes?
+    summarize_page += '<td class="summarize" colspan="2"><span class="label">' + window.itl_gem_translations[window.itl_gem_active_language]["total_sum_on_page"] + '</span></td>' if TableBuilder.obj.checkboxes?
     summarize_page += '<td class="summarize"></td>' if functions_present
     col_count = 0
     for col in TableBuilder.obj.columns
@@ -61,7 +61,7 @@ class TableBuilder
     summarize_all = ""
     summarize_all += '<tr class="summarize_all">'
 
-    summarize_all += '<td class="summarize" colspan="2"><span class="label">Celkem: </span></td>' if TableBuilder.obj.checkboxes?
+    summarize_all += '<td class="summarize" colspan="2"><span class="label">' + window.itl_gem_translations[window.itl_gem_active_language]["total_sum"] + '</span></td>' if TableBuilder.obj.checkboxes?
     #it has colspan 2 so there is no function column
     #summarize_all += '<td class="summarize"></td>' if functions_present
 

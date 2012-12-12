@@ -45,7 +45,7 @@ jQuery(function ($) {
         secondText:'Vteřiny',
         millisecText:'Milisekundy',
         timezoneText:'Časové pásmo',
-        currentText:'Nyní cs',
+        currentText:'Nyní',
         closeText:'Zavřít',
         timeFormat:'h:m',
         amNames:['dop.', 'AM', 'A'],

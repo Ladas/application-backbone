@@ -58,15 +58,15 @@ function connect_callback_to_form(caller_id) {
                 else if (xhr.status == 401) {
                     //alert("Nemáte oprávnění na tuto akci!");
                     Alert.clear("#" + caller_id);
-                    Alert.set_message_header("Přístup nepovolen.");
-                    Alert.set_message("Nemáte dostatečná oprávnění na tuto akci!");
+                    Alert.set_message_header(window.itl_gem_translations[window.itl_gem_active_language]["access_denied"]);
+                    Alert.set_message(window.itl_gem_translations[window.itl_gem_active_language]["access_denied_no_rights_for_this_action"]);
                     Alert.set_status("error");
                     Alert.show("#" + caller_id);
                 }
                 else {
                     Alert.clear("#" + caller_id);
-                    Alert.set_message_header("Server error.");
-                    Alert.set_message("There has been server error, please wait for fix of the problem.");
+                    Alert.set_message_header(window.itl_gem_translations[window.itl_gem_active_language]["server_error"]);
+                    Alert.set_message(window.itl_gem_translations[window.itl_gem_active_language]["server_error_message"]);
                     Alert.set_status("error");
                     Alert.show("#" + caller_id);
                 }

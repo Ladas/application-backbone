@@ -151,7 +151,13 @@
 
 
 <script type="text/javascript">
-    $.datepicker.setDefaults($.datepicker.regional[ "cs" ]);
+    jQuery(function ($) {
+        $.datepicker.setDefaults($.datepicker.regional[ window.itl_gem_active_language ]);
+    });
+    (function ($) {
+        $.timepicker.setDefaults($.timepicker.regional[window.itl_gem_active_language]);
+    })(jQuery);
+
     $('.datetime_class').datetimepicker({
         dateFormat:"yy-mm-dd",
         timeFormat:'hh:mm',

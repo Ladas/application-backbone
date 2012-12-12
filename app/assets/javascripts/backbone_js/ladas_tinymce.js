@@ -3,7 +3,7 @@
 
         $(this).tinymce({
             // localization
-            language:"cs", // change language here en,cs,sk
+            language:window.itl_gem_active_language, // change language here en,cs,sk
 
             // Location of TinyMCE script
             script_url:'/assets/backbone_js/tinymce/jscripts/tiny_mce/tiny_mce.js',

@@ -79,10 +79,10 @@ class EditableTableBuilder
     # todo make sure functions collumn got skipped when placement is different, eg. on the end
 
     if EditableTableBuilder.obj.static_columns_left_side?
-      summarize_page += '<td class="summarize headcol" colspan="2"><span class="label">Celkem na stránce: </span></td>' if EditableTableBuilder.obj.checkboxes?
+      summarize_page += '<td class="summarize headcol" colspan="2"><span class="label">' + window.itl_gem_translations[window.itl_gem_active_language]["total_sum_on_page"] + '</span></td>' if EditableTableBuilder.obj.checkboxes?
       summarize_page += '<td class="summarize headcol">Celkem na stránce: </td>' if functions_present && !EditableTableBuilder.obj.checkboxes?
     else
-      summarize_page += '<td class="summarize headcol" colspan="2"><span class="label">Celkem na stránce: </span></td>' if EditableTableBuilder.obj.checkboxes?
+      summarize_page += '<td class="summarize headcol" colspan="2"><span class="label">' + window.itl_gem_translations[window.itl_gem_active_language]["total_sum_on_page"] + '</span></td>' if EditableTableBuilder.obj.checkboxes?
       summarize_page += '<td class="summarize headcol">Celkem na stránce: </td>' if functions_present && !EditableTableBuilder.obj.checkboxes?
 
     #headcol" if ((EditableTableBuilder.obj.static_columns_left_side).indexOf(col.name) != -1)
@@ -129,11 +129,11 @@ class EditableTableBuilder
     summarize_all += '<tr class="summarize_all" data-row-count-number="summarize_all">'
 
     if EditableTableBuilder.obj.static_columns_left_side?
-      summarize_all += '<td class="summarize headcol" colspan="2"><span class="label">Celkem: </span></td>' if EditableTableBuilder.obj.checkboxes?
+      summarize_all += '<td class="summarize headcol" colspan="2"><span class="label">' + window.itl_gem_translations[window.itl_gem_active_language]["total_sum"] + '</span></td>' if EditableTableBuilder.obj.checkboxes?
         #it has colspan 2 so there is no function column
       summarize_all += '<td class="summarize headcol">Celkem: </td>' if functions_present && !EditableTableBuilder.obj.checkboxes?
     else
-      summarize_all += '<td class="summarize headcol" colspan="2"><span class="label">Celkem: </span></td>' if EditableTableBuilder.obj.checkboxes?
+      summarize_all += '<td class="summarize headcol" colspan="2"><span class="label">' + window.itl_gem_translations[window.itl_gem_active_language]["total_sum"] + '</span></td>' if EditableTableBuilder.obj.checkboxes?
       #it has colspan 2 so there is no function column
       summarize_all += '<td class="summarize headcol">Celkem: </td>' if functions_present && !EditableTableBuilder.obj.checkboxes?
 

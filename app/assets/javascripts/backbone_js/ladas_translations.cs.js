@@ -1,9 +1,8 @@
-itl_gem_translations[itl_gem_active_language][""]
 
-itl_gem_translations = {};
 
 itl_gem_translations['cs'] = {
     total_sum:'Celkem: ',
+    total_sum_on_page:'Celkem na stránce '
 
 };
 

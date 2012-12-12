@@ -115,16 +115,16 @@ function load_page(settings, caller_object) {
                 }
                 else if (jqXHR.status == 401) {
                     Alert.clear(content_id);
-                    Alert.set_message_header("Přístup nepovolen.");
-                    Alert.set_message("Nemáte dostatečná oprávnění na tuto akci!");
+                    Alert.set_message_header(window.itl_gem_translations[window.itl_gem_active_language]["access_denied"]);
+                    Alert.set_message(window.itl_gem_translations[window.itl_gem_active_language]["access_denied_no_rights_for_this_action"]);
                     Alert.set_status("error");
                     Alert.show(content_id);
                 }
                 else {
                     //alert("Request failed: " + textStatus + " status: " + jqXHR.status + " response" + jqXHR);
                     Alert.clear(content_id);
-                    Alert.set_message_header("Server error.");
-                    Alert.set_message("There has been server error, please wait for the fix of the problem.");
+                    Alert.set_message_header(window.itl_gem_translations[window.itl_gem_active_language]["server_error"]);
+                    Alert.set_message(window.itl_gem_translations[window.itl_gem_active_language]["server_error_message"]);
                     Alert.set_status("error");
                     Alert.show(content_id);
                 }

@@ -33,8 +33,8 @@ cs:
       cancel: Cancel
       destroy: Smazat
       add_files: Přidat soubory...
-      start_pload: Začít upload
-      cancel_upload: Zrušit uploa
+      start_upload: Začít upload
+      cancel_upload: Zrušit upload
       preview: Náhled
       file_name: Název
       created_at: Vytvořen

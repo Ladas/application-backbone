@@ -1,2 +1,50 @@
 cs:
-  itl_go_to: Přejít
+  itl-gem:
+    go_to: Přejít
+    main_page: Hlavní stránka
+    print: Tisknout
+    close: Zavřít
+    number_checked_rows_on_all_pages: Počet označených řádků na všech stránkách
+    picked: 'Vybráno:'
+    print_picked: Tisknout výběr
+    print_filtered: Tisknout vše dle filtrace
+    print_filtered_this_operation_could_take_a_while: Tato operace může trvat několik minut v této době prosím neobnovujte stránku. Maximální počet řádků pro tisk je 10000. Chcete pokračovat?
+    show_on_page_num: 'Zobrazit na stránku: '
+    clear_filter: Smazat filtr
+    edit_description: Editovat popisek
+    value_has_to_be_bigger_or_equal: Hodnota musí být vetší nebo rovna zadané hodnotě
+    value_has_to_be_lesser_or_equal: Hodnota musí být menší nebo rovna zadané hodnotě
+    date_from: Datum od
+    date_to: Datum do
+    mark_unmark_all_checkboxes: Označit/odznačit vše na stránce
+    mark_all: Označit vše
+    unmark_all: Zrušit vše
+
+    multi_upload:
+      maxFileSize: Soubor je příliš velký
+      minFileSize: Soubor je příliš malý
+      acceptFileTypes: Nepovolený typ souboru
+      maxNumberOfFiles: Překročen maximální počet souborů, které lze nahrát zaráz.
+      uploadedBytes: Nahrané data překročili velikost souboru.
+      emptyResult: Nelze nahrát prázdný soubor
+
+      error: Error
+      start: Start
+      cancel: Cancel
+      destroy: Smazat
+      add_files: Přidat soubory...
+      start_pload: Začít upload
+      cancel_upload: Zrušit uploa
+      preview: Náhled
+      file_name: Název
+      created_at: Vytvořen
+      size: Velikost
+      do_you_really_want_to_delete_this_file: Chcete opravdu smazat tento soubor?
+
+      errors:
+        maxFileSize: File is too big
+        minFileSize: File is too small
+        acceptFileTypes: Filetype not allowed
+        maxNumberOfFiles: Max number of files exceeded
+        uploadedBytes: Uploaded bytes exceed file size
+        emptyResult: Empty file upload result

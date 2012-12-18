@@ -3,10 +3,10 @@
 
 
 itl_gem_translations['sk'] = {
-    total_sum:'Celkem: ',
-    total_sum_on_page:'Celkem na stránce ',
-    access_denied: "Přístup nepovolen.",
-    access_denied_no_rights_for_this_action: "Nemáte dostatečná oprávnění na tuto akci!",
+    total_sum:'Celkom: ',
+    total_sum_on_page:'Celkom na stránke ',
+    access_denied: "Prístup nepovolený.",
+    access_denied_no_rights_for_this_action: "Nemáte dostatočné oprávnenia na túto akciu!",
     server_error: "Server error.",
     server_error_message: "There has been server error, please wait for the fix of the problem."
 };
@@ -15,18 +15,18 @@ itl_gem_translations['sk'] = {
 /* JQuery UI date picker plugin. */
 jQuery(function ($) {
     $.datepicker.regional['sk'] = {
-        closeText:'Zavřít',
-        prevText:'&#x3c;Dříve',
-        nextText:'Později&#x3e;',
-        currentText:'Nyní',
-        monthNames:['leden', 'únor', 'březen', 'duben', 'květen', 'červen',
-            'červenec', 'srpen', 'září', 'říjen', 'listopad', 'prosinec'],
-        monthNamesShort:['led', 'úno', 'bře', 'dub', 'kvě', 'čer',
-            'čvc', 'srp', 'zář', 'říj', 'lis', 'pro'],
-        dayNames:['neděle', 'pondělí', 'úterý', 'středa', 'čtvrtek', 'pátek', 'sobota'],
-        dayNamesShort:['ne', 'po', 'út', 'st', 'čt', 'pá', 'so'],
-        dayNamesMin:['ne', 'po', 'út', 'st', 'čt', 'pá', 'so'],
-        weekHeader:'Týd',
+        closeText:'Zavrieť',
+        prevText:'&#x3c;Predchodzí',
+        nextText:'Nasledujúci&#x3e;',
+        currentText:'Teraz',
+        monthNames:['január', 'február', 'marec', 'apríl', 'máj', 'jún',
+            'júl', 'august', 'september', 'október', 'november', 'december'],
+        monthNamesShort:['jan', 'feb', 'mar', 'apr', 'máj', 'jún',
+            'júl', 'aug', 'sep', 'okt', 'nov', 'dec'],
+        dayNames:['neďeľa', 'pondelok', 'utorok', 'streda', 'štvrtok', 'piatok', 'sobota'],
+        dayNamesShort:['ne', 'po', 'ut', 'st', 'št', 'pi', 'so'],
+        dayNamesMin:['ne', 'po', 'út', 'st', 'št', 'pi', 'so'],
+        weekHeader:'Týž',
         dateFormat:'dd.mm.yy',
         firstDay:1,
         isRTL:false,
@@ -41,15 +41,15 @@ jQuery(function ($) {
         timeOnlyTitle:'Vyberte čas',
         timeText:'Čas',
         hourText:'Hodiny',
-        minuteText:'Minuty',
-        secondText:'Vteřiny',
+        minuteText:'Minúty',
+        secondText:'Sekundy',
         millisecText:'Milisekundy',
         timezoneText:'Časové pásmo',
-        currentText:'Nyní',
-        closeText:'Zavřít',
+        currentText:'Teraz',
+        closeText:'Zavrieť',
         timeFormat:'h:m',
         amNames:['dop.', 'AM', 'A'],
-        pmNames:['odp.', 'PM', 'P'],
+        pmNames:['pop.', 'PM', 'P'],
         ampm:false
     };
    $.timepicker.setDefaults($.timepicker.regional[window.itl_gem_active_language]);

@@ -53,14 +53,14 @@ class TableSettings
   #
   # @return [TableSettings::Column]
   #
-  def add_column( name,
-                  label                 = nil,
-                  table                 = @default_table)
+  def add_column(name,
+      label = nil,
+      table = @default_table)
 
     column = ::TableSettings::StandardColumn.new(self, @column_index)
 
     label = default_label(name) if label.nil?
-    column.params( name, label, table)
+    column.params(name, label, table)
 
     yield(column) if block_given?
 
@@ -81,22 +81,22 @@ class TableSettings
   #
   # @return [TableSettings::Column]
   #
-  def add_custom_column( name,
-                         label,
-                         column_method,
-                         column_class   = nil,
-                         column_params  = nil
+  def add_custom_column(name,
+      label,
+      column_method,
+      column_class = nil,
+      column_params = nil
 
   )
     column = ::TableSettings::CustomColumn.new(self, @column_index)
 
 
     label = default_label(name) if label.nil?
-    column.params( name,
-                   label,
-                   column_method,
-                   column_class,
-                   column_params
+    column.params(name,
+                  label,
+                  column_method,
+                  column_class,
+                  column_params
     )
     yield(column) if block_given?
 
@@ -139,9 +139,13 @@ class TableSettings
     self
   end
 
-  def order_by(row_name = "id", table_name = @default_table)
-    @settings[:default][:order_by] = table_name.to_s+"."+row_name.to_s
-
+  def order_by(row_name = "id", table_name = @default_table, use_table_name = true)
+    if use_table_name && !table_name.nil?
+      @settings[:default][:order_by] = table_name.to_s+"."+row_name.to_s
+    else
+      @settings[:default][:order_by] = row_name.to_s
+      order_by_direction("")
+    end
     self
   end
 
@@ -172,6 +176,7 @@ class TableSettings
 
     self
   end
+
   #  Metoda, ze ktere se filtruje tabulka
   def filter_method(name)
     @settings[:filter_method] = name
@@ -183,6 +188,7 @@ class TableSettings
     @settings[:show_table_method] = name
     self
   end
+
   ##
   # ID tagu (napr. <div>), do ktereho se ma prekreslit cela tabulka
   # (napr. pro tlacitko "Smazat filtr")

@@ -109,7 +109,7 @@ module ViewMixins
           url += "/" + settings['symlink_action'].to_s
         end
         unless settings['symlink_params'].to_s.blank?
-          url += settings['params'].to_s
+          url += settings['symlink_params'].to_s
         end
       end
       url

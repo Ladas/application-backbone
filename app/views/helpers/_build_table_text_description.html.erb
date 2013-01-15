@@ -7,12 +7,19 @@
 
    if text.blank? &&
            defined?(ModelMixins::TableBuilderClassMethods::DESCRIPTION_CLASS) &&
+           defined?(ModelMixins::TableBuilderClassMethods::DESCRIPTION_REL_CLASS) &&
+           defined?(ModelMixins::TableBuilderClassMethods::DESCRIPTION_REL_METHOD) &&
            defined?(ModelMixins::TableBuilderClassMethods::DESCRIPTION_METHOD) &&
            defined?(ModelMixins::TableBuilderClassMethods::DESCRIPTION_IDENTIFIER)
      desc_class = ModelMixins::TableBuilderClassMethods::DESCRIPTION_CLASS
+     desc_rel_class = ModelMixins::TableBuilderClassMethods::DESCRIPTION_REL_CLASS
+     desc_rel_method = ModelMixins::TableBuilderClassMethods::DESCRIPTION_REL_METHOD
      desc_method = ModelMixins::TableBuilderClassMethods::DESCRIPTION_METHOD
      desc_id = ModelMixins::TableBuilderClassMethods::DESCRIPTION_IDENTIFIER
-     text_obj = desc_class.where(desc_id => settings[:form_id]).first
+
+     text_page_rel = desc_rel_class.where(desc_id => settings[:form_id]).first
+
+     text_obj = text_page_rel.send(desc_rel_method) unless text_page_rel.blank?
 
      text = text_obj.send(desc_method) unless text_obj.blank?
 

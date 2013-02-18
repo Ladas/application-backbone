@@ -1,5 +1,8 @@
 class EditableTableAligner
   @align_table: (obj, xhr) ->
+    # adds on first row to body, so there will always be one
+    EditableTableAligner.make_leading_body_row(obj)
+
     # move colhead class to left column
     EditableTableAligner.align_static_left_columns(obj, xhr)
 
@@ -20,6 +23,9 @@ class EditableTableAligner
         EditableTableAligner.register_align_table_size()
 
   @align_after_rows_update: (obj) ->
+    # adds on first row to body, so there will always be one
+    EditableTableAligner.make_leading_body_row(obj)
+
     # tr_class td_class, etc
     apply_modifiers_of_the_table($("#" + obj.form_id));
 
@@ -37,6 +43,26 @@ class EditableTableAligner
   #########################
   ### private methods #########
   ##############################
+  @make_leading_body_row: (obj) ->
+    unless $("#" + obj.form_id + "_ajax_content").find("tr.leading_tbody_row").length > 0
+      #$("#" + obj.form_id + "_ajax_content").find("tr.leading_tbody_row").remove()
+
+      orig  = $("#" + obj.form_id).find('tr.filtering_tr')
+      new_tr = $('<tr></tr>').addClass("leading_tbody_row").css("height", "1px").css("border-width", "0").css("border", "0").attr("data-row-count-number", "leading_tbody_row")
+
+      orig.each (index, element) =>
+        $(element).find("th").each (td_index, td_element) =>
+          el = $("<td></td>")
+          if $(td_element).hasClass("headcol")
+            el.addClass("headcol")
+
+          el.attr("data-width-align-id", $(td_element).data("width-align-id"))
+
+
+          new_tr.append(el)
+
+      $("#" + obj.form_id + "_ajax_content").prepend(new_tr)
+
 
   @align_widths: (obj) ->
     # HAVE TO UNSET TABLE WIDTH IF AUTOSET
@@ -55,7 +81,7 @@ class EditableTableAligner
       width_align_id = th.data("width-align-id")
 
       td = $("#" + obj.form_id).find('td[data-width-align-id="' + width_align_id + '"]').first()
-
+      console.log(td)
       #careful delete one by one, or scrolling will be lost
       # have to delete it from elements, otherwise the width would increase (alwazs adding padding nad vbroder to outerWidth)
       th.css({

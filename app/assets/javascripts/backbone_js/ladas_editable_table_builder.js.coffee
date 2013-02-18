@@ -38,6 +38,8 @@ class EditableTableBuilder
 
     EditableTableAligner.align_after_rows_update(obj)
 
+
+
   #############################################################################33
   ##############################private #######################################333
   ##############################################################################33
@@ -68,6 +70,7 @@ class EditableTableBuilder
 
     CheckboxPool.checkboxes_finalize()
     EditableTableBuilder.add_summary_row()
+
 
   @add_summary_row: ->
     functions_present = EditableTableBuilder.obj.row? && EditableTableBuilder.obj.row.functions?
@@ -178,7 +181,7 @@ class EditableTableBuilder
 
       if row_count == 1
         EditableTableBuilder.html += '<td class="' + el_class + '" '
-        EditableTableBuilder.html += 'data-width-align-id="special_checbox_filtering"'
+        #EditableTableBuilder.html += 'data-width-align-id="special_checbox_filtering"'
       else
         EditableTableBuilder.html += '<td class="' + el_class + '" '
       EditableTableBuilder.html += '">'
@@ -205,7 +208,7 @@ class EditableTableBuilder
 
       if row_count == 1
         EditableTableBuilder.html += '<td class="' + static_left_column_class + '"'
-        EditableTableBuilder.html += 'data-width-align-id="special_functions">'
+        #EditableTableBuilder.html += 'data-width-align-id="special_functions">'
       else
         EditableTableBuilder.html += '<td class="' + static_left_column_class + '">'
 
@@ -241,10 +244,10 @@ class EditableTableBuilder
           EditableTableBuilder.html += ' onclick="EditableTableModalDialog.show(this, \'' + EditableTableBuilder.obj.editable_table_edit_cell_path + '\')"'
 
         # row number 1 of body is for width synchronizin with header (if I edit first row, it will affect all others)
-        if row_count == 1
-          EditableTableBuilder.html += ' data-width-align-id="'
-          EditableTableBuilder.html += cell_name
-          EditableTableBuilder.html += '"'
+#        if row_count == 1
+#          EditableTableBuilder.html += ' data-width-align-id="'
+#          EditableTableBuilder.html += cell_name
+#          EditableTableBuilder.html += '"'
 
         EditableTableBuilder.html += ' class="' + col.class
         # adding colhead class, determines if it will be moved to static left column

@@ -66,17 +66,11 @@
 </script>
 
 
-<script type="text/javascript">
-    $.datepicker.setDefaults($.datepicker.regional[ "cs" ]);
-    $('.datetime_class').datetimepicker({
-        dateFormat:"yy-mm-dd",
-        timeFormat:'hh:mm',
-        separator:' ',
-        changeYear:true,
-        yearRange:'<%= Date.today.year - 100 %>:<%= Date.today.year + 30 %>',
-        changeMonth:true
-    });
-</script>
+
+
+<%= build_datetime_picker_js_code('.datetime_class') %>
+<%= build_date_picker_js_code('.date_class') %>
+
 
 
 <script type="text/javascript">

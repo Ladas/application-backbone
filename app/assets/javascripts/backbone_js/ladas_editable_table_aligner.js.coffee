@@ -81,7 +81,7 @@ class EditableTableAligner
       width_align_id = th.data("width-align-id")
 
       td = $("#" + obj.form_id).find('td[data-width-align-id="' + width_align_id + '"]').first()
-      console.log(td)
+      #console.log(td)
       #careful delete one by one, or scrolling will be lost
       # have to delete it from elements, otherwise the width would increase (alwazs adding padding nad vbroder to outerWidth)
       th.css({

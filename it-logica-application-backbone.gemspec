@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "it-logica-application-backbone"
-  s.version = "1.3.9"
+  s.version = "1.3.10"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ladas"]
-  s.date = "2013-01-15"
+  s.date = "2013-02-18"
   s.description = "longer description of your gem"
   s.email = "ladislav.smola@it-logica.cz"
   s.extra_rdoc_files = [
@@ -491,6 +491,7 @@ Gem::Specification.new do |s|
     "app/views/helpers/_build_ajax_callback_code.html.erb",
     "app/views/helpers/_build_breadcrumb.html.erb",
     "app/views/helpers/_build_datafiles.html.erb",
+    "app/views/helpers/_build_date_picker_js_code.html.erb",
     "app/views/helpers/_build_datetime_picker_js_code.html.erb",
     "app/views/helpers/_build_table.html.erb",
     "app/views/helpers/_build_table_data.html.erb",

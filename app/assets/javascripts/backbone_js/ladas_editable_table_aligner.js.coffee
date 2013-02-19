@@ -48,7 +48,7 @@ class EditableTableAligner
       #$("#" + obj.form_id + "_ajax_content").find("tr.leading_tbody_row").remove()
 
       orig  = $("#" + obj.form_id).find('tr.filtering_tr')
-      new_tr = $('<tr></tr>').addClass("leading_tbody_row").css("height", "1px").css("border-width", "0").css("border", "0").attr("data-row-count-number", "leading_tbody_row")
+      new_tr = $('<tr></tr>').addClass("leading_tbody_row").css("height", "1px").css("background-color", "#CCC").css("border-width", "0").css("border", "0").attr("data-row-count-number", "leading_tbody_row")
 
       orig.each (index, element) =>
         $(element).find("th").each (td_index, td_element) =>

@@ -46,8 +46,23 @@
                     <%= text_field_tag "number_to[#{col[:table]}.#{col[:name]}]", saved_param, {:class => "text #{settings[:form_id] + '_column_find'}",
                                                                                                 :onchange => "form_submit_watcher('#{settings[:form_id]}')",
                                                                                                 :placeholder => "max.",
-                                                                                                :title => t('itl-gem.value_has_to_be_bigger_or_equal')} %>
+                                                                                                :title => t('itl-gem.value_has_to_be_lesser_or_equal')} %>
                   </div>
+              <% when :number_exact %>
+                    <div class="inputs range clearfix small_padding">
+                      <% saved_param = (!settings[:params].blank? && !settings[:params]['number_exact_from'].blank? && !settings[:params]['number_exact_from']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['number_exact_from']["#{col[:table]}.#{col[:name]}"] : "" %>
+
+                      <%= text_field_tag "number_exact_from[#{col[:table]}.#{col[:name]}]", saved_param, {:class => "text first #{settings[:form_id] + '_column_find'}",
+                                                                                                    :onchange => "form_submit_watcher('#{settings[:form_id]}')",
+                                                                                                    :placeholder => "min.",
+                                                                                                    :title => t('itl-gem.value_has_to_be_bigger_or_equal_or_exact')} %>
+                      <% saved_param = (!settings[:params].blank? && !settings[:params]['number_exact_to'].blank? && !settings[:params]['number_exact_to']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['number_exact_to']["#{col[:table]}.#{col[:name]}"] : "" %>
+                      <%#= label_tag "date_to[#{col[:table]}.#{col[:name]}]", "Do", :class => "datetime_class_label" %>
+                      <%= text_field_tag "number_exact_to[#{col[:table]}.#{col[:name]}]", saved_param, {:class => "text #{settings[:form_id] + '_column_find'}",
+                                                                                                  :onchange => "form_submit_watcher('#{settings[:form_id]}')",
+                                                                                                  :placeholder => "max.",
+                                                                                                  :title => t('itl-gem.value_has_to_be_lesser_or_equal_or_exact')} %>
+                    </div>
               <% when :date %>
                   <div class="inputs range clearfix small_padding">
                     <% saved_param = (!settings[:params].blank? && !settings[:params]['date_from'].blank? && !settings[:params]['date_from']["#{col[:table]}.#{col[:name]}"].blank?) ? settings[:params]['date_from']["#{col[:table]}.#{col[:name]}"] : "" %>

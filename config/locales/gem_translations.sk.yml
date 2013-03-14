@@ -14,6 +14,9 @@ sk:
     edit_description: Editovať popis
     value_has_to_be_bigger_or_equal: Hodnota musí byť väčšia alebo rovná zadanej hodnote
     value_has_to_be_lesser_or_equal: Hodnota musí byť menšia nebo rovná zadanej hodnote
+    value_has_to_be_bigger_or_equal_or_exact: Hodnota sa musí rovnať zadanej hodnote, alebo byť v intervale <min,max>, ak sú hodnoty min a max zadané
+    value_has_to_be_lesser_or_equal_or_exact: Hodnota sa musí rovnať zadanej hodnote, alebo byť v intervale <min,max>, ak sú hodnoty min a max zadané
+
     date_from: Dátum od
     date_to: Dátum do
     mark_unmark_all_checkboxes: Označiť/odznačit všetko na stránke

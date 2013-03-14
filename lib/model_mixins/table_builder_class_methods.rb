@@ -383,6 +383,49 @@ module ModelMixins
       select(select_string)
     end
 
+    def process_number_exact_filter(params)
+      # this will divide :number_exact filter into find_exact and number_from - number_to filter
+      # the condition is look for interval if there is an interval(2 values given) otherwise look for the exact match
+
+      if !params.blank?
+        number_exact_from = params['number_exact_from'].blank? ? nil : params['number_exact_from'].dup
+        number_exact_to = params['number_exact_to'].blank? ? nil : params['number_exact_to'].dup
+
+        if (!number_exact_from.blank? && !number_exact_to.blank?)
+          # if they have whole interval, it will go to number_filter
+          number_keys = number_exact_from.keys.delete_if { |x| number_exact_from[x].blank? } &
+              number_exact_to.keys.delete_if { |x| number_exact_to[x].blank? }
+          number_keys.each do |number_key|
+            # move it to number filter
+            params['number_from'] ||= {}
+            params['number_from'][number_key] = number_exact_from[number_key]
+            params['number_to'] ||= {}
+            params['number_to'][number_key] = number_exact_to[number_key]
+
+            # and delete it
+            number_exact_from.delete(number_key)
+            number_exact_to.delete(number_key)
+          end
+        end
+
+        # the ones with whole interval were removed, I will put the rest in find exact
+        if (!number_exact_from.blank?)
+          params['find_exact'] ||= {}
+          number_exact_from.each_pair do |index, value|
+            params['find_exact'][index] = value unless value.blank?
+          end
+        end
+
+        if (!number_exact_to.blank?)
+          params['find_exact'] ||= {}
+          number_exact_to.each_pair do |index, value|
+            params['find_exact'][index] = value unless value.blank?
+          end
+        end
+      end
+      params
+    end
+
     def filter(object, settings, params, per_page = 10, total_count = nil)
       order_by = params[:real_order_by]
 
@@ -398,6 +441,9 @@ module ModelMixins
           cond_hash = {:checkboxes => params["checkbox_pool"].split(",")}
           per_page = nil # no paginate for checkbox filter
         else
+          params = process_number_exact_filter(params)
+
+
           # filtering by table filters
           if !params.blank? && params['find']
             params['find'].each_pair do |i, v|

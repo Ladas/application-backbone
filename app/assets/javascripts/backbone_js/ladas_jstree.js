@@ -300,7 +300,7 @@
                            case "text":
                                break;
                            case "edit_tree_node":                               
-                               edit_tree_node(object.jstree('get_selected').data('settings'));
+                               edit_tree_node(object.jstree('get_selected').data('settings'), self.settings);
                                break;
                            default:
                                object.jstree(this.id);

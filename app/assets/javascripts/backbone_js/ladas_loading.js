@@ -272,9 +272,9 @@ function parse_link_and_post(element) {
 }
 
 
-function edit_tree_node(settings) {
+function edit_tree_node(settings, tree_settings) {
     //console.log(settings);
-    var edit_settings = {symlink_controller:"tree", symlink_action:"edit", symlink_id:settings['id'], symlink_remote:true};
+    var edit_settings = {symlink_controller:tree_settings['symlink_controller'], symlink_action:tree_settings['symlink_action'], symlink_id:settings['id'], symlink_remote:true};
     //console.log(edit_settings);
     load_page(edit_settings);
 }

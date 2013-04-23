@@ -427,7 +427,7 @@ module ModelMixins
     end
 
     def filter(object, settings, params, per_page = 10, total_count = nil)
-      inactive_columns = get_columns_with_inactive_filter
+      inactive_columns = get_columns_with_inactive_filter settings
 
 
       order_by = params[:real_order_by]
@@ -702,10 +702,10 @@ module ModelMixins
       ret
     end
 
-    def get_columns_with_inactive_filter
+    def get_columns_with_inactive_filter settings
       inactive_cols = []
-      settings[:columns].each do |c|
-        if c[:inactive_filter]
+      settings[:columns].each do |col|
+        if col[:inactive_filter]
           inactive_cols << "#{col[:table]}.#{col[:name]}"
         end
       end

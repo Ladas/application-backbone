@@ -110,6 +110,11 @@ class TableSettings
       self
     end
 
+    # When using the filter box in header but filters in own way, not by table (just passing already filtered AREL to table)
+    def inactive_filter(bool = true)
+      @column_hash[:inactive_filter] = bool
+      self
+    end
   end
 
   class CustomColumn < Column

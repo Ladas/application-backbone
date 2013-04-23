@@ -427,6 +427,9 @@ module ModelMixins
     end
 
     def filter(object, settings, params, per_page = 10, total_count = nil)
+      inactive_columns = get_columns_with_inactive_filter
+
+
       order_by = params[:real_order_by]
 
       cond_str = ""
@@ -447,6 +450,8 @@ module ModelMixins
           # filtering by table filters
           if !params.blank? && params['find']
             params['find'].each_pair do |i, v|
+              next if inactive_columns.include?(i)
+
               i = i.gsub(/___unknown___\./, "") #some cleaning job
               unless v.blank?
                 if i.match(/^.*?non_existing_column___.*$/i)
@@ -489,6 +494,8 @@ module ModelMixins
 
           if !params.blank? && params['find_exact']
             params['find_exact'].each_pair do |i, v|
+              next if inactive_columns.include?(i)
+
               i = i.gsub(/___unknown___\./, "") #some cleaning job
               unless v.blank?
                 if i.match(/^.*?non_existing_column___.*$/i)
@@ -515,6 +522,8 @@ module ModelMixins
           # ToDo ladas add having condition to others
           if !params.blank? && params['multichoice']
             params['multichoice'].each_pair do |i, v|
+              next if inactive_columns.include?(i)
+
               i = i.gsub(/___unknown___\./, "") #some cleaning job
               unless v.blank?
                 if i.match(/^.*?___sql_expression___.*$/i)
@@ -539,6 +548,8 @@ module ModelMixins
             from_hash = params['date_from']
 
             from_hash.each_pair do |i, v|
+              next if inactive_columns.include?(i)
+
               i = i.gsub(/___unknown___\./, "") #some cleaning job
               unless v.blank?
                 if i.match(/^.*?___sql_expression___.*$/i)
@@ -562,6 +573,8 @@ module ModelMixins
             to_hash = params['date_to']
 
             to_hash.each_pair do |i, v|
+              next if inactive_columns.include?(i)
+
               i = i.gsub(/___unknown___\./, "") #some cleaning job
               unless v.blank?
                 if i.match(/^.*?___sql_expression___.*$/i)
@@ -586,6 +599,8 @@ module ModelMixins
             from_hash = params['number_from']
 
             from_hash.each_pair do |i, v|
+              next if inactive_columns.include?(i)
+
               i = i.gsub(/___unknown___\./, "") #some cleaning job
               unless v.blank?
                 if i.match(/^.*?___sql_expression___.*$/i)
@@ -608,6 +623,8 @@ module ModelMixins
             to_hash = params['number_to']
 
             to_hash.each_pair do |i, v|
+              next if inactive_columns.include?(i)
+
               i = i.gsub(/___unknown___\./, "") #some cleaning job
               unless v.blank?
                 if i.match(/^.*?___sql_expression___.*$/i)
@@ -685,6 +702,15 @@ module ModelMixins
       ret
     end
 
+    def get_columns_with_inactive_filter
+      inactive_cols = []
+      settings[:columns].each do |c|
+        if c[:inactive_filter]
+          inactive_cols << "#{col[:table]}.#{col[:name]}"
+        end
+      end
+      inactive_cols
+    end
 
     def check_non_existing_colum_order_by(settings, params)
       order_by_params = params[:order_by].dup.gsub(/___unknown___\./, "") #some cleaning job

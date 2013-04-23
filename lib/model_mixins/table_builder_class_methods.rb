@@ -705,6 +705,9 @@ module ModelMixins
     def get_columns_with_inactive_filter settings
       inactive_cols = []
       settings[:columns].each do |col|
+        col[:table] = "___unknown___" if col[:table].blank?
+        col[:table] = "___sql_expression___" unless col[:sql_expression].blank?
+
         if col[:inactive_filter]
           inactive_cols << "#{col[:table]}.#{col[:name]}"
         end

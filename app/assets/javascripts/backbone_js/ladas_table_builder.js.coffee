@@ -190,16 +190,18 @@ class TableBuilder
     TableBuilder.html += ' data-tr_class="' + settings.tr_class + '"' if  settings.tr_class?
     TableBuilder.html += ' data-td_class="' + settings.td_class + '"' if  settings.td_class? && settings.td_class.length > 0
 
-    if it_is_link
+    if settings.js_code?
+      # a javascrip code can be passed, it will be put as onclick javascript of the button
+      TableBuilder.html += ' onclick="' + settings.js_code
+      TableBuilder.html += '"'
+
+    else if it_is_link
       if (settings.confirm)
         TableBuilder.html += ' onclick="if (confirm(\'' + settings.confirm + '\')){ load_page(' + stringified_settings + ',this); }; return false;"'
       else
         TableBuilder.html += ' onclick="load_page(' + stringified_settings + ',this); return false;"'
 
-    else if settings.js_code?
-      # a javascrip code can be passed, it will be put as onclick javascript of the button
-      TableBuilder.html += ' onclick="' + settings.js_code
-      TableBuilder.html += '"'
+
 
     TableBuilder.html += '>' + sliced_text
 

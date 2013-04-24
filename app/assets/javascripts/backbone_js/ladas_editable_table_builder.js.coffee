@@ -342,7 +342,7 @@ class EditableTableBuilder
     EditableTableBuilder.html += ' data-tr_class="' + settings.tr_class + '"' if  settings.tr_class?
     EditableTableBuilder.html += ' data-td_class="' + settings.td_class + '"' if  settings.td_class? && settings.td_class.length > 0
 
-    # todo ladas asi prohodit i v table builder, pokud se zada js_code onclick, mel bz mit prioritu
+
     if settings.js_code?
       # a javascrip code can be passed, it will be put as onclick javascript of the button
       EditableTableBuilder.html += ' onclick="' + settings.js_code

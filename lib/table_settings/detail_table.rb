@@ -12,6 +12,7 @@ class TableSettings
               }
     end
 
+    # @return [Hash]
     def hash
       @hash.delete(:only) if @hash[:only].empty?
       @hash.delete(:except) if @hash[:except].empty?

@@ -117,7 +117,7 @@ class TableSettings
     end
 
     # Set if column is excluded from csv export
-    def csv_excluded(bool = false)
+    def csv_excluded(bool = true)
       @column_hash[:csv_excluded] = bool
       self
     end

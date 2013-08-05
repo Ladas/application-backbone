@@ -93,11 +93,13 @@ module ControllerMixins
           case export_method
             when "csv"
               @settings = class_obj.prepare_settings(logged_user, data, @settings, default_params, nil, 50000)
-              generate_and_return_csv(get_data_for_csv_from_settings(@settings))
+              generate_and_return_csv(get_data_for_csv_from_settings(@settings),
+                                      (@settings.blank? || @settings[:csv].blank? || @settings[:csv][:name].blank?) ? 'export.csv' : @settings[:csv][:name])
             when "csv_by_checkboxes"
               settings[:filter_method] = "only_by_checkboxes"
               @settings = class_obj.prepare_settings(logged_user, data, @settings, default_params)
-              generate_and_return_csv(get_data_for_csv_from_settings(@settings))
+              generate_and_return_csv(get_data_for_csv_from_settings(@settings),
+                                      (@settings.blank? || @settings[:csv].blank? || @settings[:csv][:name].blank?) ? 'export.csv' : @settings[:csv][:name])
             else
 
               settings = class_obj.prepare_settings(logged_user, data, settings, default_params)

@@ -115,6 +115,12 @@ class TableSettings
       @column_hash[:inactive_filter] = bool
       self
     end
+
+    # Set if column is excluded from csv export
+    def csv_excluded(bool = false)
+      @column_hash[:csv_excluded] = bool
+      self
+    end
   end
 
   class CustomColumn < Column

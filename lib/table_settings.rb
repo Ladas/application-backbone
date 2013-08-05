@@ -14,7 +14,7 @@ class TableSettings
   # @param [Symbol] model
   #
   def initialize(model)
-    @settings = {:columns => [], :row => {}, :default => {}}
+    @settings = {:columns => [], :row => {}, :default => {}, :csv => {}}
     @model = model
     @default_table = table_name_from_model(model)
 
@@ -169,6 +169,31 @@ class TableSettings
 
   def per_page(number = 10)
     @settings[:default][:per_page] = number
+  end
+
+  # CSV export - filename
+  def csv_name(name = 'export.csv')
+    @settings[:csv][:name] = name
+
+    self
+  end
+
+  # CSV export - exclude header row with column names
+  def csv_exclude_names(exclude = true)
+    @settings[:csv][:exclude_names] = exclude
+    self
+  end
+
+  # CSV export - exclude header row with column labels
+  def csv_exclude_labels(exclude = true)
+    @settings[:csv][:exclude_labels] = exclude
+    self
+  end
+
+  # CSV export - exclude row_id column
+  def csv_exclude_row_id(exclude = true)
+    @settings[:csv][:exclude_row_id] = exclude
+    self
   end
 
   def filter_path(path)

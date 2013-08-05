@@ -35,16 +35,42 @@ module ControllerMixins
       data_for_csv = []
       header_of_names = []
       header_of_labels = []
-      settings[:columns].each do |c|
-        header_of_names << c[:name].to_s.encode(encoding, "UTF-8")
-        header_of_labels << c[:label].to_s.encode(encoding, "UTF-8")
-      end
-      data_for_csv << header_of_names
-      data_for_csv << header_of_labels
 
+      excluded_columns = []
+      settings[:columns].each do |c|
+        excluded_columns << "#{c[:table]}_#{c[:name]}" if c[:csv_excluded] unless c.blank?
+      end
+
+      # add column names header
+      if settings[:csv].blank? || (!settings[:csv].blank? && !settings[:csv][:exclude_names])
+        settings[:columns].each do |c|
+
+          next if excluded_columns.include?("#{c[:table]}_#{c[:name]}")
+
+          header_of_names << c[:name].to_s.encode(encoding, "UTF-8")
+        end
+        data_for_csv << header_of_names
+      end
+
+      # add column labels header
+      if settings[:csv].blank? || (!settings[:csv].blank? && !settings[:csv][:exclude_labels])
+        settings[:columns].each do |c|
+
+          next if excluded_columns.include?("#{c[:table]}_#{c[:name]}")
+
+          header_of_labels << c[:label].to_s.encode(encoding, "UTF-8")
+        end
+        data_for_csv << header_of_labels
+      end
+
+      # add data without excluded columns
       settings[:data].each do |c|
         row = []
         c.each_pair do |name, value|
+
+          next if excluded_columns.include?(name.to_s)
+          next if name == 'row_id' && settings[:csv][:exclude_row_id] unless settings[:csv].blank?
+
           if value.kind_of?(Hash)
             val = value[:title].blank? ? "" : value[:title]
             row << val.to_s.encode(encoding, "UTF-8")
@@ -56,6 +82,7 @@ module ControllerMixins
         data_for_csv << row
       end
       data_for_csv
+
     end
 
 

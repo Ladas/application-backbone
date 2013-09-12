@@ -11,7 +11,7 @@
 //= require ./jquery.fileupload.js
 //= require ./jquery.fileupload-ui.js
 
-//= require ./tinymce/jscripts/tiny_mce/jquery.tinymce.js
+//= require ./tinymce/jscripts/tiny_mce/jquery.tinymce.min.js
 
 //= require ./ladas_table_checkbox_pool.js.coffee
 

@@ -20,7 +20,7 @@
             theme: "modern",
             //plugins:"pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
             plugins: "pagebreak,layer,table,save,hr,image,link,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking, code",
-
+            image_advtab: true,
 
             // Example content CSS (should be your site CSS)
 //                content_css:"css/content.css",

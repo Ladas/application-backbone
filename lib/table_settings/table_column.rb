@@ -104,6 +104,14 @@ class TableSettings
       self
     end
 
+    # Defines column with non-sortable content. Affects only standard columns. Sortable if not set.
+    #
+    # @param [Boolean] bool
+    #
+    def non_sortable(bool = true)
+      @column_hash[:non_sortable] = bool
+    end
+
     # For editable table, defines wchich column should be editable
     def editable(bool = true)
       @column_hash[:editable] = bool

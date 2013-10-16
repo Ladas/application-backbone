@@ -104,18 +104,20 @@
 
         <%
            sorted_class = ""
-           if col[:column_method].blank? && col[:row_method].blank? && !col[:name].blank?
-             sorted_class += "sorting_th "
+           if col[:non_sortable].nil? || (!col[:non_sortable].nil? && !col[:non_sortable])
+               if col[:column_method].blank? && col[:row_method].blank? && !col[:name].blank?
+                 sorted_class += "sorting_th "
 
-             sorting_onclick = "TableSorting.force_toggled_change_sorting('#{settings[:form_id]}','#{col[:table] + "." +col[:name]}', this); return false;"
-             sorting_mouseover = "TableSorting.mouse_over_hover_sorting('#{settings[:form_id]}','#{col[:table] + "." +col[:name]}', this); return false;"
-             sorting_mouseout = "TableSorting.mouse_out_hover_sorting('#{settings[:form_id]}','#{col[:table] + "." +col[:name]}', this); return false;"
+                 sorting_onclick = "TableSorting.force_toggled_change_sorting('#{settings[:form_id]}','#{col[:table] + "." +col[:name]}', this); return false;"
+                 sorting_mouseover = "TableSorting.mouse_over_hover_sorting('#{settings[:form_id]}','#{col[:table] + "." +col[:name]}', this); return false;"
+                 sorting_mouseout = "TableSorting.mouse_out_hover_sorting('#{settings[:form_id]}','#{col[:table] + "." +col[:name]}', this); return false;"
 
-             if (order_by_arr.include?(col[:table] + "." + col[:name] + " desc"))
-               sorted_class +="sorted sorted_desc"
-             elsif (order_by_arr.include?(col[:table] + "." + col[:name] + " asc"))
-               sorted_class +="sorted sorted_asc"
-             end
+                 if (order_by_arr.include?(col[:table] + "." + col[:name] + " desc"))
+                   sorted_class +="sorted sorted_desc"
+                 elsif (order_by_arr.include?(col[:table] + "." + col[:name] + " asc"))
+                   sorted_class +="sorted sorted_asc"
+                 end
+               end
            end
 
         %>

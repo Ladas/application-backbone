@@ -27,11 +27,11 @@ cs:
       maxFileSize: Soubor je příliš velký
       minFileSize: Soubor je příliš malý
       acceptFileTypes: Nepovolený typ souboru
-      maxNumberOfFiles: Překročen maximální počet souborů, které lze nahrát zaráz.
+      maxNumberOfFiles: Překročen maximální počet souborů, které lze nahrát naráz.
       uploadedBytes: Nahrané data překročili velikost souboru.
       emptyResult: Nelze nahrát prázdný soubor
 
-      error: Error
+      error: Chyba
       start: Start
       cancel: Cancel
       destroy: Smazat
@@ -45,9 +45,9 @@ cs:
       do_you_really_want_to_delete_this_file: Chcete opravdu smazat tento soubor?
 
       errors:
-        maxFileSize: File is too big
-        minFileSize: File is too small
-        acceptFileTypes: Filetype not allowed
-        maxNumberOfFiles: Max number of files exceeded
-        uploadedBytes: Uploaded bytes exceed file size
-        emptyResult: Empty file upload result
+        maxFileSize: Soubor je příliš velký
+        minFileSize: Soubor je příliš malý
+        acceptFileTypes: Nepovolený typ souboru
+        maxNumberOfFiles: Překročen maximální počet souborů, které lze nahrát naráz.
+        uploadedBytes: Nahrané data překročili velikost souboru
+        emptyResult: Nelze nahrát prázdný soubor

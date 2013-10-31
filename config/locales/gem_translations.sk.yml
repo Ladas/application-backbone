@@ -45,9 +45,9 @@ sk:
       do_you_really_want_to_delete_this_file: Chcete skutočne zmazať tento súbor?
 
       errors:
-        maxFileSize: File is too big
-        minFileSize: File is too small
-        acceptFileTypes: Filetype not allowed
-        maxNumberOfFiles: Max number of files exceeded
-        uploadedBytes: Uploaded bytes exceed file size
-        emptyResult: Empty file upload result
+        maxFileSize: Súbor je príliš veľký
+        minFileSize: Súbor je príliš malý
+        acceptFileTypes: Nepovolený typ súboru
+        maxNumberOfFiles: Prekročený maximálny počet súborov, ktorý je možný nahrať naraz
+        uploadedBytes: Nahrané data prekročili veľkosť súboru
+        emptyResult: Nie je možné nahrať prázdny súbor

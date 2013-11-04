@@ -69,6 +69,11 @@ class TableSettings
       self
     end
 
+    # Help Title (for mouseover) of column, no title means usage of value
+    def title(string)
+      @column_hash[:title] = string
+    end
+
     # Sets if column has summarization cell per page
     # Standard column will be computed
     # Custom column have to set TableSettings::Buttons.summarize_page_value in callback method

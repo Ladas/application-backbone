@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "it-logica-application-backbone"
-  s.version = "1.4.6"
+  s.version = "1.4.7"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ladas"]
-  s.date = "2013-11-05"
+  s.date = "2013-11-13"
   s.description = "longer description of your gem"
   s.email = "ladislav.smola@it-logica.cz"
   s.extra_rdoc_files = [

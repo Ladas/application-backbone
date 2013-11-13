@@ -19,7 +19,8 @@
 
             theme: "modern",
             //plugins:"pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
-            plugins: "pagebreak,layer,table,save,hr,image,link,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking, code",
+            plugins: "pagebreak,layer,table,save,hr,image,link,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,code,textcolor",
+            toolbar1: "undo redo | styleselect fontsizeselect | bold italic |  alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | forecolor backcolor ",
             image_advtab: true,
 
             // Example content CSS (should be your site CSS)

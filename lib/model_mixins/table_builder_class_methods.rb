@@ -53,7 +53,7 @@ module ModelMixins
       summarized_paged_cols = []
       summarized_all_cols = []
 
-      if settings[:template].blank?
+      if settings[:template].blank? || settings[:standard_query_processing]
         # initialize another_global_formats,another_formats and column_methods
         another_global_formats = []
         another_formats = []

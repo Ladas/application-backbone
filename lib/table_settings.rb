@@ -223,6 +223,13 @@ class TableSettings
     self
   end
 
+  ##
+  #   Rendering template je udelano s RIGHT OUTER JOIN (nevim proc)
+  #   Pokud to chci v renderovani template jako normalne (kdyz zadnou nezadam), musim nastavit toto
+  def standard_query_processing(aBool = true)
+    @settings[:standard_query_processing] = aBool
+  end
+
   def includes(options)
     @settings[:includes] = options
 

@@ -1,25 +1,25 @@
-//= require ./jquery.cookie.js
-//= require ./jquery.hotkeys.js
-//= require ./jquery.jstree.js
-//= require ./ladas_jstree.js
-//= require ./jquery.history.js
-//= require ./ladas_initialize_history.js
-//= require ./jquery-ui-timepicker-addon.js
+//= require ./backbone_js/jquery.cookie.js
+//= require ./backbone_js/jquery.hotkeys.js
+//= require ./backbone_js/jquery.jstree.js
+//= require ./backbone_js/ladas_jstree.js
+//= require ./backbone_js/jquery.history.js
+//= require ./backbone_js/ladas_initialize_history.js
+//= require ./backbone_js/jquery-ui-timepicker-addon.js
 
 
-//= require ./jquery.iframe-transport.js
-//= require ./jquery.fileupload.js
-//= require ./jquery.fileupload-ui.js
+//= require ./backbone_js/jquery.iframe-transport.js
+//= require ./backbone_js/jquery.fileupload.js
+//= require ./backbone_js/jquery.fileupload-ui.js
 
-//= require ./tinymce/jscripts/tiny_mce/jquery.tinymce.min.js
+//= require ./backbone_js/tinymce/jscripts/tiny_mce/jquery.tinymce.min.js
 
-//= require ./ladas_table_checkbox_pool.js.coffee
+//= require ./backbone_js/ladas_table_checkbox_pool.js.coffee
 
-//= require ./ladas_translations.js
-//= require ./ladas_translations.cs.js
-//= require ./ladas_translations.sk.js
+//= require ./backbone_js/ladas_translations.js
+//= require ./backbone_js/ladas_translations.cs.js
+//= require ./backbone_js/ladas_translations.sk.js
 
-//= require_directory .
+//= require_directory ./backbone_js
 
 
 

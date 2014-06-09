@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "it-logica-application-backbone"
-  s.version = "1.4.8"
+  s.version = "1.4.9"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ladas"]
-  s.date = "2014-05-06"
+  s.date = "2014-06-09"
   s.description = "longer description of your gem"
   s.email = "ladislav.smola@it-logica.cz"
   s.extra_rdoc_files = [
@@ -134,8 +134,8 @@ Gem::Specification.new do |s|
     "app/assets/images/backbone_images/temp-userphoto-large.jpg",
     "app/assets/images/backbone_images/temp-userphoto.jpg",
     "app/assets/images/backbone_images/vrchovina-logo.png",
+    "app/assets/javascripts/backbone_js.js",
     "app/assets/javascripts/backbone_js/bootstrap_modal.js",
-    "app/assets/javascripts/backbone_js/index.js",
     "app/assets/javascripts/backbone_js/jquery-ui-timepicker-addon.js",
     "app/assets/javascripts/backbone_js/jquery.cookie.js",
     "app/assets/javascripts/backbone_js/jquery.fileupload-ui.js",

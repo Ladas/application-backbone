@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.authors = ["Ladas"]
   s.date = "2016-02-09"
   s.description = "longer description of your gem"
-  s.email = "ladislav.smola@it-logica.cz"
+  s.email = "ladasa@post.cz"
   s.extra_rdoc_files = [
     "LICENSE.txt",
     "README.md",

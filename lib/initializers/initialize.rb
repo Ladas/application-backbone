@@ -11,10 +11,10 @@ require 'model_mixins/tree_node_instance_methods'
 
 require 'model_mixins/table_settings_interface'
 
-require "model_mixins/ladas_string_extensions"
-require "model_mixins/ladas_html_entities"
+require 'model_mixins/ladas_string_extensions'
+require 'model_mixins/ladas_html_entities'
 
-require "model_mixins/import_csv_class_methods"
+require 'model_mixins/import_csv_class_methods'
 
 
 require 'controller_mixins/renderer_instance_methods'

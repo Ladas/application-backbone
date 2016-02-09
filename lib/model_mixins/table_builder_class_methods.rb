@@ -559,11 +559,13 @@ module ModelMixins
                   having_cond_str += "#{i} >= :#{cond_id}" #OR guest_email LIKE :find"
                   having_cond_hash.merge!({cond_id.to_sym => "#{v}"})
                 else
-                  cond_str += " AND " unless cond_str.blank?
-                  cond_id = "date_from_#{i.gsub(/\./, '_')}"
-                  cond_str += "#{i} >= :#{cond_id}" #OR guest_email LIKE :find"
-                  v = Time.parse(v) # queries to database has to be in utc date
-                  cond_hash.merge!({cond_id.to_sym => "#{v.utc}"})
+                  v = Time.parse(v) rescue nil # queries to database has to be in utc date
+                  unless v.nil?
+                    cond_str += " AND " unless cond_str.blank?
+                    cond_id = "date_from_#{i.gsub(/\./, '_')}"
+                    cond_str += "#{i} >= :#{cond_id}" #OR guest_email LIKE :find"
+                    cond_hash.merge!({cond_id.to_sym => "#{v.utc}"})
+                  end
                 end
               end
             end
@@ -584,11 +586,13 @@ module ModelMixins
                   having_cond_str += "#{i} <= :#{cond_id}" #OR guest_email LIKE :find"
                   having_cond_hash.merge!({cond_id.to_sym => "#{v}"})
                 else
-                  cond_str += " AND " unless cond_str.blank?
-                  cond_id = "date_to_#{i.gsub(/\./, '_')}"
-                  cond_str += "#{i} <= :#{cond_id}" #OR guest_email LIKE :find"
-                  v = Time.parse(v) # queries to database has to be in utc date
-                  cond_hash.merge!({cond_id.to_sym => "#{v.utc}"})
+                  v = Time.parse(v) rescue nil # queries to database has to be in utc date
+                  unless v.nil?
+                    cond_str += " AND " unless cond_str.blank?
+                    cond_id = "date_to_#{i.gsub(/\./, '_')}"
+                    cond_str += "#{i} <= :#{cond_id}" #OR guest_email LIKE :find"
+                    cond_hash.merge!({cond_id.to_sym => "#{v.utc}"})
+                  end
                 end
               end
             end

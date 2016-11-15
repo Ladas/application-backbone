@@ -41,7 +41,7 @@
 }
 .ui-multiselect-all,
 .ui-multiselect-none {
-  background: asset-url('/assets/backbone_images/date_select_and_multiselect/btn-select.png', image) no-repeat left top;
+  background: asset-url('/assets/backbone_images/date_select_and_multiselect/btn-select.png') no-repeat left top;
   height: 30px;
   width: 102px;
   float: left;
@@ -50,15 +50,15 @@
   padding: 5px 0 0 15px;
 }
 .ui-multiselect-all .ui-icon-check {
-  background: asset-url('/assets/backbone_images/date_select_and_multiselect/select-all.png', image) no-repeat left top;
+  background: asset-url('/assets/backbone_images/date_select_and_multiselect/select-all.png') no-repeat left top;
   margin-top: 6px;
 }
 .ui-multiselect-none .ui-icon-closethick {
-  background: asset-url('/assets/backbone_images/date_select_and_multiselect/select-close.png', image) no-repeat left top;
+  background: asset-url('/assets/backbone_images/date_select_and_multiselect/select-close.png') no-repeat left top;
   margin-top: 6px;
 }
 a.ui-multiselect-close {
-  background: asset-url('/assets/backbone_images/date_select_and_multiselect/btn-close.png', image) no-repeat left top !important;
+  background: asset-url('/assets/backbone_images/date_select_and_multiselect/btn-close.png') no-repeat left top !important;
   width: 23px !important;
   height: 24px !important;
   padding: 6px 0 0 7px;

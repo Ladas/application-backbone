@@ -145,8 +145,9 @@ class TableBuilder
           if (col.max_text_length)
             max = col.max_text_length - 3
             sliced_text = sliced_text.slice(0, col.max_text_length) + "..." if ( max > 0 && sliced_text.length > max)
-
-          TableBuilder.html += '<span title="' + text + '">' + sliced_text + '</span>'
+            TableBuilder.html += '<span title="' + text + '">' + sliced_text + '</span>'
+          else
+            TableBuilder.html += text
 
         else
           # its something else eg. number cant be sliced, or its probably aliens Kveigars

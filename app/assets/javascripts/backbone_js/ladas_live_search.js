@@ -55,7 +55,9 @@
         var timer = undefined;
         var prevSearchTerm = element.val();
 
-        element.empty();
+        if (opts['clearText'] != false) {
+            element.empty();
+        }
 
         element.bind("keyup", function () {
             // have a timer that gets canceled if a key is pressed before it executes

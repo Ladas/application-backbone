@@ -66,6 +66,8 @@ function submit_spec(form_id, spec_attr_name, spec_attr_value, options) {
 //    form.remove();
 }
 
+// Preparing for clearing table (button)
+// Saves checkbox pool and clear param to data-post of given link element
 function on_clear_table_fill_attrs(link, form_id) {
 
     var checkbox_pool = $("#" + form_id + "_checkbox_pool").val();    
@@ -78,4 +80,21 @@ function on_clear_table_fill_attrs(link, form_id) {
     link.data("post", data);
 }
 
+// Adds special parameter, checkbox pool to link
+// Forces rendering of whole ajax page (like Clear table button)
+// @param link - <a> in jQuery
+// @param form_id - ID of table form (set in controller to table settings)
+// @param param_key, param_value - pair key/value which will be added to params
+function on_filter_table_fill_attrs(link, form_id, param_key, param_value) {
+    var checkbox_pool = $("#" + form_id + "_checkbox_pool").val();
+
+    // attrs I want to send when clearing form
+    var data = link.data("post");
+    data["render_whole_table"] = true;
+    data["checkbox_pool"] = checkbox_pool;
+    data[param_key] = param_value;
+
+    link.data("post", data);
+
+}
 

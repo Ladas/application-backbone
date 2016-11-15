@@ -7,10 +7,6 @@
 //= require ./backbone_js/jquery-ui-timepicker-addon.js
 
 
-//= require ./backbone_js/jquery.iframe-transport.js
-//= require ./backbone_js/jquery.fileupload.js
-//= require ./backbone_js/jquery.fileupload-ui.js
-
 //= require ./backbone_js/tinymce/jscripts/tiny_mce/jquery.tinymce.min.js
 
 //= require ./backbone_js/ladas_table_checkbox_pool.js.coffee

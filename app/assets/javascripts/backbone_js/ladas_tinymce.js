@@ -28,6 +28,7 @@
 
             // Drop lists for link/image/media/template dialogs
             //template_external_list_url: tinymce_datafile_url(settings, "Template"),
+            relative_urls : false,
             link_list: tinymce_datafile_url(settings, "Link"),
             image_list: tinymce_datafile_url(settings, "Image"),
             media_external_list_url: tinymce_datafile_url(settings, "Media"),

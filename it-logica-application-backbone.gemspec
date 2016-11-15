@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "it-logica-application-backbone"
-  s.version = "1.4.12"
+  s.version = "1.5.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ladas"]
-  s.date = "2016-02-09"
+  s.date = "2016-11-15"
   s.description = "longer description of your gem"
   s.email = "ladislav.smola@it-logica.cz"
   s.extra_rdoc_files = [
@@ -138,15 +138,11 @@ Gem::Specification.new do |s|
     "app/assets/javascripts/backbone_js/bootstrap_modal.js",
     "app/assets/javascripts/backbone_js/jquery-ui-timepicker-addon.js",
     "app/assets/javascripts/backbone_js/jquery.cookie.js",
-    "app/assets/javascripts/backbone_js/jquery.fileupload-ui.js",
-    "app/assets/javascripts/backbone_js/jquery.fileupload.js",
     "app/assets/javascripts/backbone_js/jquery.history.js",
     "app/assets/javascripts/backbone_js/jquery.hotkeys.js",
-    "app/assets/javascripts/backbone_js/jquery.iframe-transport.js",
     "app/assets/javascripts/backbone_js/jquery.jstree.js",
     "app/assets/javascripts/backbone_js/jquery.multiselect.min.js",
     "app/assets/javascripts/backbone_js/jquery.multiselect.zfilter.js",
-    "app/assets/javascripts/backbone_js/jquery.ui.widget.js",
     "app/assets/javascripts/backbone_js/ladas_alert.js.coffee",
     "app/assets/javascripts/backbone_js/ladas_breadcrumb.js.coffee",
     "app/assets/javascripts/backbone_js/ladas_editable_table_aligner.js.coffee",
@@ -171,7 +167,6 @@ Gem::Specification.new do |s|
     "app/assets/javascripts/backbone_js/ladas_translations.cs.js",
     "app/assets/javascripts/backbone_js/ladas_translations.js",
     "app/assets/javascripts/backbone_js/ladas_translations.sk.js",
-    "app/assets/javascripts/backbone_js/load-image.min.js",
     "app/assets/javascripts/backbone_js/tinymce/LICENSE.TXT",
     "app/assets/javascripts/backbone_js/tinymce/changelog.txt",
     "app/assets/javascripts/backbone_js/tinymce/examples/css/content.css",
@@ -264,12 +259,19 @@ Gem::Specification.new do |s|
     "app/assets/javascripts/backbone_js/tinymce/jscripts/tiny_mce/skins/lightgray/skin.min.css",
     "app/assets/javascripts/backbone_js/tinymce/jscripts/tiny_mce/themes/modern/theme.min.js",
     "app/assets/javascripts/backbone_js/tinymce/jscripts/tiny_mce/tinymce.min.js",
-    "app/assets/javascripts/backbone_js/tmpl.min.js",
+    "app/assets/javascripts/datafiles.js",
+    "app/assets/javascripts/datafiles/jquery.fileupload-ui.js",
+    "app/assets/javascripts/datafiles/jquery.fileupload.js",
+    "app/assets/javascripts/datafiles/jquery.iframe-transport.js",
+    "app/assets/javascripts/datafiles/jquery.ui.widget.js",
+    "app/assets/javascripts/datafiles/load-image.min.js",
+    "app/assets/javascripts/datafiles/tmpl.min.js",
     "app/assets/stylesheets/backbone_css/bootstrap_and_overrides.css.scss",
     "app/assets/stylesheets/backbone_css/bootstrap_modal.css",
     "app/assets/stylesheets/backbone_css/design.css",
     "app/assets/stylesheets/backbone_css/editable_tables.css.scss",
     "app/assets/stylesheets/backbone_css/index.css.scss",
+    "app/assets/stylesheets/backbone_css/jquery-ui-timepicker-addon.css",
     "app/assets/stylesheets/backbone_css/jquery.fileupload-ui.css",
     "app/assets/stylesheets/backbone_css/jquery_datetime_picker.css.scss",
     "app/assets/stylesheets/backbone_css/jquery_ui.css.scss",
@@ -311,6 +313,7 @@ Gem::Specification.new do |s|
     "application-backbone.gemspec",
     "config/locales/gem_translations.cs.yml",
     "config/locales/gem_translations.sk.yml",
+    "it-logica-application-backbone.gemspec",
     "lib/backbone_css/engine.rb",
     "lib/backbone_images/engine.rb",
     "lib/backbone_js/engine.rb",
@@ -350,27 +353,24 @@ Gem::Specification.new do |s|
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<htmlentities>, [">= 0"])
-      s.add_runtime_dependency(%q<jquery-rails>, ["= 2.1.3"])
+      s.add_runtime_dependency(%q<jquery-rails>, ["= 2.1.4"])
       s.add_development_dependency(%q<shoulda>, [">= 0"])
       s.add_development_dependency(%q<rdoc>, ["~> 3.12"])
-      s.add_development_dependency(%q<bundler>, ["~> 1.1.0"])
       s.add_development_dependency(%q<jeweler>, ["~> 1.8.4"])
       s.add_development_dependency(%q<simplecov>, [">= 0"])
     else
       s.add_dependency(%q<htmlentities>, [">= 0"])
-      s.add_dependency(%q<jquery-rails>, ["= 2.1.3"])
+      s.add_dependency(%q<jquery-rails>, ["= 2.1.4"])
       s.add_dependency(%q<shoulda>, [">= 0"])
       s.add_dependency(%q<rdoc>, ["~> 3.12"])
-      s.add_dependency(%q<bundler>, ["~> 1.1.0"])
       s.add_dependency(%q<jeweler>, ["~> 1.8.4"])
       s.add_dependency(%q<simplecov>, [">= 0"])
     end
   else
     s.add_dependency(%q<htmlentities>, [">= 0"])
-    s.add_dependency(%q<jquery-rails>, ["= 2.1.3"])
+    s.add_dependency(%q<jquery-rails>, ["= 2.1.4"])
     s.add_dependency(%q<shoulda>, [">= 0"])
     s.add_dependency(%q<rdoc>, ["~> 3.12"])
-    s.add_dependency(%q<bundler>, ["~> 1.1.0"])
     s.add_dependency(%q<jeweler>, ["~> 1.8.4"])
     s.add_dependency(%q<simplecov>, [">= 0"])
   end

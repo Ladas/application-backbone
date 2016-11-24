@@ -15,4 +15,4 @@ end
 
 gem 'htmlentities'
 
-gem 'jquery-rails', '2.1.4'
+gem 'jquery-rails', '2.1.3'
